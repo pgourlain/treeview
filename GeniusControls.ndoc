@@ -1,0 +1,68 @@
+<project SchemaVersion="1.3">
+    <assemblies>
+        <assembly location=".\Genius.Controls\bin\Release\Genius.Controls.dll" documentation=".\Genius.Controls\bin\Release\Genius.Controls.xml" />
+    </assemblies>
+    <documenters>
+        <documenter name="JavaDoc">
+            <property name="OutputDirectory" value=".\doc\" />
+        </documenter>
+        <documenter name="LaTeX">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="TextFileFullName" value="Documentation.tex" />
+            <property name="TexFileBaseName" value="Documentation" />
+            <property name="LatexCompiler" value="latex" />
+            <property name="TexFileFullPath" value=".\doc\Documentation.tex" />
+        </documenter>
+        <documenter name="LinearHtml">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+        </documenter>
+        <documenter name="MSDN">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="GeniusControls" />
+            <property name="Title" value="Genius Controls Documentation" />
+            <property name="OutputTarget" value="HtmlHelp" />
+            <property name="SdkLinksOnWeb" value="True" />
+            <property name="RootPageTOCName" value="Overview" />
+            <property name="RootPageFileName" value="C:\Pierrick\Projets\Dotnet\2005\MyTreeView\Documentation\Readme.htm" />
+            <property name="AdditionalContentResourceDirectory" value=".\Documentation\" />
+            <property name="LangID" value="1036" />
+            <property name="DocumentInheritedMembers" value="None" />
+            <property name="DocumentProtected" value="False" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="Réalisé par Pierrick Gourlain" />
+            <property name="UseNamespaceDocSummaries" value="True" />
+            <property name="Preliminary" value="True" />
+            <property name="SdkDocLanguage" value="fr" />
+        </documenter>
+        <documenter name="MSDN 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="GeniusControls2003" />
+            <property name="Title" value="Genius Controls Documentation" />
+            <property name="OutputTarget" value="HtmlHelp" />
+            <property name="SdkLinksOnWeb" value="True" />
+            <property name="LangID" value="1036" />
+            <property name="DocumentInheritedMembers" value="None" />
+            <property name="DocumentProtected" value="False" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="Réalisé par Pierrick Gourlain" />
+            <property name="Preliminary" value="True" />
+            <property name="SdkDocLanguage" value="fr" />
+        </documenter>
+        <documenter name="VS.NET 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="GeniusControls" />
+            <property name="Title" value="Genius Controls Documentation" />
+            <property name="LangID" value="1036" />
+            <property name="DocumentInheritedFrameworkMembers" value="False" />
+            <property name="DocumentProtected" value="False" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="Réalisé par Pierrick Gourlain" />
+            <property name="Preliminary" value="True" />
+            <property name="SdkDocLanguage" value="fr" />
+        </documenter>
+        <documenter name="XML">
+            <property name="OutputFile" value=".\doc\doc.xml" />
+        </documenter>
+    </documenters>
+</project>

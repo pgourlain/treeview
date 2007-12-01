@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="ProgId" content="VisualStudio.HTML">
+		<meta name="Originator" content="Microsoft Visual Studio .NET 7.1">
+	</head>
+	<body background="fond.jpg">
+		<P>
+            <strong>La version 2.0.3 (.Net 2.0)</strong></p>
+        <ul>
+            <li>Correction d'un bug génant : Graphics.DrawString provoque des problèmes d'affichages,
+                j'ai donc décidé d'utiliser TextRenderer.DrawText. Mais cela engendre des modifications
+                au niveau des couleurs du texte, puisque seul le type Color est utilisé par DrawText,
+                or jusqu'a aujourd'hui vous pouviez définir un gradient,.. pour la couleur du texte.</li>
+                <li>Ajout d'une propriété(FastDrawString) du à cette correction, DrawText est moins performante que DrawString (entre 6 à 8 fois !!), 
+                Vous pouvez donc choisir d'utiliser une mode ou l'autre via cette propriété</li>
+        </ul>
+        <P>
+            <strong>La version 2.0.2 (.Net 2.0)</strong></P>
+        <ul>
+            <li>Changement de NodeHintWindowEventArgs, ajout des informations sur le noeud sous
+                le hint</li>
+            <li>Correction de bugs </li>
+        </ul>
+        <p>
+            <strong>La version 2.0.1 (.Net 2.0)</strong></p>
+        <ul>
+            <li>Ajout de l'événement OnGetNodeWidth, utile lors du custom paint </li>
+            <li>Correction de&nbsp; bugs</li>
+        </ul>
+        <p>
+            <strong>La version 2.0.0 (.Net 2.0)</strong></p>
+        <ul>
+            <li>Changement de nom de la propriété Margin en LeftMargin (conflit avec Control.Margin
+                en .Net 2.0)</li>
+            <li>Ajout de ChecksAreIndependant</li>
+            <li>Ajout d'un designer pour VS 2005</li>
+            <li>Ajout des l'événements 
+            <ul>
+                <li>OnDragBegin (permet à l'utilisateur de fournir son propre IDataObject)</li><li>OnItemMouseEnter</li>
+                <li>OnItemMouseLeave </li>
+            </ul>
+            </li>
+            <li>Suppression de la propriété CheckedImageList</li><li>Modification de de ShowNode, afin de pouvoir centrer le noeud désirant être afficher</li><li>Correction du Drag&amp;Drop</li>
+            <li>Correction des événements CellMouseLeave..CellMouseEnter</li>
+        </ul>
+        <p>
+            <strong>
+            La version 0.8.8 (.Net 1.1)</strong></p>
+        <ul>
+            <li>Ajout de méthodes&nbsp;</li>
+            <li>Search</li>
+            <li>ShowNode&nbsp;</li>
+            <li>SelectNode&nbsp;</li>
+            <li>Enrichissement de l'aide</li>
+            <li>Correction bugs divers </li>
+        </ul>
+        <p>
+            <strong>
+            La version 0.8.7</strong></p>
+		<UL>
+			<LI>
+			Ajout d'un footer sur le treeview
+			<LI>
+				Ajout des événements
+				<UL>
+					<LI>
+					OnCellMouseUp
+					<LI>
+					OnCellMouseMove
+					<LI>
+					OnCellMouseEnter
+					<LI>
+					OnCellMouseLeave
+					<LI>
+					OnBeforePaintFooter
+					<LI>
+					OnAfterPaintFooter
+					<LI>
+						OnFooterGetText</LI></UL>
+			<LI>
+			Renommage de TextAlignment dans la colonne en ContentAlignment
+			<LI>
+			Ajout de AllowEdit sur chaque colonne
+			<LI>
+			Ajout de ContentRect dans PaintInfo, (i.e : afin de pouvoir dessiner sur une 
+			partie d'une cellule)
+			<LI>
+			Ajout d'une classe pour la sérialization des noeuds d'un treeview
+			<LI>
+				Ajout d'une classe Drawing pour le dessin de checkbox, button pendant le custom 
+				paint
+			<UL>
+				<LI>
+				FillRoundRect
+				<LI>
+				DrawRoundRect
+				<LI>
+				DrawCheckBox
+				<LI>
+					DrawButton</LI></UL>
+			</LI>
+		</UL>
+		<P>
+            <strong>La version 0.8.6</strong></P>
+		<UL>
+			<LI>
+			ajout d'un composant&nbsp;GeniusDocTab dans l'assembly
+			<LI>
+			Réorganisation des namespaces
+			<LI>
+			Ajout du tri multi-colonnes touche-Ctrl pour ajouter une colonne au tri
+			<LI>
+				Gestion de la touche Escape pendant le drag des colonnes</LI></UL>
+		<P>
+            <strong>La version 0.8.5</strong></P>
+		<UL>
+			<LI>
+			Correction drag&amp;drop
+			<LI>
+			Ajout de OnCanDragNode
+			<LI>
+			AutoSizeLastCol dans le header
+			<LI>
+				Ajout d'un indexer [] pour un manipulation des enfants d'un noeud plus rapide</LI></UL>
+		<P>
+            <strong>La version 0.8.4</strong></P>
+		<UL>
+			<LI>
+			Ajout ImageList sur le Header
+			<LI>
+			Orientation du text dans le header
+			<LI>
+				Correction divers bugs</LI></UL>
+		<P>
+            <strong>La version 0.8.3</strong></P>
+		<UL>
+			<LI>
+			Ajout de IHintWindow
+			<LI>
+			Correction de bugs sur le drag 'n drop
+			<LI>
+				Correction des touches +,-,*,/ quand en FullRowSelect</LI></UL>
+		<P>
+            <strong>La version 0.8.2</strong></P>
+		<UL>
+			<LI>
+			Ajout du Style sur GeniusPen
+			<LI>
+			Ajout de SearchColumn, pour la recherche incrémentale
+			<LI>
+				Correction de divers bugs</LI></UL>
+		<P>
+            <strong>La version 0.8.1</strong></P>
+		<UL>
+			<LI>
+			Ajout de CellGridLines dans PaintInfo, affichage ou non des lignes sur chaque 
+			cellule
+			<LI>
+			Ajout de FocusedRectangleColor dans Colors
+			<LI>
+				Ajout de UnFocusedRectangleColor dans Colors</LI></UL>
+		<P>
+            <strong>La version 0.8.0</strong></P>
+		<UL>
+			<LI>
+			Ajout CheckNode
+			<LI>
+			Ajout UnCheckNode
+			<LI>
+				Correction divers bugs</LI></UL>
+		<P>
+            <strong>La version 0.7.9</strong></P>
+		<UL>
+			<LI>
+			Ajout OnInitEdit
+			<LI>
+				Ajout OnAfterEdit</LI></UL>
+		<P>
+            <strong>La version 0.7.8</strong></P>
+		<UL>
+			<LI>
+			Ajout de AllowSort sur le Header
+			<LI>
+			Ajout de DataIsStringProvider et IStringNodeProvider
+			<LI>
+			Ajout de BorderStyle sur le control
+			<LI>
+			Ajout de GetNodeAtPoint
+			<LI>
+			Ajout de UseKeyTab pour passer de cellule en cellule en mode grille
+			<LI>
+			Ajout de ImageTreeList
+			<LI>
+				Correction de bug</LI></UL>
+		<P>
+            <strong>La version 0.7.7</strong></P>
+		<UL>
+			<LI>
+			correction d'un bug de paint
+			<LI>
+				correction du dessin du selected, le focusrect était trop près du texte</LI></UL>
+		<P>
+            <strong>La version 0.7.6</strong></P>
+		<UL>
+			<LI>
+			ajout de commentaires
+			<LI>
+				correction de bugs</LI></UL>
+		<P>
+            <strong>La version 0.7.5</strong></P>
+		<UL>
+			<LI>
+			Ajout de la recherche incrémentale
+			<LI>
+				"Renommage" de certains évènements, afin d'avoir au maximum
+				<UL>
+					<LI>
+					OnBeforeXX
+					<LI>
+						OnAfterXX</LI></UL>
+			<LI>
+				Ajout d'interface d'énumération INodeEnumerable, pour un meilleur manipulation 
+				du treeview</LI></UL>
+		<P>
+            <strong>La version 0.7.1</strong></P>
+		<UL>
+			<LI>
+			Correction du Hint
+			<LI>
+				Les scrollbars ne s'affiche que si nécessaire</LI></UL>
+		<P>
+            <strong>La version 0.7</strong></P>
+		<UL>
+			<LI>
+			Hint sur toutes les cellules en mode grille, via OnGetHint&nbsp;
+			<LI>
+				possiblité d'avoir des colonnes fixe à gauche</LI></UL>
+		<P>
+            <strong>La version 0.6</strong></P>
+		<P>Quelques fonctionnalités suplémentaires</P>
+		<UL>
+			<LI>
+				Amélioration du Custom&nbsp;Paint
+				<UL>
+					<LI>
+					&nbsp;7&nbsp;évènements à destination de l'utilisateur
+					<LI>
+						<FONT color="#0066ff">BeforePainting</FONT>
+					<LI>
+						Pour chaque noeud
+						<UL>
+							<LI>
+								<FONT color="#0066ff">DoBeforeNodePainting </FONT><FONT color="#000000">(possibilité 
+									de detourné le dessin ici)</FONT>
+							<LI>
+								<FONT color="#0066ff">DoPaintNodeBackGround</FONT>
+							<LI>
+								si je suis en mode grille
+								<UL>
+									<LI>
+										<FONT color="#0066ff">DoBeforeCellPainting <FONT color="#000000">(possibilité de 
+												detourné le dessin ici)</FONT></FONT>
+									<LI>
+										<FONT color="#0066ff">DoAfterCellPainting</FONT></LI></UL>
+							<LI>
+								<FONT color="#0066ff">DoAfterNodePainting</FONT></LI></UL>
+					<LI>
+					fin pour
+					<LI>
+						<FONT color="#0066ff">AfterPainting</FONT></LI></UL>
+			<LI>
+			Correction&nbsp;du drag and drop&nbsp;
+			<LI>
+				Correction de bugs divers</LI></UL>
+	</body>
+</html>

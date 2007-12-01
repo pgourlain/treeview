@@ -1,0 +1,320 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8371E350-09FB-4220-8D8B-09CAD6EE2285}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Genius.Controls</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Genius.Controls</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE;VS2003</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;VS2003</DefineConstants>
+    <DocumentationFile>doc\Genius.Controls.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Diagnostics\Counter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Drawing.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusDocTab\GeniusDocTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GeniusDocTab\GeniusTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GeniusDocTab\GeniusTabs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\DrawTabEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\HorizontalTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\HorizontalTabCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\HorizontalTabs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\TabChangeEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\TabMargins.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeniusTab\TabMarginsConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NativeMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NativeWindow\BaseHintWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NativeWindow\BaseNativeWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScrollBarsHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Colors\GeniusLinearGradientBrush.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Colors\GeniusPen.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Colors\Themes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Constantes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Converter\GeniusBaseConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Converter\GeniusLinearGradientBrushConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Converter\GeniusPenConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\Colonnes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\INode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\INodeEnumerable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\Node.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\NodeEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\Nodes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Core\Set.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\DragDrop\TreeViewDataObject.cs" />
+    <Compile Include="TreeView\DragForm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Editors\ComboBoxEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Editors\DateTimeEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Editors\GeniusTreeViewEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Editors\TreeViewTextBoxEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TreeView\Enumerations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Events.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\GeniusHeader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\GeniusNativeWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\GeniusTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TreeView\GeniusTreeViewColonne.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TreeView\GeniusTreeViewDelegate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\GenuisTreeViewColors.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\HintHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\HitNodeInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\IHintWindow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\IStringNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\ITreeViewEdit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\MousePosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\PaintFooterInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\PaintInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\PaintInfoBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\SearchHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Serialization\GeniusTreeViewSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Serialization\SerializationHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TreeView\Timers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VisualStyles\CheckBoxState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VisualStyles\Themes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Analyse\ArchitectureForAvalon.txt" />
+    <EmbeddedResource Include="Resources\checkindeterminate.bmp" />
+    <EmbeddedResource Include="Resources\checkindeterminatedisabled.bmp" />
+    <Content Include="Resources\geniusDocTab.bmp" />
+    <EmbeddedResource Include="GeniusTab\HorizontalTab.resx">
+      <DependentUpon>HorizontalTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeniusTab\HorizontalTabs.resx">
+      <DependentUpon>HorizontalTabs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\check.bmp" />
+    <EmbeddedResource Include="Resources\checkdisabled.bmp" />
+    <EmbeddedResource Include="Resources\dragtargetleft.bmp" />
+    <EmbeddedResource Include="Resources\dragtargetright.bmp" />
+    <EmbeddedResource Include="Resources\moins.bmp" />
+    <EmbeddedResource Include="Resources\plus.bmp" />
+    <EmbeddedResource Include="Resources\sortasc.bmp" />
+    <EmbeddedResource Include="Resources\sortdesc.bmp" />
+    <EmbeddedResource Include="Resources\treeview.bmp" />
+    <EmbeddedResource Include="Resources\uncheck.bmp" />
+    <EmbeddedResource Include="Resources\uncheckdisabled.bmp" />
+    <EmbeddedResource Include="TreeView\Editors\TreeViewTextBoxEditor.resx">
+      <DependentUpon>TreeViewTextBoxEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeView\GeniusTreeView.resx">
+      <DependentUpon>GeniusTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeView\GeniusTreeViewColonne.resx">
+      <DependentUpon>GeniusTreeViewColonne.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TreeView\Interfaces\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>copy $(TargetFileName) $(SolutionDir)\DemoTreeView\lib
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

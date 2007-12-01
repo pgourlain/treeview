@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Introduction</title>
+</head>
+<body background="fond.jpg">
+		<p>Introduction</p>
+		<p>GeniusTreeView est un treeview inspiré du treeview de <a href="http://www.soft-gems.net/VirtualTreeview/VT.php" target="_blank">
+				Mike Lischke</a>, un treeview pour Delphi, qui est vraiment très bien fait, 
+			tellement bien fait que Borland l'utilise très largement au sein de son IDE <a href="http://www.soft-gems.net/VirtualTreeview/VTGallery.php">Delphi 
+				2005</a>. Son auteur ne portant pas son treeview sous .Net, je me suis 
+			lancer dans l'aventure.</p>
+		<p>GeniusTreeView est écrit entièrement en code managé (C#)</p>
+		<p>Principales fonctionnalités :
+		</p>
+		<ul>
+			<li>
+			surligné un chemin&nbsp;</li>
+			<li>
+			support des cases à cochées</li>
+			<li>
+			support des colonnes ou mode grille, avec personalisation de la couleur de fond</li>
+			<li>
+			support d'un header de colonne</li>
+			<li>
+			support des images dans le header</li>
+			<li>
+			support du tri multi-colonnes</li>
+			<li>
+			support des images et image d'état (ImageState) sur les noeuds</li>
+			<li>
+			support du drag'n drop dans le header</li>
+			<li>
+			support du drag'n drop dans le treeview&nbsp;</li>
+			<li>
+			support de colonne(s) fixe(nt) sur la gauche</li>
+			<li>
+			custom paint</li>
+			<li>
+				custom Hint Paint</li>
+		</ul>
+
+			<TABLE id="tblMenu" cellspacing="0" cellpadding="1" width="100%" align="center" bgColor="lightblue"
+				border="0">
+				<TR>
+					<TD><a href="./History.htm">Historique des versions</a></TD>
+					<TD><a href="./apercu.htm">Quelques arperçus d'écrans</a></TD>
+					<TD><a href="./snippets.htm">"Snippets"</a></TD>
+				</TR>
+			</TABLE>
+			<HR width="100%" SIZE="1" />
+		<p>Performances</p>
+			<TABLE id="Table2" cellSpacing="1" cellPadding="1" width="100%" border="1">
+				<TR>
+					<TD width="80">Ajout</TD>
+					<TD width="241">Standard TreeView</TD>
+					<TD>GeniusTreeView</TD>
+				</TR>
+				<TR>
+					<TD width="80">10 000</TD>
+					<TD width="241">2008 ms</TD>
+					<TD>16 ms</TD>
+				</TR>
+				<TR>
+					<TD width="80">40 000</TD>
+					<TD width="241">58623 ms</TD>
+					<TD>52 ms</TD>
+				</TR>
+				<TR>
+					<TD width="80">100 000</TD>
+					<TD width="241">418985 ms soit 6m 58s</TD>
+					<TD>144 ms</TD>
+				</TR>
+				<TR>
+					<TD width="80">1 000 000</TD>
+					<TD width="241">non mesuré ! trop long</TD>
+					<TD>4275 ms</TD>
+				</TR>
+			</TABLE>
+					<P>je pense les performances acceptables, mais loin des 700 ms pour un million pour 
+			le treeview (en code natif) de Mike Lischke</P>
+		<P><FONT size="2">Tests effectué sur un Athlon XP 3000+, à 1.6Ghz, Framework .Net 1.1</FONT></P>
+		<HR width="100%" SIZE="1">
+				<P>la personalisation du paint</P>
+			<TABLE id="Table1" cellSpacing="0" cellPadding="0" width="100%" border="1">
+				<TR>
+					<TD width="236" bgColor="#ff9966">Organisation des évènements de paint</TD>
+					<TD bgColor="#ff9966">Description</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<P><FONT color="#0066ff">BeforePainting</FONT></P>
+					</TD>
+					<TD>Début du paint</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<P dir="ltr" style="MARGIN-RIGHT: 0px">Pour chaque noeud à dessiner</P>
+					</TD>
+					<TD></TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<BLOCKQUOTE dir="ltr" style="MARGIN-RIGHT: 0px">
+							<P><FONT color="#0066ff"><FONT color="#0066ff"><FONT color="#0066ff">DoBeforeNodePainting </FONT>
+									</FONT></FONT>
+							</P>
+						</BLOCKQUOTE>
+					</TD>
+					<TD>Début du paint d'un noeud</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<BLOCKQUOTE dir="ltr" style="MARGIN-RIGHT: 0px">
+							<P><FONT color="#0066ff"><FONT color="#0066ff">DoPaintNodeBackGround</FONT></FONT></P>
+						</BLOCKQUOTE>
+					</TD>
+					<TD>paint du background du noeud</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<BLOCKQUOTE dir="ltr" style="MARGIN-RIGHT: 0px">
+							<P><FONT color="#0066ff"><FONT color="#000000">si je suis en mode grille<BR>
+									</FONT><FONT color="#0066ff">DoBeforeCellPainting </FONT></FONT>
+							</P>
+						</BLOCKQUOTE>
+					</TD>
+					<TD>
+						<P>début du paint d'une cellule (en mode grille)</P>
+						<UL>
+							<LI>
+								c'est ici que l'on peut permettre ou pas le dessin des lignes de la grille pour 
+								chaque cellule</LI></UL>
+					</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<BLOCKQUOTE dir="ltr" style="MARGIN-RIGHT: 0px">
+							<P><FONT color="#0066ff">DoAfterCellPainting</FONT></P>
+						</BLOCKQUOTE>
+					</TD>
+					<TD>fin du paint d'une cellule</TD>
+				</TR>
+				<TR>
+					<TD width="236">
+						<P><FONT color="#0066ff">DoAfterNodePainting<BR>
+							</FONT>fin pour</P>
+					</TD>
+					<TD>Fin du paint pour un noeud</TD>
+				</TR>
+				<TR>
+					<TD width="236"><FONT color="#0066ff">AfterPainting</FONT></TD>
+					<TD>Fin du paint</TD>
+				</TR>
+			</TABLE>
+		<P>un exemple de paint personnalisé</P>
+		<P><IMG alt="" src=".\images\gtv20.jpg"></P>
+		<P>Personalisation du Hint, via IHintWindow<BR>
+			<IMG alt="" src=".\images\gtv12.jpg"></P>
+		<P>Auteur : Pierrick Gourlain</P>
+
+
+
+</body>
+</html>

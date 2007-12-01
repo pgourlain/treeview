@@ -1,0 +1,373 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta name="vs_showGrid" content="False">
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+	</head>
+	<body>
+		<UL>
+			<LI>
+				Utiliser la propriété DataSource</LI></UL>
+		<P><FONT face="Courier New" size="1"><FONT size="2">private void TestDataSource_Load(object 
+					sender, System.EventArgs e)<BR>
+					{
+					<BR>
+					gtv.DataSource = "toto;titi;tata;tagada tsoin tsoin;VFR 800;SV 650".Split(';');
+					<BR>
+					gtv.SortTree(0, SortDirection.Ascending);
+					<BR>
+					}</FONT> </FONT>
+		</P>
+		<P>&nbsp;</P>
+		<UL>
+			<LI>
+				Fournir le "Texte" de chaque colonne via la donnée en utilisant <FONT color="#0000ff">
+					IStringNodeProvider</FONT></LI></UL>
+		<P><FONT color="#000000">class MaClass : IStringNodeProvider<BR>
+				{</FONT></P>
+		<P>&nbsp; public string GetText(int aDisplayColumn)<BR>
+			&nbsp; {<BR>
+			&nbsp;&nbsp;&nbsp; return "coucou";<BR>
+			&nbsp; }</P>
+		<P>}</P>
+		<P>Exemple utilisant la propriété DataSource</P>
+		<DIV style="BORDER-RIGHT: windowtext 0.5pt solid; PADDING-RIGHT: 4pt; BORDER-TOP: windowtext 0.5pt solid; PADDING-LEFT: 4pt; BACKGROUND: #d9d9d9; PADDING-BOTTOM: 1pt; BORDER-LEFT: windowtext 0.5pt solid; PADDING-TOP: 1pt; BORDER-BOTTOM: windowtext 0.5pt solid"><PRE style="COLOR: #000000"><SPAN style="COLOR: #0000ff">using</SPAN> System.Collections;
+
+<SPAN style="COLOR: #0000ff">namespace</SPAN> WindowsApplication3
+{
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Summary description for Form2.</SPAN>
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+	<SPAN style="COLOR: #0000ff">public</SPAN> <SPAN style="COLOR: #0000ff">class</SPAN> Form2 : System.Windows.Forms.Form
+	{
+		<SPAN style="COLOR: #0000ff">private</SPAN> System.Windows.Forms.Button button1;
+		<SPAN style="COLOR: #0000ff">private</SPAN> System.Windows.Forms.Button button2;
+		<SPAN style="COLOR: #0000ff">private</SPAN> Genius.Controls.GeniusTreeView gtv;
+		<SPAN style="COLOR: #0000ff">private</SPAN> Genius.Controls.GeniusTreeViewColonne geniusTreeViewColonne1;
+		<SPAN style="COLOR: #0000ff">private</SPAN> Genius.Controls.GeniusTreeViewColonne geniusTreeViewColonne2;
+		<SPAN style="COLOR: #0000ff">private</SPAN> Genius.Controls.GeniusTreeViewColonne geniusTreeViewColonne3;
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Required designer variable.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">private</SPAN> System.ComponentModel.Container components = <SPAN style="COLOR: #0000ff">null</SPAN>;
+
+		<SPAN style="COLOR: #0000ff">public</SPAN> Form2()
+		{
+			<SPAN style="COLOR: #008200">//</SPAN>
+			<SPAN style="COLOR: #008200">// Required for Windows Form Designer support</SPAN>
+			<SPAN style="COLOR: #008200">//</SPAN>
+			InitializeComponent();
+
+			<SPAN style="COLOR: #008200">//</SPAN>
+			<SPAN style="COLOR: #008200">// TODO: Add any constructor code after InitializeComponent call</SPAN>
+			<SPAN style="COLOR: #008200">//</SPAN>
+		}
+
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Clean up any resources being used.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">protected</SPAN> <SPAN style="COLOR: #0000ff">override</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> Dispose( <SPAN style="COLOR: #0000ff">bool</SPAN> disposing )
+		{
+			<SPAN style="COLOR: #0000ff">if</SPAN>( disposing )
+			{
+				<SPAN style="COLOR: #0000ff">if</SPAN>(components != <SPAN style="COLOR: #0000ff">null</SPAN>)
+				{
+					components.Dispose();
+				}
+			}
+			<SPAN style="COLOR: #0000ff">base</SPAN>.Dispose( disposing );
+		}
+<SPAN style="COLOR: #6699cc">		<A id=regionToggle1 style="COLOR: #6699cc" href="javascript: ToggleSourceCodeRegion(1)">#region Windows Form Designer generated code</A>   <SPAN id=regionBlock1 style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; DISPLAY: inline; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">...</SPAN></SPAN><SPAN id=region1 style="DISPLAY: none">
+
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Required method for Designer support - do not modify</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> the contents of this method with the code editor.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> InitializeComponent()
+		{
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeView();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1 = <SPAN style="COLOR: #0000ff">new</SPAN> System.Windows.Forms.Button();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2 = <SPAN style="COLOR: #0000ff">new</SPAN> System.Windows.Forms.Button();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1 = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeViewColonne();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2 = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeViewColonne();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3 = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeViewColonne();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.SuspendLayout();
+			<SPAN style="COLOR: #008200">// GeniusTreeView By Pierrick Gourlain</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// gtv</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Alignment = System.Drawing.StringAlignment.Near;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.AutoSort = <SPAN style="COLOR: #0000ff">false</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.BackColor = System.Drawing.SystemColors.Window;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.FocusedRectanglePenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.HeaderColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.White, System.Drawing.Color.LightGray, 90F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.Highlight, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedTextColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.HighlightText, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedUnfocusedColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.InactiveCaption, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SignaledPenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(165)), ((System.Byte)(0))), 2F, System.Drawing.Drawing2D.DashStyle.Solid);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.TextColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.UnFocusedRectanglePenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.DefaultDrawingOption = Genius.Controls.DrawingOption.ShowGridLines;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.ElapsedHint = 500;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.Font = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.ImageList = <SPAN style="COLOR: #0000ff">null</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.MainColumnIndex = 0;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.HeaderColonnes.AddRange(<SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeViewColonne[] {
+																							 <SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1,
+																							 <SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2,
+																							 <SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3});
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.KeysGridMode = <SPAN style="COLOR: #0000ff">false</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Location = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Point(32, 72);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Name = <SPAN style="COLOR: #848284">"gtv"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.ShowHeader = <SPAN style="COLOR: #0000ff">true</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Size = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(240, 168);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.TabIndex = 0;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Text = <SPAN style="COLOR: #848284">"geniusTreeView1"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.UseColumns = <SPAN style="COLOR: #0000ff">true</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.OnGetNodeText += <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.OnGetNodeTextDelegate(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv_OnGetNodeText);
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// button1</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1.Location = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Point(24, 16);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1.Name = <SPAN style="COLOR: #848284">"button1"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1.TabIndex = 1;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1.Text = <SPAN style="COLOR: #848284">"remplir"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button1.Click += <SPAN style="COLOR: #0000ff">new</SPAN> System.EventHandler(<SPAN style="COLOR: #0000ff">this</SPAN>.button1_Click);
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// button2</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2.Location = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Point(160, 16);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2.Name = <SPAN style="COLOR: #848284">"button2"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2.TabIndex = 2;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2.Text = <SPAN style="COLOR: #848284">"modifier"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.button2.Click += <SPAN style="COLOR: #0000ff">new</SPAN> System.EventHandler(<SPAN style="COLOR: #0000ff">this</SPAN>.button2_Click);
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// geniusTreeViewColonne1</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.BackColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.Font = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.FontColonne = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.ForeColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.HeadColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne1.Text = <SPAN style="COLOR: #848284">"Colonne 0"</SPAN>;
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// geniusTreeViewColonne2</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.BackColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.Font = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.FontColonne = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.ForeColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.HeadColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne2.Text = <SPAN style="COLOR: #848284">"Colonne 1"</SPAN>;
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// geniusTreeViewColonne3</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.BackColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.Font = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.FontColonne = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.ForeColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.HeadColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Empty, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.geniusTreeViewColonne3.Text = <SPAN style="COLOR: #848284">"Colonne 2"</SPAN>;
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// Form2</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.AutoScaleBaseSize = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(5, 13);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.ClientSize = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(292, 266);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Controls.Add(<SPAN style="COLOR: #0000ff">this</SPAN>.button2);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Controls.Add(<SPAN style="COLOR: #0000ff">this</SPAN>.button1);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Controls.Add(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Name = <SPAN style="COLOR: #848284">"Form2"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Text = <SPAN style="COLOR: #848284">"Form2"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Load += <SPAN style="COLOR: #0000ff">new</SPAN> System.EventHandler(<SPAN style="COLOR: #0000ff">this</SPAN>.Form2_Load);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.ResumeLayout(<SPAN style="COLOR: #0000ff">false</SPAN>);
+
+		}
+</SPAN><SPAN style="COLOR: #6699cc">		#endregion</SPAN>
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> button2_Click(<SPAN style="COLOR: #0000ff">object</SPAN> sender, System.EventArgs e)
+		{
+			MesDonnes donnees = (MesDonnes)((ArrayList)gtv.DataSource)[2];
+			donnees.Columns[2] = <SPAN style="COLOR: #848284">"coucou"</SPAN>;
+			gtv.Invalidate();
+		}
+
+		<SPAN style="COLOR: #0000ff">class</SPAN> MesDonnes
+		{
+			<SPAN style="COLOR: #0000ff">public</SPAN> <SPAN style="COLOR: #0000ff">string</SPAN>[] Columns = <SPAN style="COLOR: #0000ff">new</SPAN> <SPAN style="COLOR: #0000ff">string</SPAN>[]{<SPAN style="COLOR: #848284">"a"</SPAN>,<SPAN style="COLOR: #848284">"b"</SPAN>,<SPAN style="COLOR: #848284">"c"</SPAN>}; 
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> button1_Click(<SPAN style="COLOR: #0000ff">object</SPAN> sender, System.EventArgs e)
+		{
+			ArrayList l = <SPAN style="COLOR: #0000ff">new</SPAN> ArrayList();
+			l.Add(<SPAN style="COLOR: #0000ff">new</SPAN> MesDonnes());
+			l.Add(<SPAN style="COLOR: #0000ff">new</SPAN> MesDonnes());
+			l.Add(<SPAN style="COLOR: #0000ff">new</SPAN> MesDonnes());
+			l.Add(<SPAN style="COLOR: #0000ff">new</SPAN> MesDonnes());
+			gtv.BeginUpdate();
+			<SPAN style="COLOR: #0000ff">try</SPAN>
+			{
+				gtv.Clear();
+				gtv.DataSource = l;
+			}
+			<SPAN style="COLOR: #0000ff">finally</SPAN>
+			{
+				gtv.EndUpdate();
+			}
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> Form2_Load(<SPAN style="COLOR: #0000ff">object</SPAN> sender, System.EventArgs e)
+		{
+		
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> gtv_OnGetNodeText(Genius.Controls.GeniusTreeView Sender, Genius.Controls.NodeTextEventArgs e)
+		{			
+			MesDonnes donnees = (MesDonnes)e.Node.Data;
+			<SPAN style="COLOR: #008200">//pour une gestion correct entre l'ordre d'affichage et l'ordre des données</SPAN>
+			<SPAN style="COLOR: #0000ff">int</SPAN> index = gtv.Header.DisplayIndexToIndex(e.DisplayColumn);
+			e.Text = donnees.Columns[index];
+		}
+	}
+}</PRE>
+		</DIV>
+		<P>&nbsp;</P>
+		<P>Exemple de l'utilisation du Drag and Drop</P>
+		<DIV style="BORDER-RIGHT: windowtext 0.5pt solid; PADDING-RIGHT: 4pt; BORDER-TOP: windowtext 0.5pt solid; PADDING-LEFT: 4pt; BACKGROUND: #d9d9d9; PADDING-BOTTOM: 1pt; BORDER-LEFT: windowtext 0.5pt solid; PADDING-TOP: 1pt; BORDER-BOTTOM: windowtext 0.5pt solid"><PRE style="COLOR: #000000"><SPAN style="COLOR: #0000ff">using</SPAN> System.Diagnostics;
+<SPAN style="COLOR: #0000ff">using</SPAN> Genius.Controls;
+<SPAN style="COLOR: #0000ff">using</SPAN> Genius.Controls.TreeView.Core;
+
+<SPAN style="COLOR: #0000ff">namespace</SPAN> WindowsApplication3
+{
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Summary description for FrmTestDragAndDrop.</SPAN>
+	<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+	<SPAN style="COLOR: #0000ff">public</SPAN> <SPAN style="COLOR: #0000ff">class</SPAN> FrmTestDragAndDrop : System.Windows.Forms.Form
+	{
+		<SPAN style="COLOR: #0000ff">private</SPAN> Genius.Controls.GeniusTreeView gtv;
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Required designer variable.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">private</SPAN> System.ComponentModel.Container components = <SPAN style="COLOR: #0000ff">null</SPAN>;
+
+		<SPAN style="COLOR: #0000ff">public</SPAN> FrmTestDragAndDrop()
+		{
+			<SPAN style="COLOR: #008200">//</SPAN>
+			<SPAN style="COLOR: #008200">// Required for Windows Form Designer support</SPAN>
+			<SPAN style="COLOR: #008200">//</SPAN>
+			InitializeComponent();
+
+			<SPAN style="COLOR: #008200">//</SPAN>
+			<SPAN style="COLOR: #008200">// TODO: Add any constructor code after InitializeComponent call</SPAN>
+			<SPAN style="COLOR: #008200">//</SPAN>
+		}
+
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Clean up any resources being used.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">protected</SPAN> <SPAN style="COLOR: #0000ff">override</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> Dispose( <SPAN style="COLOR: #0000ff">bool</SPAN> disposing )
+		{
+			<SPAN style="COLOR: #0000ff">if</SPAN>( disposing )
+			{
+				<SPAN style="COLOR: #0000ff">if</SPAN>(components != <SPAN style="COLOR: #0000ff">null</SPAN>)
+				{
+					components.Dispose();
+				}
+			}
+			<SPAN style="COLOR: #0000ff">base</SPAN>.Dispose( disposing );
+		}
+<SPAN style="COLOR: #6699cc">		<A id=regionToggle1 style="COLOR: #6699cc" href="javascript: ToggleSourceCodeRegion(1)">#region Windows Form Designer generated code</A>   <SPAN id=regionBlock1 style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; DISPLAY: inline; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">...</SPAN></SPAN><SPAN id=region1 style="DISPLAY: none">
+
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> Required method for Designer support - do not modify</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> the contents of this method with the code editor.</SPAN>
+		<SPAN style="COLOR: #848284">///</SPAN><SPAN style="COLOR: #008200"> <SPAN style="COLOR: #848284">&lt;/summary&gt;</SPAN></SPAN>
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> InitializeComponent()
+		{
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusTreeView();
+			<SPAN style="COLOR: #0000ff">this</SPAN>.SuspendLayout();
+			<SPAN style="COLOR: #008200">// GeniusTreeView By Pierrick Gourlain</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// gtv</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Alignment = System.Drawing.StringAlignment.Near;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.AllowDrag = <SPAN style="COLOR: #0000ff">true</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.AllowDrop = <SPAN style="COLOR: #0000ff">true</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.AutoSort = <SPAN style="COLOR: #0000ff">false</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.BackColor = System.Drawing.SystemColors.Window;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.FocusedRectanglePenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.HeaderColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.White, System.Drawing.Color.LightGray, 90F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.Highlight, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedTextColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.HighlightText, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SelectedUnfocusedColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.InactiveCaption, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.SignaledPenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(165)), ((System.Byte)(0))), 2F, System.Drawing.Drawing2D.DashStyle.Solid);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.TextColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Colors.UnFocusedRectanglePenColor = <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.DefaultDrawingOption = Genius.Controls.DrawingOption.ShowGridLines;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.ElapsedHint = 500;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.Font = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Font(<SPAN style="COLOR: #848284">"Microsoft Sans Serif"</SPAN>, 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.ImageList = <SPAN style="COLOR: #0000ff">null</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Header.MainColumnIndex = -1;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.KeysGridMode = <SPAN style="COLOR: #0000ff">false</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Location = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Point(24, 32);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Name = <SPAN style="COLOR: #848284">"gtv"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Size = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(272, 208);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.TabIndex = 0;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.Text = <SPAN style="COLOR: #848284">"geniusTreeView1"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.OnCanDragNode += <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.OnCanDragDelegate(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv_OnCanDragNode);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.OnCanDragTo += <SPAN style="COLOR: #0000ff">new</SPAN> Genius.Controls.OnCanDragToDelegate(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv_OnCanDragTo);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.gtv.DragDrop += <SPAN style="COLOR: #0000ff">new</SPAN> System.Windows.Forms.DragEventHandler(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv_DragDrop);
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #008200">// FrmTestDragAndDrop</SPAN>
+			<SPAN style="COLOR: #008200">// </SPAN>
+			<SPAN style="COLOR: #0000ff">this</SPAN>.AutoScaleBaseSize = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(5, 13);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.ClientSize = <SPAN style="COLOR: #0000ff">new</SPAN> System.Drawing.Size(328, 262);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Controls.Add(<SPAN style="COLOR: #0000ff">this</SPAN>.gtv);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Name = <SPAN style="COLOR: #848284">"FrmTestDragAndDrop"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Text = <SPAN style="COLOR: #848284">"FrmTestDragAndDrop"</SPAN>;
+			<SPAN style="COLOR: #0000ff">this</SPAN>.Load += <SPAN style="COLOR: #0000ff">new</SPAN> System.EventHandler(<SPAN style="COLOR: #0000ff">this</SPAN>.FrmTestDragAndDrop_Load);
+			<SPAN style="COLOR: #0000ff">this</SPAN>.ResumeLayout(<SPAN style="COLOR: #0000ff">false</SPAN>);
+
+		}
+</SPAN><SPAN style="COLOR: #6699cc">		#endregion</SPAN>
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> FrmTestDragAndDrop_Load(<SPAN style="COLOR: #0000ff">object</SPAN> sender, System.EventArgs e)
+		{
+			gtv.BeginUpdate();
+			<SPAN style="COLOR: #0000ff">try</SPAN>
+			{
+				INode aParent = gtv.Add(<SPAN style="COLOR: #0000ff">null</SPAN>, <SPAN style="COLOR: #848284">"Categorie 1"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+				gtv.Add(aParent, <SPAN style="COLOR: #848284">"item 1"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+				gtv.Add(aParent, <SPAN style="COLOR: #848284">"item 2"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+				aParent = gtv.Add(<SPAN style="COLOR: #0000ff">null</SPAN>, <SPAN style="COLOR: #848284">"Categorie 2"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+				gtv.Add(aParent, <SPAN style="COLOR: #848284">"item 3"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+				gtv.Add(aParent, <SPAN style="COLOR: #848284">"item 4"</SPAN>, <SPAN style="COLOR: #0000ff">null</SPAN>);
+			}
+			<SPAN style="COLOR: #0000ff">finally</SPAN>
+			{
+				gtv.EndUpdate();
+			}
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> gtv_OnCanDragTo(Genius.Controls.GeniusTreeView Sender, Genius.Controls.CanDragToEventArgs e)
+		{
+			Debug.WriteLine(<SPAN style="COLOR: #0000ff">string</SPAN>.Format(<SPAN style="COLOR: #848284">"OnCanDragTo {0}"</SPAN>, e.DropNode != <SPAN style="COLOR: #0000ff">null</SPAN> ? e.DropNode.Text : <SPAN style="COLOR: #848284">"null"</SPAN>));
+			e.CanDrop = e.DropNode != <SPAN style="COLOR: #0000ff">null</SPAN> &amp;&amp; (e.DropNode.Level &gt; 1 || (e.DropNode.Level == 1 &amp;&amp; e.Position == DragPosition.Under));
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> gtv_OnCanDragNode(Genius.Controls.GeniusTreeView Sender, Genius.Controls.CanDragEventArgs e)
+		{
+			e.CanDrag = e.Node.Level &gt; 1;
+		}
+
+		<SPAN style="COLOR: #0000ff">private</SPAN> <SPAN style="COLOR: #0000ff">void</SPAN> gtv_DragDrop(<SPAN style="COLOR: #0000ff">object</SPAN> sender, System.Windows.Forms.DragEventArgs e)
+		{
+			Debug.WriteLine(<SPAN style="COLOR: #848284">"End drag"</SPAN>);
+		}
+	}
+}
+</PRE>
+		</DIV>
+	</body>
+</html>

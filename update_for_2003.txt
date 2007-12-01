@@ -1,0 +1,77 @@
+		/// <summary>
+		/// changement de la taille du treeview
+		/// </summary>
+		/// <param name="e"></param>
+		protected override void OnSizeChanged(EventArgs e)
+		{
+            FBottomNode = null;
+            FLastVisibleNode = null;
+
+
+ligne 4262 ajout de 
+ /// <summary>
+        /// idem que <see cref="ShowNode(INode)"/>
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="centerOnView"></param>
+        /// <returns></returns>
+        public bool ShowNode(INode n, bool centerOnView)
+        {
+            return ShowNode((Node)n, centerOnView);
+        }
+        
+        internal bool ShowNode(Node n)
+        {
+            return ShowNode(n, false);
+        }
+        
+        internal bool ShowNode(Node n, bool centerOnView)
+		{
+			string rankTop = FNodes.RankNode(InternalTopNode());
+			string rankBottom = FNodes.RankNode(LastVisibleNode());
+			string rank = FNodes.RankNode(n);
+            
+            int hNode = n.Height;
+			if (rank.CompareTo(rankTop) < 0)
+			{
+				int h = 0;
+				while (n != FTopNode)
+				{
+					h += n.Height;
+					n = NextVisibleNode(n);
+				}
+                if (centerOnView)
+                {
+                    h += (this.TreeRectangle.Height - hNode) / 2; 
+                }
+				ScrollUp(h);
+				return true;
+			}
+			else if (rank.CompareTo(rankBottom) > 0)
+			{
+				int h = 0;
+				//calcul de la hauteur en dessous du bas
+				while (n != FLastVisibleNode)
+				{
+					h += n.Height;
+					n = PrevVisibleNode(n);
+				}
+                if (centerOnView)
+                {
+                    h += (this.TreeRectangle.Height - hNode) / 2; 
+                }
+				//calcul de la hauteur à réellement scroller
+				n = FTopNode;
+				int hreal = 0;
+				while (h > 0 && n != null)
+				{
+					h -= n.Height;
+					hreal += n.Height;
+					n = NextVisibleNode(n);
+				}
+				h = hreal;
+				ScrollDown(h);
+				return true;
+			}
+			return false;
+		}

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+		<meta content="VisualStudio.HTML" name="ProgId">
+		<meta content="Microsoft Visual Studio .NET 7.1" name="Originator">
+	</head>
+	<body>
+		<P>un autre TreeView....<br>
+			Connaissez-vous le Virtual Treeview de <a target=_blank href="http://www.soft-gems.net/VirtualTreeview/VT.php">
+				Mike Lischke</a> ?, les Delphistes certainement. ce Treeview est tout 
+			simplement excellent !. Ce composant&nbsp;LGPL est très largement utilisé, pour 
+			l'exemple Borland l'utilise très largement au sein de l'ide <a href="http://www.soft-gems.net/VirtualTreeview/VTGallery.php">
+				Delphi 2005</a></P>
+		<P>Malheureusement l'auteur&nbsp;indique sur son <A href="http://www.soft-gems.net/support/phpBB2/viewtopic.php?t=820">
+				forum</A> &nbsp;qu'il&nbsp;ne portera pas son treeview en .Net&nbsp;
+			<table bgColor="silver" border="0">
+				<tr>
+					<td>
+						<TABLE id="Table1" cellSpacing="1" cellPadding="3" width="90%" align="center" border="0">
+							<TR>
+								<TD bgColor="gray"><B>Quote:</B></TD>
+							</TR>
+							<TR>
+								<TD bgColor="gray">One more question: Will the new version of VTV be compatible 
+									with VCL for .NET (in Delphi 2005)?</TD>
+							</TR>
+						</TABLE>
+						No, this will not be the case. .NET is a totally different beast than Win32.
+						<br>
+						<br>
+						Mike
+					</td>
+				</tr>
+			</table>
+		</P>
+		<P>j'ai donc décidé de me lancer dans ce développement,&nbsp;&nbsp;très inspiré du 
+			treeview de Mike Lischke, mais en C#.
+		</P>
+		<P>principales fonctionnalités :
+		</P>
+		<UL>
+			<LI>
+			surligné un chemin&nbsp;
+			<LI>
+			support des cases à cochées
+			<LI>
+			support des colonnes ou mode grille, avec personalisation de la couleur de fond
+			<LI>
+			support d'un header de colonne
+			<LI>
+			support des images et image d'état (ImageState) sur les noeuds
+			<LI>
+			support du drag'n drop dans le header
+			<LI>
+				support du drag'n drop dans le treeview&nbsp;</LI></UL>
+		<P>fonctionnalités absentes&nbsp; :</P>
+		<UL>
+			<LI>
+			pas de designer pour visual studio
+			<LI>
+			pas d'aide
+			<LI>
+			un seul exemple, celui avec lequel j'ai fait les aperçus
+			<LI>
+				...</LI></UL>
+		<P>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv1.jpg">
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv2.jpg">
+			<BR>
+			Afficher/Cacher les lignes de l'arbre</P>
+		<P>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv3.jpg">
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv31.jpg">
+			<BR>
+			le treeview&nbsp;utilise
+		</P>
+		<UL>
+			<LI>
+			une ImageList pour la première image
+			<LI>
+			une ImageList pour la seconde image
+			<LI>
+				une ImageList pour les "check" image</LI></UL>
+		<P><BR>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv32.jpg">
+			<BR>
+			Afficher/Cacher les lignes de la "grille"</P>
+		<P>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv4.jpg">
+			<BR>
+			Tri par colonne avec indicateur dans le header</P>
+		<P>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv5.jpg">
+			<BR>
+			- drag'n drop l'image de drag est rouge car "Node 2" ne peut être lacher sur 
+			lui-même<BR>
+			cette image en drag est réalisé avec une NativeWindow&nbsp; sur laquelle 
+			j'utilise l'api SetLayeredWindowAttributes, avec une valeur alpha à 170, 255 
+			étant opaque&nbsp;</P>
+		<code>
+			<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CreateParams = </FONT><FONT color="#0000aa">new</FONT><FONT color="#000000">
+					CreateParams ();<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.X = x; //position de la fenêtre<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.Y = y;<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.Height = h;<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.Width = w;<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindowStyles style = (WindowStyles.WS_POPUP 
+					);<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.Style = (</FONT><FONT color="#0000aa"> int
+				</FONT><FONT color="#000000">)style;<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp.Parent = FTree.Handle ;</FONT><FONT color="#0000aa">
+					<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if </FONT><FONT color="#000000">(alpha &lt; </FONT>
+				<FONT color="#00aa00">255</FONT><FONT color="#000000"> )cp.ExStyle |= (</FONT><FONT color="#0000aa">
+					int </FONT><FONT color="#000000">)WindowExStyles.WS_EX_LAYERED ;</FONT><FONT color="#0000aa">
+					<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this</FONT><FONT color="#000000"> .CreateHandle 
+					(cp) ;</FONT><FONT color="#0000aa">
+					<BR>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if </FONT><FONT color="#000000">(alpha &lt; </FONT>
+				<FONT color="#00aa00">255</FONT><FONT color="#000000"> )NativeMethods.SetLayeredWindowAttributes 
+					(</FONT><FONT color="#0000aa"> this</FONT><FONT color="#000000"> .Handle , </FONT>
+				<FONT color="#00aa00">0</FONT><FONT color="#000000"> , alpha, </FONT><FONT color="#00aa00">
+					0x02</FONT><FONT color="#000000"> ) ;<BR>
+				</FONT>
+			</P>
+		</code>
+		<P>
+			<img src="http://blogs.developpeur.org/images/blogs_developpeur_org/pierrick/194/o_gtv6.jpg">
+			<BR>
+		pour rendre rougeâtre l'image en drag j'utilise la classe 
+		System.Drawing.Imaging.ImageAttributes et System.Drawing.Imaging.ColorMatrix
+		<p>
+			<code>ImageAttributes attr = new ImageAttributes();<br>
+				ColorMatrix matrix = new ColorMatrix();<br>
+				matrix.Matrix00 = <FONT color="#00aa00">1.00f</FONT>; // Red<br>
+				matrix.Matrix11 = <FONT color="#00aa00">1.00f</FONT>; // Green<br>
+				matrix.Matrix22 = <FONT color="#00aa00">1.00f</FONT>; // Blue<br>
+				//permet de rendre transparent le bitmap, par rapport à la couleur de fond<br>
+				matrix.Matrix33 = <FONT color="#00aa00">0.5f</FONT>; // alpha<br>
+				matrix.Matrix44 = <FONT color="#00aa00">1.0f</FONT>; // w<br>
+				attr.SetColorMatrix(matrix);<br>
+				...<br>
+				...<br>
+				g.FillRectangle(Brushes.Red, r);<br>
+				g.DrawImage(FBmp, r, <FONT color="#00aa00">0</FONT>, <FONT color="#00aa00">0</FONT>, 
+				r.Width, r.Height, GraphicsUnit.Pixel, attr); </code>
+		</p>
+		<img src="http://blogs.developpeur.org//images/blogs_developpeur_org/pierrick/194/o_gtv7.jpg"><BR>
+		Drag'n drop des colonnes&nbsp;<BR>
+		<P><a href="http://membres.lycos.fr/pgourlain/downloads/genius.controls.0.1.6.zip">télécharger 
+				la version 0.1.6</a></P>
+		<P><a href="http://www.csharpfr.com/code.aspx?ID=28555">un exemple d'utilisation</a></P>
+		<P>je fournirais les sources à partir de la version 1.0</P>
+		<P>&nbsp;</P>
+	</body>
+</html>

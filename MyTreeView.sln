@@ -1,0 +1,104 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTreeView", "MyTreeView.csproj", "{B0C8A9B1-33D7-4425-9A40-1516A4F73839}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genius.Controls", "Genius.Controls\Genius.Controls.csproj", "{8371E350-09FB-4220-8D8B-09CAD6EE2285}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genius.Controls.Design", "Genius.Controls.Design\Genius.Controls.Design.csproj", "{1AAFD329-DA2D-4524-978E-83D9E204F265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoTreeView", "DemoTreeView\DemoTreeView.csproj", "{A2DD8814-7FE3-43C0-8DED-272F904E41C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BBCE726-EAE0-44DA-86C2-A9BFF7F34161}"
+	ProjectSection(SolutionItems) = preProject
+		GeniusControls.ndoc = GeniusControls.ndoc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{5A7FCD67-8B0B-458E-B085-5EB83B97E407}"
+	ProjectSection(SolutionItems) = preProject
+		update_for_2003.txt = update_for_2003.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0787411A-5B7F-48B1-9FB8-7B50ADDAC767}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\apercu.htm = Documentation\apercu.htm
+		Documentation\fond.jpg = Documentation\fond.jpg
+		Documentation\History.htm = Documentation\History.htm
+		Documentation\Introduction.htm = Documentation\Introduction.htm
+		Documentation\Readme.htm = Documentation\Readme.htm
+		Documentation\Snippets.htm = Documentation\Snippets.htm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{CEF67AAB-DA2D-4005-97F2-801B951D3C2E}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\IMAGES\gtv1.jpg = Documentation\IMAGES\gtv1.jpg
+		Documentation\IMAGES\gtv12.jpg = Documentation\IMAGES\gtv12.jpg
+		Documentation\IMAGES\gtv13.jpg = Documentation\IMAGES\gtv13.jpg
+		Documentation\IMAGES\gtv14.jpg = Documentation\IMAGES\gtv14.jpg
+		Documentation\IMAGES\gtv15.jpg = Documentation\IMAGES\gtv15.jpg
+		Documentation\IMAGES\gtv16.jpg = Documentation\IMAGES\gtv16.jpg
+		Documentation\IMAGES\gtv17.jpg = Documentation\IMAGES\gtv17.jpg
+		Documentation\IMAGES\gtv18.jpg = Documentation\IMAGES\gtv18.jpg
+		Documentation\IMAGES\gtv19.jpg = Documentation\IMAGES\gtv19.jpg
+		Documentation\IMAGES\gtv2.jpg = Documentation\IMAGES\gtv2.jpg
+		Documentation\IMAGES\gtv20.jpg = Documentation\IMAGES\gtv20.jpg
+		Documentation\IMAGES\gtv3.jpg = Documentation\IMAGES\gtv3.jpg
+		Documentation\IMAGES\gtv31.jpg = Documentation\IMAGES\gtv31.jpg
+		Documentation\IMAGES\gtv32.jpg = Documentation\IMAGES\gtv32.jpg
+		Documentation\IMAGES\gtv4.jpg = Documentation\IMAGES\gtv4.jpg
+		Documentation\IMAGES\gtv5.jpg = Documentation\IMAGES\gtv5.jpg
+		Documentation\IMAGES\gtv6.jpg = Documentation\IMAGES\gtv6.jpg
+		Documentation\IMAGES\gtv7.jpg = Documentation\IMAGES\gtv7.jpg
+		Documentation\IMAGES\gtv8.jpg = Documentation\IMAGES\gtv8.jpg
+		Documentation\IMAGES\gtv9.jpg = Documentation\IMAGES\gtv9.jpg
+		Documentation\IMAGES\screenshot0.6.jpg = Documentation\IMAGES\screenshot0.6.jpg
+		Documentation\IMAGES\screenshot0.7.jpg = Documentation\IMAGES\screenshot0.7.jpg
+		Documentation\IMAGES\screenshot0_5_0.jpg = Documentation\IMAGES\screenshot0_5_0.jpg
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs02.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DemoTreeView\\DemoTreeView.csproj
+		SccProjectName1 = DemoTreeView
+		SccLocalPath1 = DemoTreeView
+		SccProjectUniqueName2 = Genius.Controls.Design\\Genius.Controls.Design.csproj
+		SccProjectName2 = Genius.Controls.Design
+		SccLocalPath2 = Genius.Controls.Design
+		SccProjectUniqueName3 = Genius.Controls\\Genius.Controls.csproj
+		SccProjectName3 = Genius.Controls
+		SccLocalPath3 = Genius.Controls
+		SccProjectUniqueName4 = MyTreeView.csproj
+		SccLocalPath4 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0C8A9B1-33D7-4425-9A40-1516A4F73839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C8A9B1-33D7-4425-9A40-1516A4F73839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C8A9B1-33D7-4425-9A40-1516A4F73839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C8A9B1-33D7-4425-9A40-1516A4F73839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8371E350-09FB-4220-8D8B-09CAD6EE2285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8371E350-09FB-4220-8D8B-09CAD6EE2285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8371E350-09FB-4220-8D8B-09CAD6EE2285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8371E350-09FB-4220-8D8B-09CAD6EE2285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AAFD329-DA2D-4524-978E-83D9E204F265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AAFD329-DA2D-4524-978E-83D9E204F265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AAFD329-DA2D-4524-978E-83D9E204F265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AAFD329-DA2D-4524-978E-83D9E204F265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CEF67AAB-DA2D-4005-97F2-801B951D3C2E} = {0787411A-5B7F-48B1-9FB8-7B50ADDAC767}
+	EndGlobalSection
+EndGlobal
