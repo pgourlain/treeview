@@ -78,10 +78,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Genius.Controls, Version=2.0.2.23222, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Genius.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -111,6 +107,12 @@
     <Compile Include="HorizontalTabDesigner.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Genius.Controls\Genius.Controls.csproj">
+      <Project>{8371E350-09FB-4220-8D8B-09CAD6EE2285}</Project>
+      <Name>Genius.Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

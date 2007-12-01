@@ -276,7 +276,6 @@
     <Compile Include="VisualStyles\Themes.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Analyse\ArchitectureForAvalon.txt" />
     <EmbeddedResource Include="Resources\checkindeterminate.bmp" />
     <EmbeddedResource Include="Resources\checkindeterminatedisabled.bmp" />
     <Content Include="Resources\geniusDocTab.bmp" />
@@ -308,6 +307,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Analyse\" />
     <Folder Include="TreeView\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

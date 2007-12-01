@@ -156,6 +156,7 @@ namespace DemoTreeView.UserControl
 			this.gtvDest.TabIndex = 2;
 			this.gtvDest.Text = "geniusTreeView2";
 			this.gtvDest.OnCanDragTo += new Genius.Controls.TreeView.OnCanDragToDelegate(this.gtvDest_OnCanDragTo);
+            this.gtvDest.DragOver += new System.Windows.Forms.DragEventHandler(gtvDest_DragOver);
 			// 
 			// label2
 			// 
@@ -179,6 +180,12 @@ namespace DemoTreeView.UserControl
 			this.ResumeLayout(false);
 
 		}
+
+        void gtvDest_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            //e.Effect = System.Windows.Forms.DragDropEffects.Copy;
+            //e. = System.Windows.Forms.DragDropEffects.Copy;
+        }
 		#endregion
 
 		private void DragAndDropDemoCtl_Load(object sender, System.EventArgs e)

@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 
 //[assembly: AssemblyVersion("0.8.8.*")]
-[assembly: AssemblyVersion("2.0.3.*")]
+[assembly: AssemblyVersion("2.0.4.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

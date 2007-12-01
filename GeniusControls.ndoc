@@ -24,7 +24,7 @@
             <property name="OutputTarget" value="HtmlHelp" />
             <property name="SdkLinksOnWeb" value="True" />
             <property name="RootPageTOCName" value="Overview" />
-            <property name="RootPageFileName" value="C:\Pierrick\Projets\Dotnet\2005\MyTreeView\Documentation\Readme.htm" />
+            <property name="RootPageFileName" value=".\Documentation\Readme.htm" />
             <property name="AdditionalContentResourceDirectory" value=".\Documentation\" />
             <property name="LangID" value="1036" />
             <property name="DocumentInheritedMembers" value="None" />
