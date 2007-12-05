@@ -4384,7 +4384,8 @@ namespace Genius.Controls.TreeView
                     if (FShowHeader)
                     {
                         FlagsDCX flags = FlagsDCX.DCX_CACHE | FlagsDCX.DCX_CLIPSIBLINGS | FlagsDCX.DCX_WINDOW | FlagsDCX.DCX_VALIDATE;
-                        IntPtr dc = NativeMethods.GetDCEx(this.Handle, m.WParam, flags);
+                        //IntPtr.Zero w.Wparam plante sous Vista
+                        IntPtr dc = NativeMethods.GetDCEx(this.Handle, IntPtr.Zero/*m.WParam*/, flags);
                         try
                         {
                             using (Graphics g = Graphics.FromHdc(dc))
