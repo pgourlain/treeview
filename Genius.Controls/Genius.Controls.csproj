@@ -1,7 +1,7 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8371E350-09FB-4220-8D8B-09CAD6EE2285}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>
@@ -15,8 +15,7 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>Genius.Controls</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>geniuscontrols.snk</AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -30,6 +29,8 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -98,6 +99,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AssemblyVersion.cs" />
     <Compile Include="Diagnostics\Counter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -307,14 +309,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="geniuscontrols.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Analyse\" />
+    <Folder Include="TreeView\Header\" />
     <Folder Include="TreeView\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(TargetFileName) $(SolutionDir)\DemoTreeView\lib
+    <PostBuildEvent>rem copy $(TargetFileName) $(SolutionDir)\DemoTreeView\lib
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,7 +1,7 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A2DD8814-7FE3-43C0-8DED-272F904E41C4}</ProjectGuid>
     <SccProjectName>SAK</SccProjectName>
@@ -29,6 +29,22 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -95,17 +111,32 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <Content Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Content>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Editor\UCEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MainFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainFrm.Designer.cs">
+      <DependentUpon>MainFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Samples1\AutoSizeColumnUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Samples1\AutoSizeColumnUC.Designer.cs">
+      <DependentUpon>AutoSizeColumnUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Samples1\TestSortUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Samples1\TestSortUC.Designer.cs">
+      <DependentUpon>TestSortUC.cs</DependentUpon>
     </Compile>
     <Compile Include="TabbedDemo.cs">
       <SubType>Form</SubType>
@@ -128,64 +159,70 @@
     <Compile Include="UC1\VistaItem.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UserControl\CustomDrawDemoCtl.cs">
+    <Compile Include="UserControls\CustomDrawDemoCtl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\DemoEditors.cs">
+    <Compile Include="UserControls\DemoEditors.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\DragAndDropDemoCtl.cs">
+    <Compile Include="UserControls\DragAndDropDemoCtl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\FixedColumnDemoCtl.cs">
+    <Compile Include="UserControls\FixedColumnDemoCtl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\GeniusDocTabDemo.cs">
+    <Compile Include="UserControls\GeniusDocTabDemo.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\GtvToolbox2005.cs">
+    <Compile Include="UserControls\GtvToolbox2005.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\StandardDemo1Ctl.cs">
+    <Compile Include="UserControls\StandardDemo1Ctl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\StandardDemoCtl.cs">
+    <Compile Include="UserControls\StandardDemoCtl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestChapter.cs">
+    <Compile Include="UserControls\TestChapter.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestCheckBoxes.cs">
+    <Compile Include="UserControls\TestCheckBoxes.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestCheckBoxes.Designer.cs">
+    <Compile Include="UserControls\TestCheckBoxes.Designer.cs">
       <DependentUpon>TestCheckBoxes.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\TestDataSource.cs">
+    <Compile Include="UserControls\TestDataSource.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestDrawingOptions.cs">
+    <Compile Include="UserControls\TestDrawingOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestEvents.cs">
+    <Compile Include="UserControls\TestEvents.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestHeader.cs">
+    <Compile Include="UserControls\TestHeader.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestIncrementalSearch.cs">
+    <Compile Include="UserControls\TestIncrementalSearch.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl\TestVisibility.cs">
+    <Compile Include="UserControls\TestVisibility.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <EmbeddedResource Include="Editor\UCEditor.resx">
       <DependentUpon>UCEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="images\fond1.jpg" />
+    <EmbeddedResource Include="MainFrm.resx">
+      <DependentUpon>MainFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples1\AutoSizeColumnUC.resx">
+      <DependentUpon>AutoSizeColumnUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples1\TestSortUC.resx">
+      <DependentUpon>TestSortUC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TabbedDemo.resx">
       <DependentUpon>TabbedDemo.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -203,53 +240,53 @@
       <SubType>Designer</SubType>
       <DependentUpon>demoIStringNodeProvider.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\CustomDrawDemoCtl.resx">
+    <EmbeddedResource Include="UserControls\CustomDrawDemoCtl.resx">
       <DependentUpon>CustomDrawDemoCtl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\DemoEditors.resx">
+    <EmbeddedResource Include="UserControls\DemoEditors.resx">
       <DependentUpon>DemoEditors.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\DragAndDropDemoCtl.resx">
+    <EmbeddedResource Include="UserControls\DragAndDropDemoCtl.resx">
       <DependentUpon>DragAndDropDemoCtl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\FixedColumnDemoCtl.resx">
+    <EmbeddedResource Include="UserControls\FixedColumnDemoCtl.resx">
       <DependentUpon>FixedColumnDemoCtl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\GeniusDocTabDemo.resx">
+    <EmbeddedResource Include="UserControls\GeniusDocTabDemo.resx">
       <DependentUpon>GeniusDocTabDemo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\GtvToolbox2005.resx">
+    <EmbeddedResource Include="UserControls\GtvToolbox2005.resx">
       <DependentUpon>GtvToolbox2005.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\StandardDemo1Ctl.resx">
+    <EmbeddedResource Include="UserControls\StandardDemo1Ctl.resx">
       <DependentUpon>StandardDemo1Ctl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\StandardDemoCtl.resx">
+    <EmbeddedResource Include="UserControls\StandardDemoCtl.resx">
       <DependentUpon>StandardDemoCtl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestChapter.resx">
+    <EmbeddedResource Include="UserControls\TestChapter.resx">
       <DependentUpon>TestChapter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestCheckBoxes.resx">
+    <EmbeddedResource Include="UserControls\TestCheckBoxes.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TestCheckBoxes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestDataSource.resx">
+    <EmbeddedResource Include="UserControls\TestDataSource.resx">
       <DependentUpon>TestDataSource.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestDrawingOptions.resx">
+    <EmbeddedResource Include="UserControls\TestDrawingOptions.resx">
       <DependentUpon>TestDrawingOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestEvents.resx">
+    <EmbeddedResource Include="UserControls\TestEvents.resx">
       <DependentUpon>TestEvents.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestHeader.resx">
+    <EmbeddedResource Include="UserControls\TestHeader.resx">
       <DependentUpon>TestHeader.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestIncrementalSearch.resx">
+    <EmbeddedResource Include="UserControls\TestIncrementalSearch.resx">
       <DependentUpon>TestIncrementalSearch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl\TestVisibility.resx">
+    <EmbeddedResource Include="UserControls\TestVisibility.resx">
       <DependentUpon>TestVisibility.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -261,6 +298,33 @@
       <Project>{8371E350-09FB-4220-8D8B-09CAD6EE2285}</Project>
       <Name>Genius.Controls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
