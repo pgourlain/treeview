@@ -61,6 +61,26 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genius.Controls.Tests", "Genius.Controls.Tests\Genius.Controls.Tests.csproj", "{51E94446-740A-4BF2-98ED-337A3B83B55E}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs02
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = DemoTreeView\\DemoTreeView.csproj
+		SccProjectName1 = DemoTreeView
+		SccLocalPath1 = DemoTreeView
+		SccProjectUniqueName2 = Genius.Controls.Design\\Genius.Controls.Design.csproj
+		SccProjectName2 = Genius.Controls.Design
+		SccLocalPath2 = Genius.Controls.Design
+		SccProjectUniqueName3 = Genius.Controls.Tests\\Genius.Controls.Tests.csproj
+		SccProjectName3 = Genius.Controls.Tests
+		SccLocalPath3 = Genius.Controls.Tests
+		SccProjectUniqueName4 = Genius.Controls\\Genius.Controls.csproj
+		SccProjectName4 = Genius.Controls
+		SccLocalPath4 = Genius.Controls
+		SccProjectUniqueName5 = MyTreeView.csproj
+		SccLocalPath5 = .
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = MyTreeView.vsmdi
 	EndGlobalSection
