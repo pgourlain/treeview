@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Genius.Controls.Diagnostics
@@ -8,20 +9,14 @@ namespace Genius.Controls.Diagnostics
 	/// </summary>
 	public class Counter
 	{
-		private Int64 FDebut;
-		private Int64 FFin;
-		private Int64 FFreq;
-
-		[DllImport("kernel32.dll")]
-		static extern bool QueryPerformanceCounter(ref Int64 counter);
-		[DllImport("kernel32.dll")]
-		static extern bool QueryPerformanceFrequency(ref Int64 lpFrequency);
+        Stopwatch watch;
 
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
 		public Counter()
 		{
+            watch = new Stopwatch();
 		}
 
 		/// <summary>
@@ -29,8 +24,7 @@ namespace Genius.Controls.Diagnostics
 		/// </summary>
 		public void Start()
 		{
-			QueryPerformanceFrequency(ref FFreq);
-			QueryPerformanceCounter(ref FDebut);
+            watch.Start();
 		}
 
 		/// <summary>
@@ -38,7 +32,7 @@ namespace Genius.Controls.Diagnostics
 		/// </summary>
 		public void Stop()
 		{
-			QueryPerformanceCounter(ref FFin);			
+            watch.Stop();
 		}
 
 		/// <summary>
@@ -47,7 +41,7 @@ namespace Genius.Controls.Diagnostics
 		/// <returns></returns>
 		public Int64 Elapse()
 		{
-			return ((FFin - FDebut)*1000) / FFreq;	
+            return watch.ElapsedMilliseconds;
 		}
 
 		/// <summary>
@@ -56,7 +50,7 @@ namespace Genius.Controls.Diagnostics
 		/// <returns></returns>
 		public double ElapseD()
 		{
-			return (((FFin - FDebut)*100000) / FFreq) / 100.0;	
+            return watch.ElapsedMilliseconds;
 		}
 	}
 }

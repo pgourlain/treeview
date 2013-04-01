@@ -18,7 +18,6 @@ namespace Genius.Controls.TreeView.Editors
 	{
 		private bool FInComposition;
 		private string FOldText;
-		private Rectangle FBounds;
 
 		/// <summary>
 		/// constructeur par défaut
@@ -28,7 +27,6 @@ namespace Genius.Controls.TreeView.Editors
 			base.BorderStyle = BorderStyle.None;
 			base.CausesValidation = false;
 			FOldText = string.Empty;
-			FBounds = Rectangle.Empty;
 			base.SetStyle(ControlStyles.Selectable, false);
 			base.SetStyle(ControlStyles.StandardDoubleClick | ControlStyles.StandardClick, true);
 		}
@@ -93,19 +91,22 @@ namespace Genius.Controls.TreeView.Editors
 					case Msgs.WM_NCPAINT :
 						FlagsDCX flags =  FlagsDCX.DCX_CACHE | FlagsDCX.DCX_CLIPSIBLINGS | FlagsDCX.DCX_WINDOW | FlagsDCX.DCX_VALIDATE;
 						IntPtr dc = NativeMethods.GetDCEx(this.Handle, m.WParam, flags);
-						try
-						{
-							using(Graphics g = Graphics.FromHdc(dc))
-							{
-								Rectangle rectRegion = Rectangle.Empty;
-								rectRegion = new Rectangle(0, 0, this.Size.Width-1, this.Size.Height-1);
-								g.DrawRectangle(Pens.Black, rectRegion);
-							}
-						}
-						finally
-						{
-							NativeMethods.ReleaseDC(this.Handle, dc); 
-						}
+                        if (dc != IntPtr.Zero)
+                        {
+                            try
+                            {
+                                using (Graphics g = Graphics.FromHdc(dc))
+                                {
+                                    Rectangle rectRegion = Rectangle.Empty;
+                                    rectRegion = new Rectangle(0, 0, this.Size.Width - 1, this.Size.Height - 1);
+                                    g.DrawRectangle(Pens.Black, rectRegion);
+                                }
+                            }
+                            finally
+                            {
+                                NativeMethods.ReleaseDC(this.Handle, dc);
+                            }
+                        }
 						m.Result = IntPtr.Zero;
 						break;
 					/*
@@ -115,9 +116,9 @@ namespace Genius.Controls.TreeView.Editors
 						*/
 				}
 			}
-			catch(Exception ex)
+			catch
 			{
-				throw ex;
+                throw;
 			}
 		}
 
@@ -175,7 +176,7 @@ namespace Genius.Controls.TreeView.Editors
 			set
 			{
 				base.Bounds = value;
-				FBounds = value;
+                //FBounds = value;
 			}
 		}
 	}

@@ -47,7 +47,7 @@ namespace Genius.Controls.TreeView.Serialization
 				Save(aStream, n.Parent, true);
 		}
 
-		public void Save(Stream aStream, INode aNode, bool onlyChild)
+		public static void Save(Stream aStream, INode aNode, bool onlyChild)
 		{
 			BinaryFormatter bf = new BinaryFormatter();
 			bf.Serialize(aStream, SerializableNode.Serialize(aNode, onlyChild));
@@ -158,7 +158,7 @@ namespace Genius.Controls.TreeView.Serialization
 		/// <param name="onlyChild">sauvegarde des fils et sous fils uniquement, si la valeur vaux vrai, à la relecture "aNode" ne sera pas pris en compte</param>
 		public static void Serialize(GeniusTreeView tree, Stream aStream, INode aNode, bool onlyChild)
 		{
-			new SerializationHelper(tree).Save(aStream, aNode, onlyChild);						
+			SerializationHelper.Save(aStream, aNode, onlyChild);						
 		}
 
 		/// <summary>

@@ -18,7 +18,7 @@ namespace Genius.Controls.TreeView
 			FTree = tv;
 		}
 
-		protected Rectangle ClientRectangle
+		private Rectangle ClientRectangle
 		{
 			get
 			{
@@ -69,10 +69,10 @@ namespace Genius.Controls.TreeView
 				FlagsSetWindowPos.SWP_HIDEWINDOW);
 		}
 
-		protected void Invalidate()
-		{
-			NativeMethods.InvalidateRect(this.Handle, this.ClientRectangle, 0);
-		}
+        //protected void Invalidate()
+        //{
+        //    NativeMethods.InvalidateRect(this.Handle, this.ClientRectangle, 0);
+        //}
 
 		
 		protected void Show(int x, int y, int w, int h, byte alpha)

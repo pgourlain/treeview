@@ -8,6 +8,8 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Genius.Controls.TreeView.Core;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Genius.Controls.TreeView
 {
@@ -22,30 +24,12 @@ namespace Genius.Controls.TreeView
 	}
 
 	/// <summary>
-	/// direction du tri
-	/// </summary>
-	public enum SortDirection
-	{
-		/// <summary>
-		/// pas de sens 
-		/// </summary>
-		None,
-		/// <summary>
-		/// tri ascendant
-		/// </summary>
-		Ascending, 
-		/// <summary>
-		/// tri descendant
-		/// </summary>
-		Descending
-	}
-	/// <summary>
 	/// classe représentant le header
 	/// </summary>
 	public class GeniusHeader : IDisposable
 	{
-		private Colonnes		FColonnes;
-		private ArrayList		FDisplays;
+		private GeniusTreeViewColumnCollection		FColonnes;
+		private List<GeniusTreeViewColonne>		FDisplays;
 		private int				FMainColumnIndex;
 		private int				FClickIndex;
 		internal GeniusTreeView	FTree;
@@ -71,6 +55,7 @@ namespace Genius.Controls.TreeView
 		private int			FMainColumnDisplayIndex;
 		private bool		FAllowSort;
 		private ImageList	FImageList;
+        //gestion de la colonne en autosize
 		private bool		FAutoSizeCol;
 		private int			FAutoSizeColIndex;
 		private int			FLastColWidth;
@@ -101,15 +86,15 @@ namespace Genius.Controls.TreeView
 		/// <param name="aTv"></param>
 		public GeniusHeader(GeniusTreeView aTv)
 		{
-			FColonnes = new Colonnes(this);
+			FColonnes = new GeniusTreeViewColumnCollection(this);
 			FDisplays = FColonnes.FDisplays;
 			FImageDropTarget = new ImageList();
-			FMainColumnIndex = Constantes.NoColumn;
-			FClickIndex = Constantes.NoColumn;
-			FDownIndex = Constantes.NoColumn;
-			FDropTarget = Constantes.NoColumn;
-			FDragIndex = Constantes.NoColumn;
-			FHoverIndex = Constantes.NoColumn;
+			FMainColumnIndex = Constants.NoColumn;
+			FClickIndex = Constants.NoColumn;
+			FDownIndex = Constants.NoColumn;
+			FDropTarget = Constants.NoColumn;
+			FDragIndex = Constants.NoColumn;
+			FHoverIndex = Constants.NoColumn;
 			//l'ordre est important
 			FSortColumns = new ListDictionary();
 			FDropBefore = false;
@@ -125,13 +110,18 @@ namespace Genius.Controls.TreeView
 			LoadDropTargetImage();
 		}
 
+        ~GeniusHeader()
+        {
+            Dispose(false);
+        }
+
 		#region méthodes privées
-		private void Exclude(ref HeaderStateEnum ens, HeaderStateEnum value)
+		private static void Exclude(ref HeaderStateEnum ens, HeaderStateEnum value)
 		{
 			ens &= (~value);
 		}
-		
-		private void Include(ref HeaderStateEnum ens, HeaderStateEnum value)
+
+        private static void Include(ref HeaderStateEnum ens, HeaderStateEnum value)
 		{
 			ens |= value;
 		}
@@ -169,7 +159,7 @@ namespace Genius.Controls.TreeView
 		#endregion
 		private bool DetermineSplitterIndex(Point p)
 		{
-			FTrackIndex = Constantes.NoColumn;
+			FTrackIndex = Constants.NoColumn;
 			if (this.Count > 0)
 			{
 				int splitPoint;
@@ -199,11 +189,12 @@ namespace Genius.Controls.TreeView
 				}
 				else
 				{
+                    //calcul du point de retaillage d'une colonne
 					splitPoint = -FTree.OffsetX + FTree.RangeX;
 					for (int i = FDisplays.Count-1; i >=0; i--)
 					{
 						GeniusTreeViewColonne col = DisplayColonnes(i);
-						if (col.Visible && col.AllowSize)
+                        if (col.Visible && col.AllowSize && i != FAutoSizeColIndex)
 						{
 							if (p.X < splitPoint+5 && p.X > splitPoint - 3)
 							{
@@ -288,18 +279,18 @@ namespace Genius.Controls.TreeView
 
 		private int AdjustDownColumn(Point p)
 		{
-			int Result = Constantes.NoColumn;
+			int Result = Constants.NoColumn;
 
 			p.Y += FTree.HeaderHeight;
 			Result = ColumnIndexAt(p.X + FTree.OffsetX);
 			//Debug.WriteLine(String.Format("AdjustDownColumn -> FDownIndex ={0}, Result={1}", FDownIndex, Result));
-			if (Result > Constantes.NoColumn && Result != FDownIndex)
+			if (Result > Constants.NoColumn && Result != FDownIndex)
 			{
-				if (FDownIndex > Constantes.NoColumn)
+				if (FDownIndex > Constants.NoColumn)
 					Invalidate(this.DisplayColonnes(FDownIndex));
-				if (Result > Constantes.NoColumn && !this.DisplayColonnes(Result).AllowClick)
+				if (Result > Constants.NoColumn && !this.DisplayColonnes(Result).AllowClick)
 				{
-					FDownIndex = Constantes.NoColumn;
+					FDownIndex = Constants.NoColumn;
 					return Result;
 				}
 				FDownIndex = Result;
@@ -315,7 +306,7 @@ namespace Genius.Controls.TreeView
 
 			p.Y += FTree.HeaderHeight;
 			newIndex = this.ColumnIndexAt(p.X + FTree.OffsetX);
-			if (newIndex > Constantes.NoColumn)
+			if (newIndex > Constants.NoColumn)
 			{
 				Rectangle rCol = this.ColumnRect(newIndex);
 				newDropBefore = p.X <= (rCol.Right + rCol.Left) / 2;
@@ -323,11 +314,11 @@ namespace Genius.Controls.TreeView
 			
 			if (newIndex != FDropTarget || FDropBefore != newDropBefore)
 			{
-				if (newIndex != FDropTarget && FDropTarget > Constantes.NoColumn)
+				if (newIndex != FDropTarget && FDropTarget > Constants.NoColumn)
 					Invalidate(DisplayColonnes(FDropTarget));
 				FDropTarget = newIndex;
 				FDropBefore = newDropBefore;
-				if (FDropTarget > Constantes.NoColumn)
+				if (FDropTarget > Constants.NoColumn)
 					Invalidate(DisplayColonnes(FDropTarget));
 				return true;
 			}
@@ -348,10 +339,10 @@ namespace Genius.Controls.TreeView
 
 			if (newIndex != OldIndex)
 			{
-				if (OldIndex > Constantes.NoColumn)
+				if (OldIndex > Constants.NoColumn)
 					Invalidate(DisplayColonnes(OldIndex));
 				OldIndex = newIndex;
-				if (OldIndex > Constantes.NoColumn)
+				if (OldIndex > Constants.NoColumn)
 					Invalidate(DisplayColonnes(OldIndex));
 				return true;
 			}
@@ -371,7 +362,7 @@ namespace Genius.Controls.TreeView
 
 		private void PrepareDrag(Point aStart)
 		{
-			FDropTarget = Constantes.NoColumn;
+			FDropTarget = Constants.NoColumn;
 			aStart = FTree.PointToClient(aStart);
 			aStart.Y += FTree.HeaderHeight;
 			FDragIndex = ColumnIndexAt(aStart.X + FTree.OffsetX);
@@ -397,7 +388,7 @@ namespace Genius.Controls.TreeView
 		private void DragTo(Point p)
 		{
 			//Debug.WriteLine("droptarget :" + FDropTarget.ToString());
-			FDrag.Forbiden =  FDropTarget == Constantes.NoColumn;
+			FDrag.Forbiden =  FDropTarget == Constants.NoColumn;
 			if (!FDrag.Visible)
 				FDrag.Show(p.X + FDragDecal.X, p.Y + FDragDecal.Y);
 			else
@@ -406,7 +397,7 @@ namespace Genius.Controls.TreeView
 
 		private void EndDrag()
 		{
-			Dispose(ref FDragImage);
+			DisposeImage(ref FDragImage);
 			if (FDrag != null)
 			{
 				FDrag.Dispose();
@@ -414,7 +405,7 @@ namespace Genius.Controls.TreeView
 			}
 		}
 
-		private void Dispose(ref Image aImg)
+		private static void DisposeImage(ref Image aImg)
 		{
 			if (aImg != null)
 			{
@@ -464,7 +455,7 @@ namespace Genius.Controls.TreeView
 		}
 
 		#endregion
-		private bool CtrlIsDown()
+		private static bool CtrlIsDown()
 		{
 			Int16 state = NativeMethods.GetKeyState(VirtualKeys.VK_CONTROL);
 			return (state & 0x80) > 0;
@@ -495,7 +486,7 @@ namespace Genius.Controls.TreeView
 						else
 						{
 							int HitIndex = AdjustDownColumn(p);
-							if (HitIndex > Constantes.NoColumn)
+							if (HitIndex > Constants.NoColumn)
 							{
 								if (AllowDrag && this.DisplayColonnes(HitIndex).AllowDrag)
 								{
@@ -503,7 +494,7 @@ namespace Genius.Controls.TreeView
 									FTree.Capture = true;
 								}
 								else if (!AllowSort)
-									FDownIndex = Constantes.NoColumn;
+									FDownIndex = Constants.NoColumn;
 							}
 							//Debug.WriteLine(HitIndex);
 							//Debug.WriteLine(FDownIndex);
@@ -519,11 +510,11 @@ namespace Genius.Controls.TreeView
 						{
 							EndDrag();
 							FTree.Capture = false;
-							if (FDropTarget > Constantes.NoColumn && FDropTarget != FDragIndex)
+							if (FDropTarget > Constants.NoColumn && FDropTarget != FDragIndex)
 							{
 								if (FTree.SelectedColumn == FDragIndex)
 									FTree.InternalSelectedColumn = FDropTarget;
-								else if (FTree.SelectedColumn != Constantes.NoColumn)
+								else if (FTree.SelectedColumn != Constants.NoColumn)
 								{
 									if (FTree.SelectedColumn >= FDropTarget && FTree.SelectedColumn < FDragIndex)
 										FTree.InternalSelectedColumn++;
@@ -533,22 +524,22 @@ namespace Genius.Controls.TreeView
 								if (FDropTarget > FDragIndex)
 									FDropTarget--;
 								if (FDropBefore)
-									MoveColonneTo(FDragIndex, FDropTarget);
+									MoveColumnTo(FDragIndex, FDropTarget);
 								else
-									MoveColonneTo(FDragIndex, FDropTarget+1);
+									MoveColumnTo(FDragIndex, FDropTarget+1);
 
 								FTree.InvalidateTree();
 							}
-							FDropTarget = Constantes.NoColumn;
+							FDropTarget = Constants.NoColumn;
 							Invalidate();
 							//AdjustDropTargetColumn(new Point(-1,-1));
 						}
 						FStates = 0;
 					}
-					if (FDownIndex > Constantes.NoColumn && AllowSort)
+					if (FDownIndex > Constants.NoColumn && AllowSort)
 					{
 						int acol = this.DisplayIndexToIndex(FDownIndex);
-						FDownIndex = Constantes.NoColumn;
+						FDownIndex = Constants.NoColumn;
 						Invalidate(this.DisplayColonnes(acol));
 						SortDirection aDir = IsSort(acol);
 						if (aDir != SortDirection.None)
@@ -611,9 +602,9 @@ namespace Genius.Controls.TreeView
 								Math.Abs(FDragStart.Y - p.Y) > 4)
 							{
 								int aDownIndex = FDownIndex;
-								FHoverIndex = Constantes.NoColumn;
-								FDownIndex = Constantes.NoColumn;
-								if (aDownIndex > Constantes.NoColumn)
+								FHoverIndex = Constants.NoColumn;
+								FDownIndex = Constants.NoColumn;
+								if (aDownIndex > Constants.NoColumn)
 									Invalidate(this.DisplayColonnes(aDownIndex));
 									//Invalidate(this.FColonnes[aDownIndex]);
 								PrepareDrag(FDragStart);
@@ -642,10 +633,20 @@ namespace Genius.Controls.TreeView
 			return false;
 		} 
 
-		internal void ColSizeChanged(GeniusTreeViewColonne aCol)
+		internal bool ColSizeChanged(GeniusTreeViewColonne column)
 		{
-			if (!InUpdateLayout)
-				UpdateLayoutForLastCol();
+            bool result = false;
+            if (!InUpdateLayout)
+            {
+                if (this.FAutoSizeCol && FAutoColHeight)
+                {
+                    //recalcul la hauteur
+                    result = FTree.RecalcHeightAutoSizeColumn(FDisplays[FAutoSizeColIndex], FAutoSizeColIndex);
+                }
+                UpdateLayoutForLastCol();
+                result = true;
+            }
+            return result;
 		}
 		#endregion
 
@@ -660,24 +661,23 @@ namespace Genius.Controls.TreeView
 			return n;
 		}
 
-		private int AddInstance(GeniusTreeViewColonne aCol)
+		private void AddInstance(GeniusTreeViewColonne aCol)
 		{
-			int Result = this.FColonnes.Add(aCol);
-			return Result;
+            this.FColonnes.Add(aCol);
 		}
 
 		/// <summary>
 		/// retourne la largeur total de toutes les colonnes
 		/// précédentes ansi que aDisplayIndex
 		/// </summary>
-		/// <param name="aDisplayIndex"></param>
+		/// <param name="displayIndex"></param>
 		/// <returns>la largeur totale des colonnes includant aDisplayIndex</returns>
-		public int GetWidthFromStart(int aDisplayIndex)
+		public int GetWidthFromStart(int displayIndex)
 		{
 			int Result = 0;
-			if (aDisplayIndex >= Count || aDisplayIndex < 0)
+			if (displayIndex >= Count || displayIndex < 0)
 				return 0;
-			for(int i=0; i <= aDisplayIndex; i++)
+			for(int i=0; i <= displayIndex; i++)
 			{
 				if (!DisplayColonnes(i).Visible)
 					continue;
@@ -689,33 +689,33 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// renvoi la position gauche d'une colonne, en fonction de la position du scroll horizontal
 		/// </summary>
-		/// <param name="aDisplayIndex"></param>
+		/// <param name="displayIndex"></param>
 		/// <returns></returns>
-		public int Left(int aDisplayIndex)
+		public int Left(int displayIndex)
 		{
-			int Result = GetWidthFromStart(aDisplayIndex-1);
-			Result -= (aDisplayIndex >= FixedColumnCount) ? FTree.OffsetX : 0;
+			int Result = GetWidthFromStart(displayIndex-1);
+			Result -= (displayIndex >= FixedColumnCount) ? FTree.OffsetX : 0;
 			return Result;
 		}
 		
 		/// <summary>
 		/// renvoi la position gauche d'une colonne
 		/// </summary>
-		/// <param name="aCol"></param>
+		/// <param name="column"></param>
 		/// <returns></returns>
-		public int Left(GeniusTreeViewColonne aCol)
+		public int Left(GeniusTreeViewColonne column)
 		{
-			return Left(FDisplays.IndexOf(aCol));
+			return Left(FDisplays.IndexOf(column));
 		}
 
 		/// <summary>
 		/// renvoi l'index d'une colonne
 		/// </summary>
-		/// <param name="aCol"></param>
+		/// <param name="column"></param>
 		/// <returns></returns>
-		public int IndexOf(GeniusTreeViewColonne aCol)
+		public int IndexOf(GeniusTreeViewColonne column)
 		{
-			return this.FColonnes.IndexOf(aCol);
+			return this.FColonnes.IndexOf(column);
 		}
 
 		/// <summary>
@@ -723,9 +723,9 @@ namespace Genius.Controls.TreeView
 		/// </summary>
 		/// <param name="aCol"></param>
 		/// <returns></returns>
-		public int IndexOfDisplay(GeniusTreeViewColonne aCol)
+        public int IndexOfDisplay(GeniusTreeViewColonne column)
 		{
-			return FDisplays.IndexOf(aCol);
+            return FDisplays.IndexOf(column);
 		}
 
 		/// <summary>
@@ -771,7 +771,7 @@ namespace Genius.Controls.TreeView
 					return i;
 				startx += width;
 			}
-			return Constantes.NoColumn;
+			return Constants.NoColumn;
 		}
 
 		/// <summary>
@@ -788,24 +788,24 @@ namespace Genius.Controls.TreeView
 		/// retourne index d'une colonne par rapport à son index du tableau des 
 		/// DisplayColonnes
 		/// </summary>
-		/// <param name="aDisplayIndex"></param>
+		/// <param name="displayIndex"></param>
 		/// <returns></returns>
-		public int DisplayIndexToIndex(int aDisplayIndex)
+		public int DisplayIndexToIndex(int displayIndex)
 		{
-			return IndexOf(DisplayColonnes(aDisplayIndex));
+			return IndexOf(DisplayColonnes(displayIndex));
 		}
 
 		/// <summary>
 		/// retourne les index des colonnes par rapport à leurs index du tableau des 
 		/// DisplayColonnes
 		/// </summary>
-		/// <param name="aDisplayIndex"></param>
+		/// <param name="displayIndex"></param>
 		/// <returns></returns>
-		public int[] DisplayIndexToIndex(int[] aDisplayIndex)
+		public int[] DisplayIndexToIndex(int[] displayIndex)
 		{
-			int[] Result = new int[aDisplayIndex.Length];
+			int[] Result = new int[displayIndex.Length];
 			for(int i = 0; i < Result.Length; i++)
-				Result[i] = IndexOf(DisplayColonnes(aDisplayIndex[i]));
+				Result[i] = IndexOf(DisplayColonnes(displayIndex[i]));
 			return Result;
 		}
 
@@ -831,7 +831,7 @@ namespace Genius.Controls.TreeView
 		/// liste des colonne affichés, identique aux colonnes à l'ordre près
 		/// </summary>
 		[Browsable(false)]
-		public ArrayList Displays
+		public List<GeniusTreeViewColonne> Displays
 		{
 			get
 			{
@@ -982,6 +982,7 @@ namespace Genius.Controls.TreeView
 		}
 
 		[Browsable(false)]
+        [Description("indique quelle est la colonne concernée par le dernier clic de la souris")]
 		public int ClickIndex
 		{
 			get
@@ -1040,7 +1041,7 @@ namespace Genius.Controls.TreeView
 		/// la propriété Width
 		/// </summary>
 		[DefaultValue(-1)]
-		[Description("la n'ième colonne est à taille variable")]
+		[Description("la n'ième colonne est à taille variable en largeur")]
 		public int AutoSizeColIndex
 		{
 			get
@@ -1056,10 +1057,29 @@ namespace Genius.Controls.TreeView
 			}
 		}
 
+
+        private bool FAutoColHeight = true;
+        /// <summary>
+        /// la colonne en autosize, est-elle aussi en autoheight (hauteur du noeud 'variable')
+        /// </summary>
+        [DefaultValue(false)]
+        [Description("permet d'indiquer si la colonne spécifiée par 'AutoSizeColIndex' est à taille variable en hauteur")]
+        public bool AutoColHeight
+        {
+            get { return FAutoColHeight; }
+            set
+            {
+                if (value != FAutoColHeight)
+                {
+                    FAutoColHeight = value;
+                }
+            }
+        }
+
 		public void SwapColonnes(int index1, int index2)
 		{
 			bool lastColIsConcerned = index1 == FAutoSizeColIndex || index2 == FAutoSizeColIndex;
-			object aCol = FDisplays[index1];
+			GeniusTreeViewColonne aCol = FDisplays[index1];
 			FDisplays[index1] = FDisplays[index2];
 			FDisplays[index2] = aCol;
 			if (lastColIsConcerned)
@@ -1070,27 +1090,27 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// deplace une colonne, vers une position
 		/// </summary>
-		/// <param name="aDisplayStart">index de la colonne à déplacer, index visuel</param>
-		/// <param name="aDisplayTo">index </param>
-		public void MoveColonneTo(int aDisplayStart, int aDisplayTo)
+		/// <param name="displayStart">index de la colonne à déplacer, index visuel</param>
+		/// <param name="displayTo">index </param>
+		public void MoveColumnTo(int displayStart, int displayTo)
 		{
 
-			if (aDisplayTo < 0 || aDisplayTo >= FDisplays.Count || aDisplayStart < 0 || aDisplayStart > FDisplays.Count)
-				throw new Exception(String.Format("Impossible de déplacer la colonne {0}, index d'arrivé \"{1}\" invalide", aDisplayStart, aDisplayTo));
+			if (displayTo < 0 || displayTo >= FDisplays.Count || displayStart < 0 || displayStart > FDisplays.Count)
+				throw new Exception(String.Format("Impossible de déplacer la colonne {0}, index d'arrivé \"{1}\" invalide", displayStart, displayTo));
 
-			bool lastColIsConcerned = aDisplayStart == FAutoSizeColIndex || aDisplayTo <= FAutoSizeColIndex ||
-				(aDisplayStart < FAutoSizeColIndex && aDisplayTo >= FAutoSizeColIndex) ||
-				(aDisplayStart > FAutoSizeColIndex && aDisplayTo <= FAutoSizeColIndex);
-			object o = FDisplays[aDisplayStart];
-			FDisplays.RemoveAt(aDisplayStart);
-			if (aDisplayTo < aDisplayStart)
-				FDisplays.Insert(aDisplayTo, o);
+			bool lastColIsConcerned = displayStart == FAutoSizeColIndex || displayTo <= FAutoSizeColIndex ||
+				(displayStart < FAutoSizeColIndex && displayTo >= FAutoSizeColIndex) ||
+				(displayStart > FAutoSizeColIndex && displayTo <= FAutoSizeColIndex);
+			GeniusTreeViewColonne o = FDisplays[displayStart];
+			FDisplays.RemoveAt(displayStart);
+			if (displayTo < displayStart)
+				FDisplays.Insert(displayTo, o);
 			else
 			{
-				if (aDisplayStart >= FDisplays.Count)
+				if (displayStart >= FDisplays.Count)
 					FDisplays.Add(o);
 				else
-					FDisplays.Insert(aDisplayTo, o);
+					FDisplays.Insert(displayTo, o);
 			}
 			if (lastColIsConcerned)
 				UpdateLayoutForLastCol();
@@ -1105,116 +1125,135 @@ namespace Genius.Controls.TreeView
 		/// </summary>
 		public void Dispose()
 		{
-			FColonnes.Clear();
-			FFontSort.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
 		}
+
+
+        protected virtual void Dispose(bool disposing)
+        {
+            FColonnes.Clear();
+            if (FFontSort != null)
+            {
+                FFontSort.Dispose();
+                FFontSort = null;
+            }
+            if (this.FImageDropTarget != null)
+            {
+                this.FImageDropTarget.Dispose();
+                this.FImageDropTarget = null;
+            }
+            DisposeImage(ref FDragImage);
+        }
 
 		#endregion
 
 		#region Paint
 		#region dessin du header
 
-		private void InternalDrawHeaderCol(Graphics g, GeniusTreeViewColonne aCol, Rectangle rCol)
+		private void InternalDrawHeaderCol(Graphics graphics, GeniusTreeViewColonne column, Rectangle columnRect)
 		{
-			DrawHeaderColEventArgs args = new DrawHeaderColEventArgs(g, aCol, rCol);
+			DrawHeaderColEventArgs args = new DrawHeaderColEventArgs(graphics, column, columnRect);
 			if (DoBeforePaintHeader(args))
 			{
-				int iCol = IndexOf(aCol);
-				bool hasImage = aCol.ImageIndex > -1 && this.ImageList != null;
-				GeniusLinearGradientBrush colColor = (!aCol.HeadColor.IsEmpty) ? aCol.HeadColor : FTree.Colors.HeaderColor;
-				using (Brush br = colColor.GetBrush(rCol))
+				int iCol = IndexOf(column);
+				bool hasImage = column.ImageIndex > -1 && this.ImageList != null;
+				GeniusLinearGradientBrush colColor = (!column.HeadColor.IsEmpty) ? column.HeadColor : FTree.Colors.HeaderColor;
+				using (Brush br = colColor.GetBrush(columnRect))
 				{
-					g.FillRectangle(br, rCol);
-					g.DrawLine(Pens.LightGray, rCol.Right-2, rCol.Top+4, rCol.Right-2, rCol.Bottom-4);
-					g.DrawLine(Pens.WhiteSmoke, rCol.Right-1, rCol.Top+4, rCol.Right-1, rCol.Bottom-4);
+					graphics.FillRectangle(br, columnRect);
+					graphics.DrawLine(Pens.LightGray, columnRect.Right-2, columnRect.Top+4, columnRect.Right-2, columnRect.Bottom-4);
+					graphics.DrawLine(Pens.WhiteSmoke, columnRect.Right-1, columnRect.Top+4, columnRect.Right-1, columnRect.Bottom-4);
 				}
 				//je retire un pixel pour le dessin de la ligne de séparation
-				rCol.Width -= 1;
-				StringFormat sf = new StringFormat(StringFormatFlags.NoWrap);
-				sf.Trimming = StringTrimming.EllipsisCharacter;
-				sf.Alignment = aCol.Alignment;
-				sf.LineAlignment = aCol.VAlignment;
-				if (aCol.ForeColor.IsEmpty)
-					aCol.ForeColor = new GeniusLinearGradientBrush(Color.Black);
-				Rectangle OldrCol = rCol;
-				Rectangle rTextCol = rCol;
+				columnRect.Width -= 1;
+                //StringFormat sf = new StringFormat(StringFormatFlags.NoWrap);
+                //sf.Trimming = StringTrimming.EllipsisCharacter;
+                //sf.Alignment = column.Alignment;
+                //sf.LineAlignment = column.VAlignment;
+				if (column.ForeColor.IsEmpty)
+					column.ForeColor = new GeniusLinearGradientBrush(Color.Black);
+				Rectangle OldrCol = columnRect;
+				Rectangle rTextCol = columnRect;
 				if (hasImage)
 				{
 					//dessin de l'image
 					//faire un test quand les images sont de taille <> en X et en Y
-					Point ImgPosition = new Point(rCol.Left, rCol.Top);
+					Point ImgPosition = new Point(columnRect.Left, columnRect.Top);
 
-					switch(aCol.ImageAlignment)
+					switch(column.ImageAlignment)
 					{
 						case ImageAlignment.Left :
-							ImgPosition.Y += rCol.Height / 2 - this.ImageList.ImageSize.Height / 2;
-							rCol.Width -= this.ImageList.ImageSize.Width;
+							ImgPosition.Y += columnRect.Height / 2 - this.ImageList.ImageSize.Height / 2;
+							columnRect.Width -= this.ImageList.ImageSize.Width;
 							break;
 						case ImageAlignment.Top :
-							ImgPosition.X += rCol.Width / 2 - this.ImageList.ImageSize.Width / 2;
-							rCol.Height -= this.ImageList.ImageSize.Height;
+							ImgPosition.X += columnRect.Width / 2 - this.ImageList.ImageSize.Width / 2;
+							columnRect.Height -= this.ImageList.ImageSize.Height;
 							break;
 						case ImageAlignment.Right :
-							ImgPosition.Y += rCol.Height / 2 - this.ImageList.ImageSize.Height / 2;
-							ImgPosition.X = rCol.Right - this.ImageList.ImageSize.Width; 
-							rCol.Width -= this.ImageList.ImageSize.Width;
+							ImgPosition.Y += columnRect.Height / 2 - this.ImageList.ImageSize.Height / 2;
+							ImgPosition.X = columnRect.Right - this.ImageList.ImageSize.Width; 
+							columnRect.Width -= this.ImageList.ImageSize.Width;
 							break;
 						case ImageAlignment.Bottom :
-							ImgPosition.X += rCol.Width / 2 - this.ImageList.ImageSize.Width / 2;
-							ImgPosition.Y = rCol.Bottom - this.ImageList.ImageSize.Height;
-							rCol.Height -= this.ImageList.ImageSize.Height;
+							ImgPosition.X += columnRect.Width / 2 - this.ImageList.ImageSize.Width / 2;
+							ImgPosition.Y = columnRect.Bottom - this.ImageList.ImageSize.Height;
+							columnRect.Height -= this.ImageList.ImageSize.Height;
 							break;
 					}
-					g.DrawImage(this.ImageList.Images[aCol.ImageIndex], ImgPosition);
+					graphics.DrawImage(this.ImageList.Images[column.ImageIndex], ImgPosition);
 					//this.ImageList.Draw(g, ImgPosition, aCol.ImageIndex);
 				}
-                Color foreColor = aCol.ForeColor;
+                Color foreColor = column.ForeColor;
 				{
 					GraphicsState state = null;
-					if (aCol.TextOrientation != 0)
+					if (column.TextOrientation != 0)
 					{
-						state = g.Save();
-						Matrix m = new Matrix();
-						switch (Convert.ToInt32(aCol.TextOrientation))
-						{
-							case 90 :
-								rTextCol.Width = rCol.Height;
-								m.RotateAt(90, new PointF(rCol.Left, rCol.Top));
-								rTextCol.Height = rCol.Width;
-								m.Translate(0, -rCol.Width);
-								if (hasImage && aCol.ImageAlignment == ImageAlignment.Left)
-									m.Translate(0, -this.ImageList.ImageSize.Width);
-								else if (hasImage && aCol.ImageAlignment == ImageAlignment.Top)
-									m.Translate(this.ImageList.ImageSize.Height, 0);
-								break;
-							case 180 :
-								m.RotateAt(180, new PointF(rCol.Left, rCol.Top));
-								m.Translate(-rCol.Width, -rCol.Height);
-								rTextCol.Width = rCol.Width;
-								break;
-							case -90 :
-							case 270 :
-								m.RotateAt(270, new PointF(rCol.Left, rCol.Top));
-								m.Translate(-rCol.Height, 0);
-								rTextCol.Width = rCol.Height;
-								rTextCol.Height = rCol.Width;
-								if (hasImage && aCol.ImageAlignment == ImageAlignment.Left)
-									m.Translate(0/*-this.ImageList.ImageSize.Width*/, this.ImageList.ImageSize.Width);
-								else if (hasImage && aCol.ImageAlignment == ImageAlignment.Top)
-									m.Translate(-this.ImageList.ImageSize.Height, 0);
-								break;
-							default :
-								m.RotateAt(Convert.ToInt32(aCol.TextOrientation), new PointF((rCol.Right + rCol.Left) / 2, (rCol.Top + rCol.Bottom) / 2), MatrixOrder.Append);
-								break;
-						}
-						g.Transform = m;
+						state = graphics.Save();
+                        using (Matrix m = new Matrix())
+                        {
+                            switch (Convert.ToInt32(column.TextOrientation))
+                            {
+                                case 90:
+                                    rTextCol.Width = columnRect.Height;
+                                    m.RotateAt(90, new PointF(columnRect.Left, columnRect.Top));
+                                    rTextCol.Height = columnRect.Width;
+                                    m.Translate(0, -columnRect.Width);
+                                    if (hasImage && column.ImageAlignment == ImageAlignment.Left)
+                                        m.Translate(0, -this.ImageList.ImageSize.Width);
+                                    else if (hasImage && column.ImageAlignment == ImageAlignment.Top)
+                                        m.Translate(this.ImageList.ImageSize.Height, 0);
+                                    break;
+                                case 180:
+                                    m.RotateAt(180, new PointF(columnRect.Left, columnRect.Top));
+                                    m.Translate(-columnRect.Width, -columnRect.Height);
+                                    rTextCol.Width = columnRect.Width;
+                                    break;
+                                case -90:
+                                case 270:
+                                    m.RotateAt(270, new PointF(columnRect.Left, columnRect.Top));
+                                    m.Translate(-columnRect.Height, 0);
+                                    rTextCol.Width = columnRect.Height;
+                                    rTextCol.Height = columnRect.Width;
+                                    if (hasImage && column.ImageAlignment == ImageAlignment.Left)
+                                        m.Translate(0/*-this.ImageList.ImageSize.Width*/, this.ImageList.ImageSize.Width);
+                                    else if (hasImage && column.ImageAlignment == ImageAlignment.Top)
+                                        m.Translate(-this.ImageList.ImageSize.Height, 0);
+                                    break;
+                                default:
+                                    m.RotateAt(Convert.ToInt32(column.TextOrientation), new PointF((columnRect.Right + columnRect.Left) / 2, (columnRect.Top + columnRect.Bottom) / 2), MatrixOrder.Append);
+                                    break;
+                            }
+                            graphics.Transform = m;
+                        }
 					}
 					else
 					{
-						rTextCol = rCol;
+						rTextCol = columnRect;
 						if (hasImage)
 						{
-							switch(aCol.ImageAlignment)
+							switch(column.ImageAlignment)
 							{
 								case ImageAlignment.Left :
 									rTextCol.Offset(this.ImageList.ImageSize.Width, 0);
@@ -1227,26 +1266,38 @@ namespace Genius.Controls.TreeView
 					}
                     if (rTextCol.Width > 0)
                     {
-                        if (FTree.FastDrawString)
-                            g.DrawString(aCol.Text, aCol.Font, new SolidBrush(foreColor), rTextCol, sf);
-                        else
-                            TextRenderer.DrawText(g, aCol.Text, aCol.Font, rTextCol, foreColor, Drawing.StringFormatToTextFormatFlags(sf));
+                        using (StringFormat sf = new StringFormat(StringFormatFlags.NoWrap))
+                        {
+                            sf.Trimming = StringTrimming.EllipsisCharacter;
+                            sf.Alignment = column.Alignment;
+                            sf.LineAlignment = column.VAlignment;
+
+                            if (FTree.FastDrawString)
+                            {
+                                using (var brush = new SolidBrush(foreColor))
+                                {
+                                    graphics.DrawString(column.Text, column.Font, brush, rTextCol, sf);
+                                }
+                            }
+                            else
+                                TextRenderer.DrawText(graphics, column.Text, column.Font, rTextCol, foreColor, DrawingHelper.StringFormatToTextFormatFlags(sf));
+                        }
                         
                     }
 					//pour deboggage
 					//g.DrawRectangle(Pens.Red, rTextCol);
 					if (state != null)
 					{
-						g.Restore(state);
+						graphics.Restore(state);
 					}
 				}
-				rCol = OldrCol;
-				if (FDownIndex == IndexOfDisplay(aCol))
+				columnRect = OldrCol;
+				if (FDownIndex == IndexOfDisplay(column))
 				{
-					Rectangle rColBis = rCol;
+					Rectangle rColBis = columnRect;
 					rColBis.Width -= 1;
 					rColBis.Height -= 1;
-					g.DrawRectangle(Pens.Black, rColBis);
+					graphics.DrawRectangle(Pens.Black, rColBis);
 				}
 				//Debug.WriteLine(String.Format("InternalDrawHeaderCol -> FDownIndex ={0}", FDownIndex));
 				//dessin de l'icône de tri
@@ -1259,55 +1310,55 @@ namespace Genius.Controls.TreeView
 					{
 						default :
 						case ImageSortAlignment.RightCenter :
-							y = rCol.Height / 2 - 8;
-							x = rCol.Right - 20;
+							y = columnRect.Height / 2 - 8;
+							x = columnRect.Right - 20;
 							break;
 						case ImageSortAlignment.LeftCenter :
-							y = rCol.Height / 2 - 8;
-							x = rCol.Left;
+							y = columnRect.Height / 2 - 8;
+							x = columnRect.Left;
 							break;
 						case ImageSortAlignment.TopLeft :
-							y = rCol.Top;
-							x = rCol.Left;
+							y = columnRect.Top;
+							x = columnRect.Left;
 							break;
 						case ImageSortAlignment.TopCenter :
-							y = rCol.Top;
-							x = rCol.Width / 2 - 8;
+							y = columnRect.Top;
+							x = columnRect.Width / 2 - 8;
 							break;
 						case ImageSortAlignment.TopRight :
-							y = rCol.Top;
-							x = rCol.Right - 20;
+							y = columnRect.Top;
+							x = columnRect.Right - 20;
 							break;
 						case ImageSortAlignment.BottomLeft :
-							y = rCol.Bottom -20;
-							x = rCol.Left;
+							y = columnRect.Bottom -20;
+							x = columnRect.Left;
 							break;
 						case ImageSortAlignment.BottomCenter :
-							y = rCol.Bottom -20;
-							x = rCol.Width / 2 - 8;
+							y = columnRect.Bottom -20;
+							x = columnRect.Width / 2 - 8;
 							break;
 						case ImageSortAlignment.BottomRight :
-							y = rCol.Bottom - 20;
-							x = rCol.Right - 20;
+							y = columnRect.Bottom - 20;
+							x = columnRect.Right - 20;
 							break;
 					}
-					FImageDropTarget.Draw(g, x, y, aDir == SortDirection.Ascending ? 2 : 3);				
+					FImageDropTarget.Draw(graphics, x, y, aDir == SortDirection.Ascending ? 2 : 3);				
 					int sortOrder = SortOrder(iCol) + 1;
 					if (sortOrder > 1)
-						g.DrawString(sortOrder.ToString(), FFontSort, Brushes.Black, x, y  + 8);
+						graphics.DrawString(sortOrder.ToString(CultureInfo.CurrentCulture), FFontSort, Brushes.Black, x, y  + 8);
 				}
 			}
-			if (FDropTarget == IndexOfDisplay(aCol))
+			if (FDropTarget == IndexOfDisplay(column))
 			{
-				int y = rCol.Height / 2 - 8;
+				int y = columnRect.Height / 2 - 8;
 				int x ;
 			
 				if (FDropBefore)
-					x = rCol.Left;
+					x = columnRect.Left;
 				else
-					x = rCol.Right - 16;
+					x = columnRect.Right - 16;
 			
-				DrawDropTarget(g, new Point(x, y));
+				DrawDropTarget(graphics, new Point(x, y));
 			}
 			DoAfterPaintHeader(args);
 		}
@@ -1384,16 +1435,18 @@ namespace Genius.Controls.TreeView
 
 		internal void PaintHeader(Graphics g, Rectangle r, int offsetx)
 		{
-			Bitmap bmp = new Bitmap(r.Width, r.Height);
-			using (Graphics gBmp = Graphics.FromImage(bmp))
-			{
-				using (Brush br = FTree.Colors.HeaderColor.GetBrush(r))
-				{
-					gBmp.FillRectangle(br, r);
-				}
-				DrawHeader(gBmp, r, offsetx);
-				g.DrawImage(bmp, 0,0);
-			}
+            using (Bitmap bmp = new Bitmap(r.Width, r.Height))
+            {
+                using (Graphics gBmp = Graphics.FromImage(bmp))
+                {
+                    using (Brush br = FTree.Colors.HeaderColor.GetBrush(r))
+                    {
+                        gBmp.FillRectangle(br, r);
+                    }
+                    DrawHeader(gBmp, r, offsetx);
+                    g.DrawImage(bmp, 0, 0);
+                }
+            }
 		}
 
 		internal void Redraw(bool updatescrolls)
@@ -1421,10 +1474,10 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// provode le redessin d'une partie du header
 		/// </summary>
-		/// <param name="rBounds"></param>
-		public void Invalidate(Rectangle rBounds)
+		/// <param name="rect"></param>
+		public void Invalidate(Rectangle rect)
 		{
-			Rectangle r = rBounds;
+			Rectangle r = rect;
 			RECT RW;
 
 			r.Height = FTree.HeaderHeight;
@@ -1434,11 +1487,14 @@ namespace Genius.Controls.TreeView
 				FlagsRDW.RDW_NOERASE); 
 		}
 		
-		public void Invalidate(GeniusTreeViewColonne aCol)
+		public void Invalidate(GeniusTreeViewColonne column)
 		{
-			int left = Left(aCol);
-			Rectangle r = new Rectangle(left, 0, aCol.Width-10, FTree.HeaderHeight);
-			Invalidate(r);
+            if (column != null)
+            {
+                int left = Left(column);
+                Rectangle r = new Rectangle(left, 0, column.Width - 10, FTree.HeaderHeight);
+                Invalidate(r);
+            }
 		}
 		#endregion
 
@@ -1446,6 +1502,7 @@ namespace Genius.Controls.TreeView
 		/// renvoi le nombre de colonnes
 		/// </summary>
 		[Browsable(false)]
+        [Description("Renvoi le nombre de colonne dans le header")]
 		public int Count
 		{
 			get
@@ -1458,7 +1515,7 @@ namespace Genius.Controls.TreeView
 		/// renvoi la liste des colonnes définies
 		/// </summary>
 		[Browsable(false)]
-		public Colonnes Colonnes
+		public GeniusTreeViewColumnCollection Colonnes
 		{
 			get
 			{
@@ -1472,27 +1529,27 @@ namespace Genius.Controls.TreeView
 		/// <returns></returns>
 		public GeniusTreeViewColonne[] GetDisplays()
 		{
-			return (GeniusTreeViewColonne[])FDisplays.ToArray(typeof(GeniusTreeViewColonne));
+			return FDisplays.ToArray();
 		}
 
 		/// <summary>
 		/// renvoi la direction du tri pour une colonne
 		/// </summary>
-		/// <param name="aDisplayCol"></param>
+		/// <param name="displayCol"></param>
 		/// <returns></returns>
-		public SortDirection GetSorting(int aDisplayCol)
+		public SortDirection GetSorting(int displayCol)
 		{			
-			return IsSort(aDisplayCol);
+			return IsSort(displayCol);
 		}
 
 		/// <summary>
 		/// renvoi la direction du tri pour une colonne
 		/// </summary>
-		/// <param name="aCol"></param>
+		/// <param name="column"></param>
 		/// <returns></returns>
-		public SortDirection GetSorting(GeniusTreeViewColonne aCol)
+		public SortDirection GetSorting(GeniusTreeViewColonne column)
 		{			
-			return IsSort(IndexOfDisplay(aCol));
+			return IsSort(IndexOfDisplay(column));
 		}
 
 		#region propriétés publiques
@@ -1548,7 +1605,7 @@ namespace Genius.Controls.TreeView
 				{
 					InUpdateLayout = false;
 				}
-				Redraw(true);
+				Redraw(!this.AutoColHeight);
 			}
 		}
 
@@ -1558,16 +1615,16 @@ namespace Genius.Controls.TreeView
 		{
 			if (Contains(FStates, HeaderStateEnum.Dragging))
 			{
-				FDragIndex = Constantes.NoColumn;
-				FDragIndex = Constantes.NoColumn;
-				FDropTarget = Constantes.NoColumn;
+				FDragIndex = Constants.NoColumn;
+				FDragIndex = Constants.NoColumn;
+				FDropTarget = Constants.NoColumn;
 				EndDrag();
 				FTree.Capture = false;
 			}
-			if (FStates != 0 || FDownIndex != Constantes.NoColumn)
+			if (FStates != 0 || FDownIndex != Constants.NoColumn)
 			{
 				FStates = 0;
-				FDownIndex = Constantes.NoColumn;
+				FDownIndex = Constants.NoColumn;
                 Invalidate();
 			}
 		}

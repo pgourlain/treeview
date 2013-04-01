@@ -108,7 +108,7 @@ namespace DemoTreeView.UC1
 			this.gtv.Colors.SignaledPenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(165)), ((System.Byte)(0))), 2F, System.Drawing.Drawing2D.DashStyle.Solid);
 			this.gtv.Colors.TextColor = new Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
 			this.gtv.Colors.UnFocusedRectanglePenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
-			this.gtv.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOption.ShowGridLines;
+			this.gtv.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOptions.ShowGridLines;
 			this.gtv.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gtv.ElapsedHint = 500;
 			this.gtv.FullRowSelect = true;
@@ -250,7 +250,7 @@ namespace DemoTreeView.UC1
 		private void demoLonghornUC_Load(object sender, System.EventArgs e)
 		{
 			gtv.BackColor = Color.FromArgb(244,244,244);
-			this.gtv.DefaultDrawingOption = DrawingOption.HideTreeLines | DrawingOption.ShowVertLines | DrawingOption.AlwaysHideSelection | DrawingOption.HideFocusRect | DrawingOption.HideSelection | DrawingOption.HideButtons;
+			this.gtv.DefaultDrawingOption = DrawingOptions.HideTreeLines | DrawingOptions.ShowVertLines | DrawingOptions.AlwaysHideSelection | DrawingOptions.HideFocusRect | DrawingOptions.HideSelection | DrawingOptions.HideButtons;
 			this.gtv.Indentation = 2;
 			this.gtv.LeftMargin = 5;
 			this.gtv.Colors.GridLinesColor = new Pen(Color.FromArgb(231, 231, 231));
@@ -276,9 +276,9 @@ namespace DemoTreeView.UC1
 		{
 			using(Brush br = geniusBr.GetBrush(r))
 			{
-				Drawing.FillRoundRect(g, br, r, 5, 5);
+				DrawingHelper.FillRoundRect(g, br, r, 5, 5);
 			}
-			Drawing.DrawRoundRect(g, pen, r, 5, 5);
+			DrawingHelper.DrawRoundRect(g, pen, r, 5, 5);
 		}
 
 		private void gtv_OnPaintNodeBackGround(Genius.Controls.TreeView.GeniusTreeView Sender, Genius.Controls.TreeView.PaintNodeEventArgs e)
@@ -492,35 +492,35 @@ namespace DemoTreeView.UC1
 
 		private void gtv_OnDrawHeaderCol(Genius.Controls.TreeView.GeniusTreeView Sender, Genius.Controls.TreeView.DrawHeaderColEventArgs e)
 		{
-			Rectangle rCol = e.RectCol;
-			e.graphics.FillRectangle(Brushes.WhiteSmoke, rCol);
-			rCol = e.RectCol;
+			Rectangle rCol = e.ColumnRect;
+			e.Graphics.FillRectangle(Brushes.WhiteSmoke, rCol);
+			rCol = e.ColumnRect;
 			rCol.Height = 6;
-			SortDirection sortCol = gtv.Header.GetSorting(e.Col);
+			SortDirection sortCol = gtv.Header.GetSorting(e.Column);
 			if (sortCol != SortDirection.None)
 			{
 				using (GeniusLinearGradientBrush gbrush = new GeniusLinearGradientBrush(FSelectedBrush.EndColor, FSelectedBrush.BeginColor, 90))
 				{
 					using (Brush br = gbrush.GetBrush(rCol))
 					{
-						e.graphics.FillRectangle(br, rCol);
+						e.Graphics.FillRectangle(br, rCol);
 					}				
 				}
-				DrawSortingIcone(e.graphics,rCol, sortCol);
+				DrawSortingIcone(e.Graphics,rCol, sortCol);
 			}
-			rCol = e.RectCol;
+			rCol = e.ColumnRect;
 			rCol.Height -= 7;
 			rCol.Y += 7;
 			StringFormat sf = new StringFormat(StringFormatFlags.NoWrap);
 
-			sf.LineAlignment = e.Col.VAlignment;
-			sf.Alignment = e.Col.Alignment;
-			using (Brush br = new SolidBrush(e.Col.ForeColor))
+			sf.LineAlignment = e.Column.VAlignment;
+			sf.Alignment = e.Column.Alignment;
+			using (Brush br = new SolidBrush(e.Column.ForeColor))
 			{
-				e.graphics.DrawString(e.Col.Text, e.Col.Font, br, rCol, sf);
+				e.Graphics.DrawString(e.Column.Text, e.Column.Font, br, rCol, sf);
 			}
-			e.graphics.DrawLine(gtv.Colors.GridLinesColor, rCol.Left, e.RectCol.Top,  rCol.Left, rCol.Bottom);
-			e.graphics.DrawLine(gtv.Colors.GridLinesColor, rCol.Right, e.RectCol.Top,  rCol.Right, rCol.Bottom);
+			e.Graphics.DrawLine(gtv.Colors.GridLinesColor, rCol.Left, e.ColumnRect.Top,  rCol.Left, rCol.Bottom);
+			e.Graphics.DrawLine(gtv.Colors.GridLinesColor, rCol.Right, e.ColumnRect.Top,  rCol.Right, rCol.Bottom);
 			e.DefaultDrawing = false;
 		}
 

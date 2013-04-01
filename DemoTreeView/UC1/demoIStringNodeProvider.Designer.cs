@@ -49,7 +49,7 @@ namespace DemoTreeView.UC1
             this.gtv.Colors.TextColor = new Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
             this.gtv.Colors.UnFocusedRectanglePenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255))))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
             this.gtv.DataIsStringProvider = true;
-            this.gtv.DefaultDrawingOption = ((Genius.Controls.TreeView.DrawingOption)((Genius.Controls.TreeView.DrawingOption.ShowVertLines | Genius.Controls.TreeView.DrawingOption.ShowHorzLines)));
+            this.gtv.DefaultDrawingOption = ((Genius.Controls.TreeView.DrawingOptions)((Genius.Controls.TreeView.DrawingOptions.ShowVertLines | Genius.Controls.TreeView.DrawingOptions.ShowHorzLines)));
             this.gtv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gtv.ElapsedHint = 500;
             this.gtv.Header.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

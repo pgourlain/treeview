@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Genius.Controls.TreeView.Core;
 
 namespace Genius.Controls.TreeView.Core
@@ -604,12 +605,12 @@ namespace Genius.Controls.TreeView.Core
             return null;
         }
 
-        internal static Node NextSiblingVisibleNode(Node aNode)
+        internal static Node NextSiblingVisibleNode(Node node)
         {
             Node Result;
-            if (aNode == null)
+            if (node == null)
                 return null;
-            Result = aNode.NextSibling;
+            Result = node.NextSibling;
             while (Result != null)
             {
                 if (Set.Contains(Result.State, NodeState.Visible))
@@ -617,6 +618,16 @@ namespace Genius.Controls.TreeView.Core
                 Result = Result.NextSibling;
             }
             return null;
+        }
+
+        internal static Node NextSiblingNode(Node node)
+        {
+            return node.NextSibling;
+        }
+
+        internal static Node PrevSiblingNode(Node node)
+        {
+            return node.PrevSibling;
         }
 
         INode INode.Find(string aText)
@@ -632,41 +643,67 @@ namespace Genius.Controls.TreeView.Core
 
         #region INodeEnumerable Members
 
-        public IEnumerable GetNodes()
+        public IEnumerable<INode> GetNodes()
         {
             return new NodeEnumerator(this, false);
         }
 
-        public IEnumerable GetNodes(bool recurse)
+        public IEnumerable<INode> GetNodes(bool recurse)
         {
             return new NodeEnumerator(this, recurse);
         }
 
-        public IEnumerable GetVisibleNodes(bool recurse)
+        public IEnumerable<INode> GetVisibleNodes(bool recurse)
         {
             return new NodeEnumerator(this, recurse, true);
         }
 
+        public static Node NextNode(Node current, Node parentNode)      
+        {           
+            if (current != null)            
+            {               
+                if (current.ChildCount > 0)                 
+                    return current.FirstChild;              
+                if (current.NextSibling != null)                    
+                    return current.NextSibling;             
+                else                
+                {                   
+                    do                  
+                    {                       
+                        current = current.Parent;
+                        // We have reach the parent node, do not continue
+                        if (current == parentNode)                          
+                            return null;                    
+                    }                   
+                    while (current != null && current.NextSibling == null);                 
+                    if (current != null)                        
+                        current = current.NextSibling;              
+                }           
+            }           
+            return current;     
+        }
+
         public static Node NextNode(Node current)
         {
-            if (current != null)
-            {
-                if (current.ChildCount > 0)
-                    return current.FirstChild;
-                if (current.NextSibling != null)
-                    return current.NextSibling;
-                else
-                {
-                    do
-                    {
-                        current = current.Parent;
-                    }
-                    while (current != null && current.NextSibling == null);
-                    if (current != null)
-                        current = current.NextSibling;
-                }
-            }
-            return current;
+            return NextNode(current, null);
+            //if (current != null)
+            //{
+            //    if (current.ChildCount > 0)
+            //        return current.FirstChild;
+            //    if (current.NextSibling != null)
+            //        return current.NextSibling;
+            //    else
+            //    {
+            //        do
+            //        {
+            //            current = current.Parent;
+            //        }
+            //        while (current != null && current.NextSibling == null);
+            //        if (current != null)
+            //            current = current.NextSibling;
+            //    }
+            //}
+            //return current;
         }
 
         internal static Node LastNode(Node aParent)

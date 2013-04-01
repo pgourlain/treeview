@@ -3,11 +3,11 @@ using System;
 namespace Genius.Controls.TreeView
 {
 	/// <summary>
-	/// Summary description for Constantes.
+	/// Summary description for Constants.
 	/// </summary>
-	public class Constantes
+	public sealed class Constants
 	{
-		private Constantes()
+		private Constants()
 		{
 		}
 
@@ -18,6 +18,6 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// 
 		/// </summary>
-		public const int InvalideColumn = -2;
+		public const int InvalidColumn = -2;
 	}
 }

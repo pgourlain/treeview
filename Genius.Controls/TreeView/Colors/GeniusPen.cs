@@ -20,23 +20,23 @@ namespace Genius.Controls.TreeView.Colors
 		/// <summary>
 		/// contructeur
 		/// </summary>
-		/// <param name="aColor">couleur du stylo</param>
-		/// <param name="aWidth">épaisseur</param>
-		public GeniusPen(Color aColor, float aWidth) : this(aColor, aWidth, DashStyle.Solid)
+		/// <param name="color">couleur du stylo</param>
+		/// <param name="width">épaisseur</param>
+		public GeniusPen(Color color, float width) : this(color, width, DashStyle.Solid)
 		{
 		}
 
 		/// <summary>
 		/// constructeur
 		/// </summary>
-		/// <param name="aColor"></param>
-		/// <param name="aWidth"></param>
-		/// <param name="aStyle"></param>
-		public GeniusPen(Color aColor, float aWidth, DashStyle aStyle)
+		/// <param name="color"></param>
+		/// <param name="width"></param>
+		/// <param name="style"></param>
+		public GeniusPen(Color color, float width, DashStyle style)
 		{
-			FColor = aColor;
-			FWidth = aWidth;
-			FDashStyle = aStyle;			
+			FColor = color;
+			FWidth = width;
+			FDashStyle = style;			
 		}
 
 		/// <summary>

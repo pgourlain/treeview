@@ -32,7 +32,7 @@ namespace Genius.Controls.DocTabs
 	/// <summary>
 	/// deleguée utilise par <see cref="GeniusDocTab.OnSelectedIndexChanged"/>
 	/// </summary>
-    public delegate void SelectedIndexChangedDelegate(object Sender, int aOldIndex, int aNewIndex);
+    public delegate void SelectedIndexChangedEventHandler(object Sender, int oldIndex, int newIndex);
 
 	/// <summary>
 	/// control visuel représentant une zone avec des "tabs"
@@ -71,7 +71,7 @@ namespace Genius.Controls.DocTabs
 		/// <summary>
 		/// évènement déclenché lorsque <see cref="GeniusDocTab.SelectedIndex"/> change
 		/// </summary>
-        public event SelectedIndexChangedDelegate OnSelectedIndexChanged;
+        public event SelectedIndexChangedEventHandler OnSelectedIndexChanged;
         #endregion
 
 		/// <summary>
@@ -162,9 +162,11 @@ namespace Genius.Controls.DocTabs
             if (tab.Path == null)
                 return;
             tab.PathOffset = (GraphicsPath)tab.Path.Clone();
-            Matrix m = new Matrix();
-            m.Translate(0, FTopMargin);
-            tab.PathOffset.Transform(m);
+            using (Matrix m = new Matrix())
+            {
+                m.Translate(0, FTopMargin);
+                tab.PathOffset.Transform(m);
+            }
             int hauteur = Hauteur;
             float w = tab.Width - hauteur / 2;
             for (int i = StartIndex - 1; i > 0; i--)
@@ -174,25 +176,36 @@ namespace Genius.Controls.DocTabs
             {
                 tab = Tabs[i];
                 tab.PathOffset = (GraphicsPath)tab.Path.Clone();
-                m = new Matrix();
-                m.Translate(w, FTopMargin);
-                tab.PathOffset.Transform(m);
+                using (Matrix m = new Matrix())
+                {
+                    m.Translate(w, FTopMargin);
+                    tab.PathOffset.Transform(m);
+                }
                 w += tab.Width - hauteur / 2;
             }
         }
 
-        private GraphicsPath TabPath(int hauteur, int largeur)
+        private static GraphicsPath TabPath(int hauteur, int largeur)
         {
             GraphicsPath Result = new GraphicsPath();
-
-            hauteur -= 4;
-            if (hauteur < 0)
-                hauteur = 0;
-            int x1 = 5 + hauteur + largeur; 
-            Result.AddCurve(new Point[] { new Point(0, 3 + hauteur), new Point(hauteur, 3), new Point(5 + hauteur, 0) }, 0.4f);
-            Result.AddLine(5 + hauteur, 0, x1-2, 0);
-            Result.AddLine(x1 - 2, 0, x1, 2);
-            Result.AddLine(x1, 2, x1, 3 + hauteur);
+            var tempResult = Result;
+            try
+            {
+                hauteur -= 4;
+                if (hauteur < 0)
+                    hauteur = 0;
+                int x1 = 5 + hauteur + largeur;
+                Result.AddCurve(new Point[] { new Point(0, 3 + hauteur), new Point(hauteur, 3), new Point(5 + hauteur, 0) }, 0.4f);
+                Result.AddLine(5 + hauteur, 0, x1 - 2, 0);
+                Result.AddLine(x1 - 2, 0, x1, 2);
+                Result.AddLine(x1, 2, x1, 3 + hauteur);
+                tempResult = null;
+            }
+            finally
+            {
+                if (tempResult != null)
+                    tempResult.Dispose();
+            }
             return Result;
         }
 
@@ -225,7 +238,10 @@ namespace Genius.Controls.DocTabs
 					g.DrawLine(p, r.Right, r.Bottom, GetRight, r.Bottom);
 				}
 			}
-			g.DrawString(sText, this.Font, new SolidBrush(this.ForeColor), r.Left + hauteur, (GetHeight - size.Height) / 2);
+            using (var brush = new SolidBrush(this.ForeColor))
+            {
+			    g.DrawString(sText, this.Font, brush, r.Left + hauteur, (GetHeight - size.Height) / 2);
+            }
         }
 		#endregion
 
@@ -233,8 +249,8 @@ namespace Genius.Controls.DocTabs
 		/// <summary>
 		/// dessin des tabs
 		/// </summary>
-		/// <param name="pe"></param>
-        protected override void OnPaint(PaintEventArgs pe)
+		/// <param name="e"></param>
+        protected override void OnPaint(PaintEventArgs e)
         {
 			try
 			{
@@ -257,34 +273,39 @@ namespace Genius.Controls.DocTabs
 					RecalcTabRect();
 				if (FOrientation == TabOrientation.Right)
 				{
-					Matrix m = new Matrix();
-					m.Translate(this.ClientRectangle.Width, 0);
-					m.Rotate(90);
-					pe.Graphics.Transform = m;
+                    using (Matrix m = new Matrix())
+                    {
+                        m.Translate(this.ClientRectangle.Width, 0);
+                        m.Rotate(90);
+                        e.Graphics.Transform = m;
+                    }
 				}
 				else if (FOrientation == TabOrientation.Left)
 				{
-					Matrix m = new Matrix();
-					m.Translate(0, this.ClientRectangle.Height);
-					m.Rotate(270);
-					pe.Graphics.Transform = m;
+                    using (Matrix m = new Matrix())
+                    {
+                        m.Translate(0, this.ClientRectangle.Height);
+                        m.Rotate(270);
+                        e.Graphics.Transform = m;
+                    }
 				}
 				for (int i = Tabs.Count - 1; i >= StartIndex; i--)
 				{
 					GeniusTab tab = Tabs[i];
 					if (i == SelectedIndex)
 						continue;
-					DrawTab(Tabs[i], pe.Graphics, hauteur, false);
+					DrawTab(Tabs[i], e.Graphics, hauteur, false);
 				}
 				if (SelectedIndex >= 0)
 				{
 					GeniusTab tab = Tabs[SelectedIndex];
-					DrawTab(tab, pe.Graphics, hauteur, true);              
+					DrawTab(tab, e.Graphics, hauteur, true);              
 				}
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
+                Trace.TraceError("OnPaint error : {0}", ex);
 			}
         }
 

@@ -54,9 +54,9 @@ namespace Genius.Controls.TreeView
 	{
 		internal Node FNode;
 		/// <summary>
-		/// les options de dessin du noeud en cours (<see cref="DrawingOption"/>)
+		/// les options de dessin du noeud en cours (<see cref="DrawingOptions"/>)
 		/// </summary>
-		public DrawingOption DrawingOptions;
+		public DrawingOptions DrawingOptions;
 		internal Rectangle FNodeRect;
 		/// <summary>
 		/// couleur de fond

@@ -14,10 +14,10 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// construteur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		public NodeEventArgs(INode aNode) : base()
+		/// <param name="node"></param>
+		public NodeEventArgs(INode node) : base()
 		{
-			FNode = aNode;
+			FNode = node;
 		}
 
 		internal void SetNode(INode n)
@@ -45,11 +45,11 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="aDisplayColumn"></param>
-		public NodeCellEventArgs(INode aNode, int aDisplayColumn) : base(aNode)
+		/// <param name="node"></param>
+		/// <param name="displayColumn"></param>
+		public NodeCellEventArgs(INode node, int displayColumn) : base(node)
 		{
-			FDisplayColumn = aDisplayColumn;
+			FDisplayColumn = displayColumn;
 		}
 
 		/// <summary>
@@ -72,8 +72,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		public ExpandEventArgs(INode aNode) : base(aNode)
+		/// <param name="node"></param>
+		public ExpandEventArgs(INode node) : base(node)
 		{
 			CanExpand = true;
 		}
@@ -81,7 +81,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// autorise ou pas l'expansion du noeud en cours
 		/// </summary>
-		public bool CanExpand;
+        public bool CanExpand { get; set; }
 	}
 
 	/// <summary>
@@ -92,8 +92,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		public CollapseEventArgs(INode aNode) : base(aNode)
+		/// <param name="node"></param>
+		public CollapseEventArgs(INode node) : base(node)
 		{
 			CanCollapse = true;
 		}
@@ -101,7 +101,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// autosie ou pas le replie du noeuds en cours
 		/// </summary>
-		public bool CanCollapse;
+        public bool CanCollapse { get; set; }
 	}
 
 	/// <summary>
@@ -112,8 +112,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// construteur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		public CheckEventArgs(INode aNode) : base(aNode)
+		/// <param name="node"></param>
+		public CheckEventArgs(INode node) : base(node)
 		{
 			CanCheck = true;
 		}
@@ -121,7 +121,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// autorise ou pas le check sur le noeud courant
 		/// </summary>
-		public bool CanCheck;
+        public bool CanCheck { get; set; }
 	}
 
 	/// <summary>
@@ -132,8 +132,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		public UnCheckEventArgs(INode aNode) : base(aNode)
+		/// <param name="node"></param>
+		public UnCheckEventArgs(INode node) : base(node)
 		{
 			CanUnCheck = true;
 		}
@@ -141,7 +141,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// peut-on décocher le noeud en cours
 		/// </summary>
-		public bool CanUnCheck;
+        public bool CanUnCheck { get; set; }
 	}
 
 	/// <summary>
@@ -161,7 +161,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// peuit on editer le noeud en cours
 		/// </summary>
-		public bool CanEdit;
+        public bool CanEdit { get; set; }
 	}
 	
 	/// <summary>
@@ -172,21 +172,21 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="colindex"></param>
-		public CanSelectEventArgs(INode aNode, int colindex) : base(aNode)
+		/// <param name="node"></param>
+		/// <param name="colIndex"></param>
+		public CanSelectEventArgs(INode node, int colIndex) : base(node)
 		{
 			CanSelect = true;
-			DisplayColumn = colindex;
+			DisplayColumn = colIndex;
 		}
 		/// <summary>
 		/// puis-je selectionner le noeud
 		/// </summary>
-		public bool CanSelect;
+        public bool CanSelect { get; set; }
 		/// <summary>
 		/// la colonne que l'on tente de selectionné, en mode grille
 		/// </summary>
-		public int DisplayColumn;
+        public int DisplayColumn { get; set; }
 	}
 
 	/// <summary>
@@ -197,21 +197,21 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constrcuteur par défaut, vous n'avez pas à instancier cette classe
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="colindex"></param>
-		public CanUnSelectEventArgs(INode aNode, int colindex) : base(aNode)
+		/// <param name="node"></param>
+		/// <param name="colIndex"></param>
+		public CanUnSelectEventArgs(INode node, int colIndex) : base(node)
 		{
 			CanUnSelect = true;
-			DisplayColumn = colindex;
+			DisplayColumn = colIndex;
 		}
 		/// <summary>
 		/// peut deselectioner le noeuds
 		/// </summary>
-		public bool CanUnSelect;
+        public bool CanUnSelect { get; set; }
 		/// <summary>
 		/// la colonne concerné
 		/// </summary>
-		public int DisplayColumn;
+        public int DisplayColumn { get; set; }
 	}
 
 	/// <summary>
@@ -224,11 +224,11 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="colindex"></param>
-		public SelectedEventArgs(INode aNode, int colindex) : base (aNode)
+		/// <param name="node"></param>
+		/// <param name="colIndex"></param>
+		public SelectedEventArgs(INode node, int colIndex) : base (node)
 		{
-			FColumn = colindex;
+			FColumn = colIndex;
 		}
 
 		/// <summary>
@@ -251,10 +251,10 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="colindex"></param>
+		/// <param name="node"></param>
+		/// <param name="colIndex"></param>
 		/// <param name="defaultText"></param>
-		public NodeTextEventArgs(INode aNode, int colindex, string defaultText) : base(aNode, colindex)
+		public NodeTextEventArgs(INode node, int colIndex, string defaultText) : base(node, colIndex)
 		{
 			Text = defaultText;
 		}
@@ -262,7 +262,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// le texte
 		/// </summary>
-		public string Text;
+        public string Text { get; set; }
 	}
 
 	/// <summary>
@@ -278,10 +278,10 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="paintinfo"></param>
-		public PaintNodeEventArgs(PaintInfo paintinfo) : base(paintinfo.Node)
+		/// <param name="paintInfo"></param>
+		public PaintNodeEventArgs(PaintInfo paintInfo) : base(paintInfo.Node)
 		{
-			FInfo = paintinfo;
+			FInfo = paintInfo;
 		}
 
 		/// <summary>
@@ -304,31 +304,31 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="g"></param>
-		/// <param name="r"></param>
-		public DrawDragEventArgs(Graphics g, Rectangle r )
+		/// <param name="graphics"></param>
+		/// <param name="rect"></param>
+		public DrawDragEventArgs(Graphics graphics, Rectangle rect )
 		{
-			graphics = g;
-			Bounds = r;
+			Graphics = graphics;
+			Bounds = rect;
 			DefaultDrawing = true;
 			Forbiden = false;
 		}
 		/// <summary>
 		/// canevas pour le dessin
 		/// </summary>
-		public Graphics graphics;
+        public Graphics Graphics { get; private set; }
 		/// <summary>
 		/// zone de dessin
 		/// </summary>
-		public Rectangle Bounds;
+        public Rectangle Bounds { get; set; }
 		/// <summary>
 		/// dessin par defaut
 		/// </summary>
-		public bool DefaultDrawing;
+        public bool DefaultDrawing { get; set; }
 		/// <summary>
 		/// interdiction du drag
 		/// </summary>
-		public bool Forbiden;
+        public bool Forbiden { get; set; }
 	}
 
 	/// <summary>
@@ -347,7 +347,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// rectangle désirer pour le dessin du drag
 		/// </summary>
-		public Rectangle Bounds;
+        public Rectangle Bounds { get; set; }
 	}
 
 	/// <summary>
@@ -396,7 +396,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// autorise ou pas le drop
 		/// </summary>
-		public bool CanDrop;
+        public bool CanDrop { get; set; }
 	}
 
 	/// <summary>
@@ -416,7 +416,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// peut -on demarrer le drag
 		/// </summary>
-		public bool CanDrag;
+        public bool CanDrag { get; set; }
 	}
 
 	/// <summary>
@@ -429,18 +429,18 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="acol"></param>
-		public NodeEditorEventArgs(INode aNode, int acol) : base(aNode)
+		/// <param name="node"></param>
+		/// <param name="column"></param>
+		public NodeEditorEventArgs(INode node, int column) : base(node)
 		{
 			Editor = null;
-			FColumn = acol;
+			FColumn = column;
 		}
 
 		/// <summary>
 		/// Placez votre propre éditeur
 		/// </summary>
-		public ITreeViewEdit Editor;
+        public ITreeViewEdit Editor { get; set; }
 
 		/// <summary>
 		/// indique la colonne en édition
@@ -466,33 +466,33 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="g"></param>
-		/// <param name="aCol"></param>
-		/// <param name="rCol"></param>
-		public DrawHeaderColEventArgs(Graphics g, GeniusTreeViewColonne aCol, Rectangle rCol)
+		/// <param name="graphics"></param>
+		/// <param name="column"></param>
+		/// <param name="columnRect"></param>
+		public DrawHeaderColEventArgs(Graphics graphics, GeniusTreeViewColonne column, Rectangle columnRect)
 		{
 			DefaultDrawing = true;
-			FGraphics = g;
-			FRectCol = rCol;
-			FCol = aCol;
+			FGraphics = graphics;
+			FRectCol = columnRect;
+			FCol = column;
 		}
 
 		/// <summary>
 		/// si cette propriété est positionnée à false, le dessin par défaut ne sera pas fait
 		/// </summary>
-		public bool DefaultDrawing;
+        public bool DefaultDrawing { get; set; }
 		/// <summary>
 		/// le graphics à utiliser pour déssiner
 		/// </summary>
-		public Graphics graphics {get {return FGraphics;}}
+		public Graphics Graphics {get {return FGraphics;}}
 		/// <summary>
 		/// la colonne concernée par le dessin
 		/// </summary>
-		public GeniusTreeViewColonne Col {get { return FCol;}}
+		public GeniusTreeViewColonne Column {get { return FCol;}}
 		/// <summary>
 		/// le rectangle dans lequel il faut dessiner, représentant l'entête de la colonne
 		/// </summary>
-		public Rectangle RectCol {get {return FRectCol;}}
+		public Rectangle ColumnRect {get {return FRectCol;}}
 	}
 
 	/// <summary>
@@ -519,17 +519,17 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="n"></param>
-		/// <param name="aImageType"></param>
-		public NodeImageIndexEventArgs(INode n, ImageIndexType aImageType) : base(n)
+		/// <param name="node"></param>
+		/// <param name="imageType"></param>
+		public NodeImageIndexEventArgs(INode node, ImageIndexType imageType) : base(node)
 		{
-			FImageIndexType = aImageType;
+			FImageIndexType = imageType;
 		}
 
 		/// <summary>
 		/// index de l'image
 		/// </summary>
-		public int ImageIndex;
+        public int ImageIndex { get; set; }
 		/// <summary>
 		/// le type de l'image
 		/// </summary>
@@ -551,9 +551,9 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="aDisplayColumn"></param>
-		public NodeGetHintEventArgs(INode aNode, int aDisplayColumn) : base(aNode, aDisplayColumn)
+		/// <param name="node"></param>
+		/// <param name="displayColumn"></param>
+		public NodeGetHintEventArgs(INode node, int displayColumn) : base(node, displayColumn)
 		{
 			
 		}
@@ -561,7 +561,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// propriété représentant le texte du hint
 		/// </summary>
-		public string HintText;
+        public string HintText { get; set; }
 	}
 
 	/// <summary>
@@ -572,8 +572,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="n"></param>
-		public NodeDeleteEventArgs(INode n) : base(n)
+		/// <param name="node"></param>
+		public NodeDeleteEventArgs(INode node) : base(node)
 		{
 			CanDelete = true;
 		}
@@ -581,7 +581,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// peut-on uspprimer le noeud en cours
 		/// </summary>
-		public bool CanDelete;
+        public bool CanDelete { get; set; }
 	}
 
 	/// <summary>
@@ -594,10 +594,10 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur
 		/// </summary>
-		/// <param name="n"></param>
-		/// <param name="aDisplayColumn"></param>
+		/// <param name="node"></param>
+		/// <param name="displayColumn"></param>
 		/// <param name="editor"></param>
-		public EditEventArgs(INode n, int aDisplayColumn, ITreeViewEdit editor): base(n, aDisplayColumn)
+		public EditEventArgs(INode node, int displayColumn, ITreeViewEdit editor): base(node, displayColumn)
 		{
 			FEditor = editor;
 		}
@@ -637,16 +637,16 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="n"></param>
-		/// <param name="aDisplayColumn"></param>
-		public NodeFontEventArgs(INode n, int aDisplayColumn) : base(n, aDisplayColumn)
+		/// <param name="node"></param>
+		/// <param name="displayColumn"></param>
+		public NodeFontEventArgs(INode node, int displayColumn) : base(node, displayColumn)
 		{
 			
 		}
 		/// <summary>
 		/// la font associé à la cellule
 		/// </summary>
-		public Font Font;
+        public Font Font { get; set; }
 	}
 
 	/// <summary>
@@ -657,8 +657,8 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="n"></param>
-		public NodeDrawingTreeLinesEventArgs(INode n) : base(n)
+		/// <param name="node"></param>
+		public NodeDrawingTreeLinesEventArgs(INode node) : base(node)
 		{
 			Draw = true;
 		}
@@ -666,7 +666,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// doit-je dessiner les lignes de l'arbre ?
 		/// </summary>
-		public bool Draw;
+        public bool Draw { get; set; }
 	}
 
 	/// <summary>
@@ -677,14 +677,14 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-        public NodeHintWindowEventArgs(INode aNode, int aDisplayColumn, IHintWindow aCurrentHint) : base(aNode, aDisplayColumn)
+        public NodeHintWindowEventArgs(INode node, int displayColumn, IHintWindow currentHint) : base(node, displayColumn)
 		{
-            HintWindow = aCurrentHint;
+            HintWindow = currentHint;
 		}
 		/// <summary>
 		/// user HintWindow
 		/// </summary>
-		public IHintWindow HintWindow;
+        public IHintWindow HintWindow { get; set; }
 	}
 
 	#region Cell Mouse events
@@ -705,15 +705,15 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// position de la souris par rapport à une cellule
 		/// </summary>
-		public MousePosition MousePosition;
+        public MousePosition MousePosition { get; set; }
 		/// <summary>
 		/// état des boutons de la souris
 		/// </summary>
-		public MouseButtons Button;
+        public MouseButtons Button { get; set; }
 		/// <summary>
 		/// coordonées de la souris
 		/// </summary>
-		public Point Position;
+        public Point Position { get; set; }
 	}
 	#endregion
 
@@ -725,9 +725,9 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur
 		/// </summary>
-		/// <param name="aNode"></param>
-		/// <param name="aDisplayColumn"></param>
-		public EditRectEventArgs(INode aNode, int aDisplayColumn) : base(aNode, aDisplayColumn)
+		/// <param name="node"></param>
+		/// <param name="displayColumn"></param>
+		public EditRectEventArgs(INode node, int displayColumn) : base(node, displayColumn)
 		{
 			
 		}
@@ -735,7 +735,7 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// le rectangle visuel de la zone d'édition
 		/// </summary>
-		public Rectangle EditRect;
+        public Rectangle EditRect { get; set; }
 	}
 
 	/// <summary>
@@ -749,15 +749,15 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="g"></param>
-		/// <param name="aDisplayColumn"></param>
-		/// <param name="aRect"></param>
-		public PaintFooterEventArgs(Graphics g, int aDisplayColumn, Rectangle aRect)
+		/// <param name="graphics"></param>
+		/// <param name="displayColumn"></param>
+		/// <param name="rect"></param>
+		public PaintFooterEventArgs(Graphics graphics, int displayColumn, Rectangle rect)
 		{
 			DefaultDrawing = true;
-			FGraphics = g;
-			DisplayColumn = aDisplayColumn;
-			FFooterRect = aRect;
+			FGraphics = graphics;
+			DisplayColumn = displayColumn;
+			FFooterRect = rect;
 		}
 
 		/// <summary>
@@ -773,16 +773,16 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// la display column concernée par le dessin en mode grille, -1 dans les autres cas
 		/// </summary>
-		public int			DisplayColumn;
+        public int DisplayColumn { get; set; }
 		/// <summary>
 		/// utiliser par <see cref="GeniusTreeView.OnBeforePaintFooter"/>. via cette propriété l'utilisateur peut
 		/// empecher le paint par défaut du footer pour y mettre le sien
 		/// </summary>
-		public bool			DefaultDrawing;
+        public bool DefaultDrawing { get; set; }
 		/// <summary>
 		/// le canevas à utiliser pour le dessin du footer
 		/// </summary>
-		public Graphics		graphics
+		public Graphics Graphics
 		{
 			get
 			{
@@ -799,33 +799,33 @@ namespace Genius.Controls.TreeView
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="aDisplayColumn"></param>
-		public FooterTextEventArgs(int aDisplayColumn)
+		/// <param name="displayColumn"></param>
+		public FooterTextEventArgs(int displayColumn)
 		{
-			DisplayColumn = aDisplayColumn;
+			DisplayColumn = displayColumn;
 			Text = string.Empty;
 		}
 		/// <summary>
 		/// la colonne concernée par le dessin
 		/// </summary>
-		public int		DisplayColumn;
+        public int DisplayColumn { get; set; }
 		/// <summary>
 		/// le texte à afficher
 		/// </summary>
-		public string	Text;
+        public string Text { get; set; }
 		/// <summary>
 		/// la font du texte à afficher
 		/// </summary>
-		public Font		Font;
+        public Font Font { get; set; }
 		/// <summary>
 		/// la couleur du texte à afficher
 		/// </summary>
-		public Color ForeColor;	
+        public Color ForeColor { get; set; }
 
 		/// <summary>
 		/// format d'affichage pour le texte du footer
 		/// </summary>
-		public StringFormat	Format;
+        public StringFormat Format { get; set; }
 	}
 
     /// <summary>
@@ -836,17 +836,17 @@ namespace Genius.Controls.TreeView
         /// <summary>
         /// constructeur par défaut
         /// </summary>
-        /// <param name="n"></param>
-        /// <param name="aDataToDrag"></param>
-        public BeginDragEventArgs(INode n, object aDataToDrag) : base(n)
+        /// <param name="node"></param>
+        /// <param name="dataToDrag"></param>
+        public BeginDragEventArgs(INode node, object dataToDrag) : base(node)
         {
-            DataToDrag = aDataToDrag;
+            DataToDrag = dataToDrag;
         }
 
         /// <summary>
         /// permet à l'utilisateur de définir l'objet à dragger, il n'est pas conseillé d'affecter cette propriété avec un noeud de l'arbre
         /// </summary>
-        public object DataToDrag;
+        public object DataToDrag { get; set; }
     }
 
     /// <summary>
@@ -855,21 +855,21 @@ namespace Genius.Controls.TreeView
     public class GetNodeWidthEventArgs : NodeCellEventArgs
     {
         private Graphics FGraphics;
-        public GetNodeWidthEventArgs(INode aNode, int aColumn, Graphics aGraphics)
-            : base(aNode, aColumn)
+        public GetNodeWidthEventArgs(INode node, int column, Graphics graphics)
+            : base(node, column)
         {
             Width = 0;
-            FGraphics = aGraphics;
+            FGraphics = graphics;
         }
 
         /// <summary>
         /// largeur du noeud
         /// </summary>
-        public int Width;
+        public int Width { get; set; }
         /// <summary>
         /// pour calculer éventuellement la largeur du noeud
         /// </summary>
-        public Graphics graphics
+        public Graphics Graphics
         {
             get { return FGraphics; }
         }

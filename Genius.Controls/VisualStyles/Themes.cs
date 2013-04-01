@@ -20,14 +20,14 @@ namespace Genius.Controls.VisualStyles
 		/// <summary>
 		/// récupère le handle d'un ThemeData
 		/// </summary>
-		/// <param name="aClassName">BUTTON, TREEVIEW, TOOLTIP, ... <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/shellcc/platform/commctls/userex/topics/partsandstates.asp">msdn</a></param>
+		/// <param name="className">BUTTON, TREEVIEW, TOOLTIP, ... <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/shellcc/platform/commctls/userex/topics/partsandstates.asp">msdn</a></param>
 		/// <returns></returns>
-		public static IntPtr Theme(string aClassName)
+		public static IntPtr Theme(string className)
 		{
-			if (!FThemes.Contains(aClassName))
-				FThemes.Add(aClassName, NativeMethods.OpenThemeData(IntPtr.Zero, aClassName));
+			if (!FThemes.Contains(className))
+				FThemes.Add(className, NativeMethods.OpenThemeData(IntPtr.Zero, className));
 				
-			return (IntPtr)FThemes[aClassName];
+			return (IntPtr)FThemes[className];
 		}		
 	}
 }

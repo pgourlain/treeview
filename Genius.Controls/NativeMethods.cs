@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Genius.Controls
 {
@@ -81,8 +82,16 @@ namespace Genius.Controls
 		internal extern static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
 												int x, int y, int cx, int cy, FlagsSetWindowPos uflags);
 		
-		[DllImport("user32.dll", CharSet=CharSet.Auto)]
-		internal extern static int SetLayeredWindowAttributes(IntPtr hWnd, uint rgb, int alpha, int flags);
+		[DllImport("user32.dll", CharSet=CharSet.Auto, EntryPoint="SetLayeredWindowAttributes")]
+		private extern static bool InternalSetLayeredWindowAttributes(IntPtr hWnd, uint rgb, int alpha, int flags);
+
+        internal static void SetLayeredWindowAttributes(IntPtr hWnd, uint rgb, int alpha, int flags)
+        {
+            if (!InternalSetLayeredWindowAttributes(hWnd, rgb, alpha, flags))
+            {
+                System.Diagnostics.Trace.TraceWarning("SetLayeredWindowAttributes failed");
+            }
+        }
  
 		internal static int InvalidateRect(IntPtr hWnd,  Rectangle rc, int bErase)
 		{
@@ -108,10 +117,19 @@ namespace Genius.Controls
 		[DllImport("uxtheme.dll", CharSet=CharSet.Unicode)]
 		internal extern static int CloseThemeData(IntPtr hWnd);
 
-		[DllImport("uxtheme", ExactSpelling=true)]
-		internal extern static Int32 DrawThemeBackground(IntPtr hTheme, IntPtr hdc, int iPartId,
+		[DllImport("uxtheme", ExactSpelling=true, EntryPoint="DrawThemeBackground")]
+		private extern static Int32 InternalDrawThemeBackground(IntPtr hTheme, IntPtr hdc, int iPartId,
 			int iStateId, ref RECT pRect, ref RECT pClipRect);
-		#endregion
+        
+        internal static void DrawThemeBackground(IntPtr hTheme, IntPtr hdc, int iPartId,
+            int iStateId, ref RECT pRect, ref RECT pClipRect)
+        {
+            if (InternalDrawThemeBackground(hTheme, hdc, iPartId, iStateId, ref pRect, ref pClipRect) == 0)
+            {
+                Trace.TraceWarning("DrawThemeBackground failed");
+            }
+        }
+        #endregion
 
 		internal const int SIF_RANGE = 1;
 		internal const int SIF_PAGE = 2;

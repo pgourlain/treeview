@@ -6,7 +6,8 @@ using Genius.Controls.TreeView.Core;
 
 namespace Genius.Controls.NativeWindow
 {
-	using GeniusTreeView = Control;
+    using System.Security.Permissions;
+    using GeniusTreeView = Control;
 	/// <summary>
 	/// fenêtre de base pour la gestion des hint
 	/// </summary>
@@ -21,10 +22,12 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// constrcuteur par défaut
 		/// </summary>
-		/// <param name="tv"></param>
-		public BaseHintWindow(GeniusTreeView tv) : base(tv)
+		/// <param name="treeView"></param>
+		public BaseHintWindow(GeniusTreeView treeView) : base(treeView)
 		{
-			FFont = (Font)tv.Font.Clone();
+            if (treeView == null)
+                throw new ArgumentNullException("treeView");
+			FFont = (Font)treeView.Font.Clone();
 			FCalculateSizeNeeded = false;
 		}
 
@@ -49,7 +52,8 @@ namespace Genius.Controls.NativeWindow
 		/// surcharge de la WndProc pour le traitement du WM_NCHITTEST
 		/// </summary>
 		/// <param name="m"></param>
-		protected override void WndProc(ref Message m)
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        protected override void WndProc(ref Message m)
 		{
 			if (m.Msg == (int)Msgs.WM_NCHITTEST)
 				m.Result = new IntPtr((int)HitTest.HTTRANSPARENT);
@@ -61,9 +65,9 @@ namespace Genius.Controls.NativeWindow
 		/// à surcharger par les descendant pour renvoyer la taille de la fenêtre de
 		/// hint
 		/// </summary>
-		/// <param name="g"></param>
+		/// <param name="graphics"></param>
 		/// <returns></returns>
-		protected virtual Size CalculateSize(Graphics g)
+		protected virtual Size CalculateSize(Graphics graphics)
 		{
             SizeF size;
             //size = g.MeasureString(this.Text, this.Font);
@@ -75,15 +79,16 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// à surcharger par les descendants, pour customiser le paint
 		/// </summary>
-		/// <param name="g"></param>
-		protected override void DoPaint(Graphics g)
+		/// <param name="graphics"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Justification="Validate by caller")]
+        protected override void DoPaint(Graphics graphics)
 		{
-			Rectangle r = this.ClientRectangle;
-			g.FillRectangle(SystemBrushes.Info, r);
-			g.DrawString(FText, FFont, Brushes.Black, r);
-			r.Width -= 1;
-			r.Height -=1;
-			g.DrawRectangle(Pens.Black, r);
+            Rectangle r = this.ClientRectangle;
+            graphics.FillRectangle(SystemBrushes.Info, r);
+            graphics.DrawString(FText, FFont, Brushes.Black, r);
+            r.Width -= 1;
+            r.Height -= 1;
+            graphics.DrawRectangle(Pens.Black, r);
 		}
 
 		/// <summary>
@@ -207,12 +212,12 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// dispose du hint
 		/// </summary>
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
 			if (FFont != null)
 				FFont.Dispose();
 			FFont = null;
-			base.Dispose ();
+			base.Dispose (disposing);
 		}
 
 		#endregion

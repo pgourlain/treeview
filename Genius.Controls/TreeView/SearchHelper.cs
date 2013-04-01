@@ -14,7 +14,7 @@ namespace Genius.Controls.TreeView
 		private string			FBuffer;
 		private Node			FLastSearchNode;
 		private bool			FInit;
-		private SearchDirectionEnum FCurrentDirection;
+		private SearchDirectionOption FCurrentDirection;
 
 		/// <summary>
 		/// constructeur par défaut
@@ -30,11 +30,11 @@ namespace Genius.Controls.TreeView
 
 		delegate Node GetNextNodeDelegate(Node aNode);
 
-		private GetNextNodeDelegate CalculGetNextNode(IncrementalSearchEnum aIncr)
+		private GetNextNodeDelegate CalculGetNextNode(IncrementalSearchOption aIncr)
 		{
-			if (aIncr == IncrementalSearchEnum.VisibleOnly)
+			if (aIncr == IncrementalSearchOption.VisibleOnly)
 			{
-				if (FCurrentDirection == SearchDirectionEnum.Forward )
+				if (FCurrentDirection == SearchDirectionOption.Forward )
 				{
 					return new GetNextNodeDelegate(FOwner.NextVisibleNode);
 				}
@@ -45,7 +45,7 @@ namespace Genius.Controls.TreeView
 			}
 			else
 			{
-				if (FCurrentDirection == SearchDirectionEnum.Forward )
+				if (FCurrentDirection == SearchDirectionOption.Forward )
 				{
 					return new GetNextNodeDelegate(FOwner.NextVisibleOrNotNode);
 				}
@@ -66,7 +66,7 @@ namespace Genius.Controls.TreeView
 			bool foundMatch = false;
 			Node Run;
 			GetNextNodeDelegate GetNextNode;
-			if (FOwner.IncrementalSearch != IncrementalSearchEnum.None)
+			if (FOwner.IncrementalSearch != IncrementalSearchOption.None)
 			{
 				if (keyChar != 0)
 				{
@@ -75,10 +75,10 @@ namespace Genius.Controls.TreeView
 					{
 						switch(FOwner.SearchStart)
 						{
-							case SearchStartEnum.AlwaysStartOver :
+							case SearchStartOption.AlwaysStartOver :
 								Run = null;
 								break;
-							case SearchStartEnum.FocusedNode :
+							case SearchStartOption.FocusedNode :
 								Run = (Node)FOwner.SelectedNode;
 								break;
 							default:
@@ -92,13 +92,13 @@ namespace Genius.Controls.TreeView
 
 						switch(FOwner.IncrementalSearch)
 						{
-							case IncrementalSearchEnum.All :
+							case IncrementalSearchOption.All :
 								if (Run == null)
 									Run = (Node)FOwner.FirstVisible();
 								else if (!FInit)
 									Run = GetNextNode(Run);
 								break;
-							case IncrementalSearchEnum.VisibleOnly :
+							case IncrementalSearchOption.VisibleOnly :
 								if (Run == null)
 									Run = (Node)FOwner.FirstVisible();
 								else if (!Node.IsFullyVisible(Run))
@@ -147,7 +147,7 @@ namespace Genius.Controls.TreeView
 			return false;
 		}
 
-		public Node Search(Node aStart, string aText, IncrementalSearchEnum aTypeSearch, int aDisplayColumn)
+		public Node Search(Node aStart, string aText, IncrementalSearchOption aTypeSearch, int aDisplayColumn)
 		{
 			Node Run = aStart;
 
@@ -156,11 +156,11 @@ namespace Genius.Controls.TreeView
 			GetNextNode = CalculGetNextNode(aTypeSearch);
 			switch(aTypeSearch)
 			{
-				case IncrementalSearchEnum.All :
+				case IncrementalSearchOption.All :
 					if (Run == null)
 						Run = (Node)FOwner.FirstVisible();
 					break;
-				case IncrementalSearchEnum.VisibleOnly :
+				case IncrementalSearchOption.VisibleOnly :
 					if (Run == null)
 						Run = (Node)FOwner.FirstVisible();
 					else if (!Node.IsFullyVisible(Run))
@@ -183,13 +183,13 @@ namespace Genius.Controls.TreeView
 
 		private void ToggleDirection()
 		{
-			if (FCurrentDirection == SearchDirectionEnum.Forward)
-				FCurrentDirection = SearchDirectionEnum.Backward;
+			if (FCurrentDirection == SearchDirectionOption.Forward)
+				FCurrentDirection = SearchDirectionOption.Backward;
 			else
-				FCurrentDirection = SearchDirectionEnum.Forward;			
+				FCurrentDirection = SearchDirectionOption.Forward;			
 		}
 
-		public SearchDirectionEnum Direction
+		public SearchDirectionOption Direction
 		{
 			get { return FCurrentDirection;}	
 			set { FCurrentDirection = value;}

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using Genius.Controls.TreeView.Converter;
+using Genius.Controls.TreeView.Colors;
 
 namespace Genius.Controls
 {
@@ -22,8 +23,8 @@ namespace Genius.Controls
 		/// <summary>
 		/// constructeur
 		/// </summary>
-		/// <param name="aSolidColor">à partir d'un couleur</param>
-		public GeniusLinearGradientBrush(Color aSolidColor) : this(aSolidColor, Color.Empty)
+		/// <param name="solidColor">à partir d'un couleur</param>
+		public GeniusLinearGradientBrush(Color solidColor) : this(solidColor, Color.Empty)
 		{
 		}
 
@@ -53,10 +54,10 @@ namespace Genius.Controls
 		/// <summary>
 		/// constructeur à partir d'un brush
 		/// </summary>
-		/// <param name="aBrush"></param>
-		public GeniusLinearGradientBrush(Brush aBrush)
+		/// <param name="brush"></param>
+		public GeniusLinearGradientBrush(Brush brush)
 		{
-			FBrush = aBrush;
+			FBrush = brush;
 			FColor = Color.Empty;
 			FEndColor = Color.Empty;
 			FAngle = 0;
@@ -141,9 +142,9 @@ namespace Genius.Controls
 		/// <summary>
 		/// construit un <see cref="LinearGradientBrush"/>, ou un <see cref="SolidBrush"/>
 		/// </summary>
-		/// <param name="aRect"></param>
+		/// <param name="rect"></param>
 		/// <returns></returns>
-		public Brush GetBrush(Rectangle aRect)
+		public Brush GetBrush(Rectangle rect)
 		{
 			if (FBrush != null)
 				return (Brush)FBrush.Clone(); 
@@ -151,7 +152,7 @@ namespace Genius.Controls
 				return null;
 			if (EndColor.IsEmpty)
 				return new SolidBrush(FColor);
-			return new LinearGradientBrush(aRect,  FColor, FEndColor, FAngle);
+			return new LinearGradientBrush(rect,  FColor, FEndColor, FAngle);
 		}
 
 		/// <summary>
@@ -189,6 +190,11 @@ namespace Genius.Controls
         /// <returns></returns>
         public static implicit operator Color(GeniusLinearGradientBrush brush)
         {
+            return ToColor(brush);
+        }
+
+        public static Color ToColor(GeniusLinearGradientBrush brush)
+        {
             return brush.Color;
         }
 
@@ -197,9 +203,16 @@ namespace Genius.Controls
         //    return brush.Color;
         //}
 
+        private static GeniusLinearGradientBrush _empty = new GeniusLinearGradientBrush(Color.Empty);
 		/// <summary>
 		/// réprésente un Brusg vide
 		/// </summary>
-		public static GeniusLinearGradientBrush Empty = new GeniusLinearGradientBrush(Color.Empty);
+        public static GeniusLinearGradientBrush Empty
+        {
+            get
+            {
+                return _empty;
+            }
+        }
 	}
 }

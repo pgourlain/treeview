@@ -21,7 +21,7 @@ namespace Genius.Controls.GeniusTab
 		/// <summary>
 		/// le graphics à utiliser pour dessiner
 		/// </summary>
-		public Graphics graphics
+		public Graphics Graphics
 		{
 			get
 			{
@@ -42,6 +42,6 @@ namespace Genius.Controls.GeniusTab
 		/// <summary>
 		/// indique si le dessin par défaut doit être fait
 		/// </summary>
-		public bool DefaultDrawing;
+        public bool DefaultDrawing { get; set; }
 	}
 }

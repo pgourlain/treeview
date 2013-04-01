@@ -5,7 +5,8 @@ using System.Windows.Forms;
 
 namespace Genius.Controls.NativeWindow
 {
-	using GeniusTreeView = Control;
+    using System.Security.Permissions;
+    using GeniusTreeView = Control;
 	/// <summary>
 	/// Summary description for BaseNativeWindow.
 	/// </summary>
@@ -22,13 +23,19 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="tv"></param>
-		public BaseNativeWindow(GeniusTreeView tv)
+		/// <param name="treeView"></param>
+		public BaseNativeWindow(GeniusTreeView treeView)
 		{
-			FTree = tv;
+			FTree = treeView;
 			FAlpha = 254;
 			FRect = Rectangle.Empty;
 		}
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags=SecurityPermissionFlag.UnmanagedCode)]
+        ~BaseNativeWindow()
+        {
+            Dispose(false);
+        }
 
 		/// <summary>
 		/// Le treeview lié
@@ -45,7 +52,8 @@ namespace Genius.Controls.NativeWindow
 		/// surcharge de WndProc pour le paint
 		/// </summary>
 		/// <param name="m"></param>
-		protected override void WndProc(ref Message m)
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        protected override void WndProc(ref Message m)
 		{
 			switch((Msgs)m.Msg)
 			{
@@ -66,15 +74,16 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// à surcharger par le descendant, pour le paint du hint
 		/// </summary>
-		/// <param name="g"></param>
-		protected virtual void DoPaint(Graphics g)
+		/// <param name="graphics"></param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "g")]
+        protected virtual void DoPaint(Graphics graphics)
 		{
 		}
 
-		private void SetAlpha(int value)
-		{
-			Alpha = value;		
-		}
+        //private void SetAlpha(int value)
+        //{
+        //    Alpha = value;		
+        //}
 
 		private void FadeInWindow()
 		{
@@ -117,10 +126,12 @@ namespace Genius.Controls.NativeWindow
 					FAlpha = value;
 					if (HandleCreated)
 					{
-						if (oldValue < 255)
-							NativeMethods.SetLayeredWindowAttributes(this.Handle, 0, FAlpha, 0x02);
-						else
-							RecreateHandle();
+                        if (oldValue < 255)
+                        {
+                            NativeMethods.SetLayeredWindowAttributes(this.Handle, 0, FAlpha, 0x02);
+                        }
+                        else
+                            RecreateHandle();
 					}
 				}
 			}
@@ -247,10 +258,16 @@ namespace Genius.Controls.NativeWindow
 		/// <summary>
 		/// dispose du handle de la fenêtre
 		/// </summary>
-		public virtual void Dispose()
+		public void Dispose()
 		{
-			this.DestroyHandle();
+            Dispose(true);
+            GC.SuppressFinalize(this);
 		}
+
+        protected virtual void Dispose(bool disposing)
+        {
+			this.DestroyHandle();        
+        }
 
 		#endregion
 

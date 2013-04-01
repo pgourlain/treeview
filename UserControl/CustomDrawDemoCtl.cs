@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Genius.Controls.UserControl
+namespace Genius.Controls.UserControls
 {
 	/// <summary>
 	/// Summary description for CustomDrawDemo.
@@ -76,7 +76,7 @@ namespace Genius.Controls.UserControl
 			this.geniusTreeView1.Alignment = System.Drawing.StringAlignment.Near;
 			this.geniusTreeView1.AutoSort = false;
 			this.geniusTreeView1.BackColor = System.Drawing.SystemColors.Window;
-			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOption.ShowGridLines;
+			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOptions.ShowGridLines;
 			this.geniusTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.geniusTreeView1.FullRowSelect = true;
 			this.geniusTreeView1.Header.AllowDrag = true;
@@ -98,7 +98,7 @@ namespace Genius.Controls.UserControl
 			this.geniusTreeView1.KeysGridMode = false;
 			this.geniusTreeView1.Location = new System.Drawing.Point(0, 0);
 			this.geniusTreeView1.Name = "geniusTreeView1";
-			this.geniusTreeView1.SearchDirection = Genius.Controls.TreeView.SearchDirectionEnum.Forward;
+			this.geniusTreeView1.SearchDirection = Genius.Controls.TreeView.SearchDirectionOption.Forward;
 			this.geniusTreeView1.ShowHeader = true;
 			this.geniusTreeView1.Size = new System.Drawing.Size(480, 384);
 			this.geniusTreeView1.TabIndex = 0;

@@ -1,8 +1,10 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BBCE726-EAE0-44DA-86C2-A9BFF7F34161}"
 	ProjectSection(SolutionItems) = preProject
+		genius.controls.testsettings = genius.controls.testsettings
 		GeniusControls.ndoc = GeniusControls.ndoc
+		MyTreeView.vsmdi = MyTreeView.vsmdi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{5A7FCD67-8B0B-458E-B085-5EB83B97E407}"
@@ -56,23 +58,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genius.Controls.Design", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoTreeView", "DemoTreeView\DemoTreeView.csproj", "{A2DD8814-7FE3-43C0-8DED-272F904E41C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genius.Controls.Tests", "Genius.Controls.Tests\Genius.Controls.Tests.csproj", "{51E94446-740A-4BF2-98ED-337A3B83B55E}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs02.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MyTreeView.csproj
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = Genius.Controls\\Genius.Controls.csproj
-		SccProjectName2 = Genius.Controls
-		SccLocalPath2 = Genius.Controls
-		SccProjectUniqueName3 = Genius.Controls.Design\\Genius.Controls.Design.csproj
-		SccProjectName3 = Genius.Controls.Design
-		SccLocalPath3 = Genius.Controls.Design
-		SccProjectUniqueName4 = DemoTreeView\\DemoTreeView.csproj
-		SccProjectName4 = DemoTreeView
-		SccLocalPath4 = DemoTreeView
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = MyTreeView.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,11 +85,18 @@ Global
 		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2DD8814-7FE3-43C0-8DED-272F904E41C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E94446-740A-4BF2-98ED-337A3B83B55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E94446-740A-4BF2-98ED-337A3B83B55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E94446-740A-4BF2-98ED-337A3B83B55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E94446-740A-4BF2-98ED-337A3B83B55E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CEF67AAB-DA2D-4005-97F2-801B951D3C2E} = {0787411A-5B7F-48B1-9FB8-7B50ADDAC767}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

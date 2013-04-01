@@ -7,23 +7,21 @@ namespace Genius.Controls.TreeView.Colors
 	/// <summary>
 	/// Summary description for Themes.
 	/// </summary>
-	public class Themes
+	public static class Themes
 	{
-		private Themes()
-		{
-		}
-
 		/// <summary>
 		/// Thème Genius 
 		/// </summary>
-		/// <param name="aColors"></param>
-		public static void GeniusTreeViewTheme(GenuisTreeViewColors aColors)
+		/// <param name="colors"></param>
+		public static void GeniusTreeViewTheme(GenuisTreeViewColors colors)
 		{
-			aColors.SelectedTextColor = aColors.TextColor;
-			aColors.SelectedUnfocusedColor= new GeniusLinearGradientBrush(Color.FromArgb(225, 230, 232));
-			aColors.SelectedColor = new GeniusLinearGradientBrush(Color.FromArgb(193, 210, 238));
-			aColors.UnFocusedRectanglePenColor = new GeniusPen(Color.FromArgb(152,181,226), 1, DashStyle.Solid);
-			aColors.FocusedRectanglePenColor = new GeniusPen(Color.FromArgb(49, 106, 197), 1, DashStyle.Solid);
+            if (colors == null)
+                throw new ArgumentNullException("colors");
+			colors.SelectedTextColor = colors.TextColor;
+			colors.SelectedUnfocusedColor= new GeniusLinearGradientBrush(Color.FromArgb(225, 230, 232));
+			colors.SelectedColor = new GeniusLinearGradientBrush(Color.FromArgb(193, 210, 238));
+			colors.UnFocusedRectanglePenColor = new GeniusPen(Color.FromArgb(152,181,226), 1, DashStyle.Solid);
+			colors.FocusedRectanglePenColor = new GeniusPen(Color.FromArgb(49, 106, 197), 1, DashStyle.Solid);
 		}
 	}
 }

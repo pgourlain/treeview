@@ -1,61 +1,69 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Genius.Controls.TreeView.Core
 {
 	/// <summary>
 	/// Collections des colonnes
 	/// </summary>
-	public class Colonnes : CollectionBase
+	public class GeniusTreeViewColumnCollection : System.Collections.ObjectModel.Collection<GeniusTreeViewColonne>
 	{
 		private GeniusHeader FOwner;
-		internal ArrayList		FDisplays;
+        internal List<GeniusTreeViewColonne> FDisplays;
 
 		/// <summary>
 		/// constructeur par défaut, mais vous n'avez pas besoin de 
 		/// de créer cette collections
 		/// </summary>
-		/// <param name="aOwner"></param>
-		public Colonnes(GeniusHeader aOwner)
+		/// <param name="owner"></param>
+		public GeniusTreeViewColumnCollection(GeniusHeader owner)
 		{
-			FOwner = aOwner;
-			FDisplays = new ArrayList();
+			FOwner = owner;
+            FDisplays = new List<GeniusTreeViewColonne>();
 		}
 
-		/// <summary>
-		/// renvoi une instance de <see cref="GeniusTreeViewColonne"/> à l'index index
-		/// </summary>
-		public GeniusTreeViewColonne this[int index]
-		{
-			get
-			{
-				return (GeniusTreeViewColonne)List[index];
-			}
-			set
-			{
-				List[index] = value;
-			}
-		}
+        //// Provide the explicit interface member for ICollection. 
+        //void ICollection.CopyTo(Array array, int index)
+        //{
+        //    this.List.CopyTo(array, index);
+        //}
 
-		/// <summary>
-		/// renvoi l'index d'un colonne
-		/// </summary>
-		/// <param name="aCol">la colonne dont on désire l'index</param>
-		/// <returns></returns>
-		public int IndexOf(GeniusTreeViewColonne aCol)
-		{
-			return List.IndexOf(aCol);
-		}
+        ///// <summary>
+        ///// renvoi une instance de <see cref="GeniusTreeViewColonne"/> à l'index index
+        ///// </summary>
+        //public GeniusTreeViewColonne this[int index]
+        //{
+        //    get
+        //    {
+        //        return (GeniusTreeViewColonne)Items[index];
+        //    }
+        //    set
+        //    {
+        //        List[index] = value;
+        //    }
+        //}
 
-		/// <summary>
-		/// ajout d'une colonne, mais passé plutôt par <see cref="GeniusHeader.Add"/>
-		/// </summary>
-		/// <param name="aCol"></param>
-		/// <returns>la position dans la liste</returns>
-		public int Add(GeniusTreeViewColonne aCol)
-		{
-			return this.List.Add(aCol);
-		}
+        ///// <summary>
+        ///// renvoi l'index d'un colonne
+        ///// </summary>
+        ///// <param name="aCol">la colonne dont on désire l'index</param>
+        ///// <returns></returns>
+        //public int IndexOf(GeniusTreeViewColonne aCol)
+        //{
+        //    return this.Items.IndexOf(aCol);
+        //}
+
+        ///// <summary>
+        ///// ajout d'une colonne, mais passé plutôt par <see cref="GeniusHeader.Add"/>
+        ///// </summary>
+        ///// <param name="aCol"></param>
+        ///// <returns>la position dans la liste</returns>
+        //public int Add(GeniusTreeViewColonne aCol)
+        //{
+        //    return this.List.Add(aCol);
+        //}
 
 		/// <summary>
 		/// ajoute une liste de colonnes
@@ -63,10 +71,12 @@ namespace Genius.Controls.TreeView.Core
 		/// <param name="actions"></param>
 		public void AddRange(GeniusTreeViewColonne[] actions)
 		{
+            if (actions == null)
+                throw new ArgumentNullException("actions");
 			foreach (GeniusTreeViewColonne a in actions)
 			{
 				a.Owner = FOwner;
-				List.Add(a);
+				this.Add(a);
 			}
 			if (FOwner != null)
 			{
@@ -75,71 +85,46 @@ namespace Genius.Controls.TreeView.Core
 			}
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		protected override void OnClear()
-		{
-			FDisplays.Clear();
-			base.OnClear ();
-		}
+
+        protected override void ClearItems()
+        {
+            FDisplays.Clear();
+            base.ClearItems();
+        }
 
 		private void AddDisplay(GeniusTreeViewColonne aCol)
 		{
 			if (aCol.Text == null || aCol.Text.Length == 0)
-				aCol.Text = "Colonne " + List.Count.ToString();
+				aCol.Text = string.Format(CultureInfo.InvariantCulture, "Colonne {0}", this.Items.Count);
 			FDisplays.Add(aCol);
 		}
 
-		private void CheckType(object value)
-		{
-			if (!(value is GeniusTreeViewColonne))
-				throw new ArgumentException("Type de l'argument invalide !");			
-		}
+        //private static void CheckType(object value)
+        //{
+        //    if (!(value is GeniusTreeViewColonne))
+        //        throw new ArgumentException("Type de l'argument invalide !");			
+        //}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="value"></param>
-		protected override void OnInsert(int index, object value)
-		{
-			(value as GeniusTreeViewColonne).Owner = FOwner;
-			base.OnInsert (index, value);
-			AddDisplay(value as GeniusTreeViewColonne);
-		}
+        protected override void InsertItem(int index, GeniusTreeViewColonne item)
+        {
+            if (item != null)
+                item.Owner = FOwner;
+            base.InsertItem(index, item);
+            if (item != null)
+                AddDisplay(item);
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="value"></param>
-		protected override void OnInsertComplete(int index, object value)
-		{
-			base.OnInsertComplete (index, value);
-		}
+        protected override void SetItem(int index, GeniusTreeViewColonne item)
+        {
+            if (item != null)
+                item.Owner = FOwner;
+            base.SetItem(index, item);
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="oldValue"></param>
-		/// <param name="newValue"></param>
-		protected override void OnSet(int index, object oldValue, object newValue)
-		{
-			(newValue as GeniusTreeViewColonne).Owner = FOwner;
-			base.OnSet (index, oldValue, newValue);
-		}
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="value"></param>
-		protected override void OnRemoveComplete(int index, object value)
-		{
-			base.OnRemoveComplete (index, value);
-			FDisplays.Remove(value);
-		}
+        protected override void RemoveItem(int index)
+        {
+            base.RemoveItem(index);
+            FDisplays.RemoveAt(index);
+        }
 	}
 }

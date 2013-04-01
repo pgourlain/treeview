@@ -46,7 +46,7 @@
             this.gtv.Colors.SignaledPenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(165)))), ((int)(((byte)(0))))), 2F, System.Drawing.Drawing2D.DashStyle.Solid);
             this.gtv.Colors.TextColor = System.Drawing.Color.Black;
             this.gtv.Colors.UnFocusedRectanglePenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255))))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
-            this.gtv.DefaultDrawingOption = ((Genius.Controls.TreeView.DrawingOption)((Genius.Controls.TreeView.DrawingOption.ShowVertLines | Genius.Controls.TreeView.DrawingOption.ShowHorzLines)));
+            this.gtv.DefaultDrawingOption = ((Genius.Controls.TreeView.DrawingOptions)((Genius.Controls.TreeView.DrawingOptions.ShowVertLines | Genius.Controls.TreeView.DrawingOptions.ShowHorzLines)));
             this.gtv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gtv.ElapsedHint = 500;
             this.gtv.Header.AutoColHeight = true;

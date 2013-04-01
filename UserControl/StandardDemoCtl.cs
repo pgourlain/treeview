@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Genius.Controls.TreeView;
 
-namespace Genius.Controls.UserControl
+namespace Genius.Controls.UserControls
 {
 	/// <summary>
 	/// Summary description for StandardDemoCtl.
@@ -245,7 +245,7 @@ namespace Genius.Controls.UserControl
 			this.geniusTreeView1.AutoSort = false;
 			this.geniusTreeView1.BackColor = System.Drawing.SystemColors.Window;
 			this.geniusTreeView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOption.ShowGridLines;
+			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOptions.ShowGridLines;
 			this.geniusTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.geniusTreeView1.Header.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.geniusTreeView1.HeaderColonnes.AddRange(new Genius.Controls.TreeView.GeniusTreeViewColonne[] {

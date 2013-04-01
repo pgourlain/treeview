@@ -1,4 +1,7 @@
+using System;
 using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 //
@@ -7,27 +10,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("GeniusControls")]
-[assembly: AssemblyDescription("Controls Visuels pour .Net 2.0")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GeniusControls")]
-[assembly: AssemblyCopyright("Pierrick Gourlain")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
-
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-//[assembly: AssemblyVersion("0.8.8.*")]
-[assembly: AssemblyVersion("2.0.5.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -55,7 +37,8 @@ using System.Runtime.InteropServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-[assembly: AssemblyKeyName("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("231B4DCF-ADB8-4b86-8B71-BE7AC2F1EBFC")]
+[assembly: NeutralResourcesLanguage("US-US")]
+[assembly: CLSCompliant(false)]
+[assembly: InternalsVisibleTo("Genius.Controls.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100510bb9be48d92b90f3b3adf43bd448f7c012ac7fdebf5327b99340186b59a4cc7b27fc2788b6139c8664e8702dac96e30e206c9d3ecd4f455441da8d72566bc05bffab8d11e7348cf716f5783337aa482d2e1e4513d3137f0e4290c66705e0f01534839914d2806e31660b6994d5ee6675b3882d39ae4388b953cb2fbbbc10b2")]

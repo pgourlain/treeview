@@ -69,7 +69,7 @@ namespace Genius.Controls.TreeView.Converter
 		{
 			if (destinationType == null)
 			{
-				MessageBox.Show("Erreur ! destinationType");
+				//MessageBox.Show("Erreur ! destinationType");
 				throw new ArgumentNullException("destinationType");
 			}
 			if (value == null)

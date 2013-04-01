@@ -13,7 +13,7 @@ namespace Genius.Controls
 		static void Main()
 		{
 			Application.EnableVisualStyles();
-			Application.Run(new TabbedDemo());
+			Application.Run(new MainFrm());
 		}
 	}
 }

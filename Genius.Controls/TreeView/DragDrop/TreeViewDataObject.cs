@@ -8,13 +8,13 @@ namespace Genius.Controls.TreeView.DragDrop
 {
     class TreeViewDataObject : DataObject
     {
-        Node FNode;
+        //Node FNode;
         IDataObject FDataObject;
         DataObject FData;
         public TreeViewDataObject(object aData) :base ("GTV", aData)
         {
             FDataObject = aData as IDataObject;
-            FNode = aData as Node;
+            //FNode = aData as Node;
             FData = aData as DataObject;
         }
 

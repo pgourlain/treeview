@@ -43,7 +43,7 @@ namespace Genius.Controls.TreeView.Core
             FDefaultNodeHeight = 18;
             FRoot = new Root(this);
             FSelecteds = new List<INode>();
-            FColIndex = Constantes.NoColumn;
+            FColIndex = Constants.NoColumn;
         }
         #region propriétés
         public int DefaultNodeHeight
@@ -230,7 +230,7 @@ namespace Genius.Controls.TreeView.Core
             {
                 child.Index = index;
                 child.Data = aData;
-                //je place le parent pour le que Level soit correct dans l'InitNode
+                //je place le parent pour le que "Level" soit correct dans l'InitNode
                 child.Parent = aParent;
                 InitNode(child);
                 Set.Exclude(ref child.State, NodeState.Selected);
@@ -707,17 +707,17 @@ namespace Genius.Controls.TreeView.Core
 
         #region INodeEnumerable Members
 
-        public IEnumerable GetNodes()
+        public IEnumerable<INode> GetNodes()
         {
             return new NodeEnumerator(FRoot, false);
         }
 
-        IEnumerable Genius.Controls.TreeView.INodeEnumerable.GetNodes(bool recurse)
+        IEnumerable<INode> Genius.Controls.TreeView.INodeEnumerable.GetNodes(bool recurse)
         {
             return new NodeEnumerator(FRoot, recurse);
         }
 
-        public IEnumerable GetVisibleNodes(bool recurse)
+        public IEnumerable<INode> GetVisibleNodes(bool recurse)
         {
             return new NodeEnumerator(FRoot, recurse, true);
         }

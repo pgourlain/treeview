@@ -83,7 +83,7 @@ namespace DemoTreeView.UC1
 			this.gtv.Colors.TextColor = new Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
 			this.gtv.Colors.UnFocusedRectanglePenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(255))), 1F, System.Drawing.Drawing2D.DashStyle.Dot);
 			this.gtv.ContextMenu = this.contextMenu1;
-			this.gtv.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOption.ShowGridLines;
+			this.gtv.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOptions.ShowGridLines;
 			this.gtv.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gtv.ElapsedHint = 500;
 			this.gtv.Header.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));

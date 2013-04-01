@@ -3,7 +3,7 @@ namespace Genius.Controls.VisualStyles
 {
 	//reprise des états du framework 2.0
 	/// <summary>
-	/// détermine l'état du dessin lors de l'appel à <see cref="Genius.Controls.Drawing.DrawCheckBox"/>
+	/// détermine l'état du dessin lors de l'appel à <see cref="Genius.Controls.DrawingHelper.DrawCheckBox"/>
 	/// </summary>
 	public enum CheckBoxState
 	{
@@ -54,7 +54,11 @@ namespace Genius.Controls.VisualStyles
 		/// <summary>
 		/// Décoché et bouton gauche souris enfoncé
 		/// </summary>
-		UncheckedPressed = 3
+		UncheckedPressed = 3,
+        /// <summary>
+        /// inconnue
+        /// </summary>
+        Unknown = 0
 	} 
 
 	public enum ComboBoxState
@@ -74,7 +78,11 @@ namespace Genius.Controls.VisualStyles
 		/// <summary>
 		/// enfoncé
 		/// </summary>
-		Pressed = 3
+		Pressed = 3,
+        /// <summary>
+        /// inconnue
+        /// </summary>
+        Unknown = 0
 	}
 
 	public enum PushButtonState
@@ -99,7 +107,11 @@ namespace Genius.Controls.VisualStyles
 		/// <summary>
 		/// enfoncé
 		/// </summary>
-		Pressed = 3
+		Pressed = 3,
+        /// <summary>
+        /// inconnue
+        /// </summary>
+        Unknown = 0
 	}
 
 	enum ButtonPart

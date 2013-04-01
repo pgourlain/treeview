@@ -224,7 +224,9 @@ namespace Genius.Controls.TreeView.Editors
 		private void Hook()
 		{
 			FKeysHook = new HookProc(KeyBoardHookProc);
-			FHook = NativeMethods.SetWindowsHookEx(HookType.WH_KEYBOARD, FKeysHook, IntPtr.Zero, (uint)AppDomain.GetCurrentThreadId());			
+            uint dwId = (uint)Thread.CurrentThread.ManagedThreadId;
+            //uint dwId = (uint)AppDomain.GetCurrentThreadId();
+			FHook = NativeMethods.SetWindowsHookEx(HookType.WH_KEYBOARD, FKeysHook, IntPtr.Zero, dwId);			
 		}
 
 		private void UnHook()

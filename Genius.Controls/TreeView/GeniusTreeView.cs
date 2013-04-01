@@ -27,10 +27,17 @@ using System.Collections.ObjectModel;
  * - : retrait de fonctionnalité pour cause de bug
  * . : correction de bug
  *
+ * 2.0.6 17/02/2009
+ * . correction multiselection => navigation des noeuds
+ * + ajout d'un propriété permettant de désactiver la multiselection
+ * + TODO: editeur de colonnes font et couleur par défaut, ne pas tout sérializer
+ * + TODO: refaire le retaillage des colonnes quand il y a un autosizecolonne
+ * 
+ * 
  * 2.0.4 01/12/2007
  * + multiselection (by Giorgio)
  * . correction du Drag&Drop (initiative by Giorgio)
- * + ajout  de la propriété AutomaticDropNode, vous permet de gérer vous même le drop uand cette propriété vaut false  
+ * + ajout  de la propriété AutomaticDropNode, vous permet de gérer vous même le drop quand cette propriété vaut false  
  * 
  * 2.0.3 23/08/2006
  * - TextColor et SelectedColor ne sont plus des gradients, Graphics.DrawString dessine mal le texte
@@ -239,140 +246,6 @@ using System.Collections.ObjectModel;
  * *****************************/
 namespace Genius.Controls.TreeView
 {
-    #region enumérations
-    [Flags]
-    enum TreeStateEnum
-    {
-        DragPending = 0x04,
-        Dragging = 0x08,
-        EditPending = 0x10,
-        IncrementalSearchPending = 0x01,
-        IncrementalSearching = 0x02
-    }
-
-    /// <summary>
-    /// énumération de la position du noeud en cours de drag par rapport au noeud "drop"
-    /// </summary>
-    public enum DragPosition
-    {
-        /// <summary>
-        /// null part
-        /// </summary>
-        None,
-        /// <summary>
-        /// avant le noeud indiqué dans l'évènement
-        /// </summary>
-        Before,
-        /// <summary>
-        /// après le noeud indiqué dans l'évènement
-        /// </summary>
-        After,
-        /// <summary>
-        /// en dessous du noeud indiqué dans l'évènement
-        /// </summary>
-        Under
-    }
-
-    /// <summary>
-    /// option de dessin
-    /// </summary>
-    [Flags]
-    public enum DrawingOption
-    {
-        /// <summary>
-        /// cache la selection, si le treeview n'a pas le focus
-        /// </summary>
-        HideSelection = 0x01,
-        /// <summary>
-        /// cache le focusrect
-        /// </summary>
-        HideFocusRect = 0x02,
-        /// <summary>
-        /// cache les "boutons" deplier/replier
-        /// </summary>
-        HideButtons = 0x04,
-        /// <summary>
-        /// cache les lignes du treeview
-        /// </summary>
-        HideTreeLines = 0x08,
-        /// <summary>
-        /// affiche les lignes verticales en mode grille
-        /// </summary>
-        ShowVertLines = 0x10,
-        /// <summary>
-        /// affiche les lignes horizontales en mode grille
-        /// </summary>
-        ShowHorzLines = 0x20,
-        /// <summary>
-        /// Combinaison de <see cref="ShowVertLines"/> et <see cref="ShowHorzLines"/>
-        /// </summary>
-        ShowGridLines = DrawingOption.ShowHorzLines | DrawingOption.ShowVertLines,
-        /// <summary>
-        /// ne dessine jamais la selection
-        /// </summary>
-        AlwaysHideSelection = 0x40,
-        /// <summary>
-        /// valeur par défaut
-        /// </summary>
-        Default = 0
-
-    };
-
-    /// <summary>
-    /// option pour la recherche incrémentale
-    /// </summary>
-    public enum IncrementalSearchEnum
-    {
-        /// <summary>
-        /// la recherche est désactivée
-        /// </summary>
-        None,
-        /// <summary>
-        /// recherche partout, même les noeuds repliées
-        /// </summary>
-        All,
-        /// <summary>
-        /// recherche seulement sur les noeuds visibles
-        /// </summary>
-        VisibleOnly
-    };
-
-    /// <summary>
-    /// ou démarre la recherche incrémentale, <see cref="GeniusTreeView.SearchStart"/>
-    /// </summary>
-    public enum SearchStartEnum
-    {
-        /// <summary>
-        /// commence la recherche toujours au début
-        /// </summary>
-        AlwaysStartOver,
-        /// <summary>
-        /// commence la recherche depuis le dernier noeud trouvé
-        /// </summary>
-        LastHit,
-        /// <summary>
-        /// utilise le noeud sélectionné pour commencer la recherche
-        /// </summary>
-        FocusedNode
-    };
-
-    /// <summary>
-    /// le sens de la recherche incrémentale, <see cref="GeniusTreeView.SearchDirection"/>
-    /// pour changer de sens, utilisez la touche BackSpace
-    /// </summary>
-    public enum SearchDirectionEnum
-    {
-        /// <summary>
-        /// en avant
-        /// </summary>
-        Forward,
-        /// <summary>
-        /// en arrière
-        /// </summary>
-        Backward
-    };
-    #endregion
-
     /// <summary>
     /// déléguée pour la demande de la font pour un noeud
     /// </summary>
@@ -397,7 +270,6 @@ namespace Genius.Controls.TreeView
         private StringAlignment FAlignment;
         private bool FAllowDrag;
         private bool FAutomaticDropNode;
-        //private bool FMoveOnDrop;
         private bool FAutoSort;
         private Node FBottomNode;
         /// <summary>
@@ -413,7 +285,6 @@ namespace Genius.Controls.TreeView
         private GeniusHeader FHeader;
         private int FHeaderHeight;
         private IHintWindow FHint;
-        //private ImageList				FImageCheckList;
         private ImageList FImageList;
         private ImageList FImageStateList;
         private ImageList FImageTreeList;
@@ -421,7 +292,7 @@ namespace Genius.Controls.TreeView
         private bool FInGridMode;
         private Point FLastClick;
         private Nodes FNodes;
-        private DrawingOption FDrawingOption;
+        private DrawingOptions FDrawingOption;
         private Node FRoot;
         private ScrollBarsHelper FScrolls;
         private bool FShowHeader;
@@ -448,9 +319,9 @@ namespace Genius.Controls.TreeView
         /// <summary>
         /// dernier noeud trouvé
         /// </summary>
-        private IncrementalSearchEnum FIncrementalSearch;
-        private SearchDirectionEnum FSearchDirection;
-        private SearchStartEnum FSearchStart;
+        private IncrementalSearchOption FIncrementalSearch;
+        private SearchDirectionOption FSearchDirection;
+        private SearchStartOption FSearchStart;
         private int FSearchColumn;
         /// <summary>
         /// indique si le texte du noeud est fourni par la donnée associée
@@ -470,6 +341,7 @@ namespace Genius.Controls.TreeView
         private bool FFastDrawString = true;
         private bool SelectionUP;
         private bool SelectionDOWN;
+        private bool _AllowMultiSelect = true;
 
         #region DragAndDrop
         private DragPosition FDropPosition;
@@ -710,7 +582,7 @@ namespace Genius.Controls.TreeView
             FNodes.OnBeginSelect += new OnSelectInternalDelegate(FNodes_OnBeginSelect);
             FNodes.OnBeginUnCheck += new OnUnCheckInternalDelegate(FNodes_OnBeginUnCheck);
             FNodes.OnBeginUnSelect += new OnUnSelectInternalDelegate(FNodes_OnBeginUnSelect);
-            FNodes.OnInitNode = new OnNodeInternalDelegate(FNodes_OnInitNode);
+            FNodes.OnInitNode = FNodes_OnInitNode;
             FNodes.OnInvalidateNodeNeeded += new OnNodeInternalDelegate(FNodes_OnInvalidateNodeNeeded);
             Clear();
             FDefaultNodeHeight = 18;
@@ -727,7 +599,7 @@ namespace Genius.Controls.TreeView
             FMargin = 0;
             FCheckSize = new Size(13, 13);
             FHeaderHeight = 20;
-            FDrawingOption = DrawingOption.ShowGridLines;
+            FDrawingOption = DrawingOptions.ShowGridLines;
             //FImageCheckList = new ImageList();
             LoadCheckImage();
             FImageTreeList = new ImageList();
@@ -741,14 +613,14 @@ namespace Genius.Controls.TreeView
             FTimers.OnBeginHint += new EventHandler(FTimers_OnBeginHint);
             FFullRowSelect = false;
             FAllowEdit = true;
-            FSearchStart = SearchStartEnum.FocusedNode;
-            FIncrementalSearch = IncrementalSearchEnum.VisibleOnly;
+            FSearchStart = SearchStartOption.FocusedNode;
+            FIncrementalSearch = IncrementalSearchOption.VisibleOnly;
             //SystemInformation.MenuCheckSize
             FSearchHelper = null;
             FBorderStyle = BorderStyle.None;
             //FFixedRowsCount = 3;
             FLastNodeUnderMouse = null;
-            FLastColUnDerMouse = Constantes.InvalideColumn;
+            FLastColUnDerMouse = Constants.InvalidColumn;
             FFooterHeight = 0;
             FAutomaticDropNode = true;
         }
@@ -866,7 +738,7 @@ namespace Genius.Controls.TreeView
             return Contains((int)ens, (int)value);
         }
 
-        private bool Contains(DrawingOption ens, DrawingOption value)
+        private bool Contains(DrawingOptions ens, DrawingOptions value)
         {
             return Contains((int)ens, (int)value);
         }
@@ -969,7 +841,7 @@ namespace Genius.Controls.TreeView
         {
             get
             {
-                if (UseColumns && FHeader.MainColumnIndex > Constantes.NoColumn)
+                if (UseColumns && FHeader.MainColumnIndex > Constants.NoColumn)
                     return FHeader.Left(FHeader.MainColumnDisplayIndex);
                 else
                     return 0;
@@ -1105,7 +977,7 @@ namespace Genius.Controls.TreeView
                 }
                 ColumnLeft = ColumnRight;
             }
-            return Constantes.InvalideColumn;
+            return Constants.InvalidColumn;
         }
 
         internal void InvalidateTree()
@@ -1300,7 +1172,7 @@ namespace Genius.Controls.TreeView
             }
             return false;
         }
-        private void DrawLines(Node aNode, Graphics g, Point NodePoint, DrawingOption option)
+        private void DrawLines(Node aNode, Graphics g, Point NodePoint, DrawingOptions option)
         {
             Pen linecolor = FColors.LinesColor;
             Pen sigColor = FColors.SignaledColor;
@@ -1327,7 +1199,7 @@ namespace Genius.Controls.TreeView
                 rClip = g.ClipBounds;
                 g.ExcludeClip(rExpand);
             }
-            if (!Contains(option, DrawingOption.HideTreeLines))
+            if (!Contains(option, DrawingOptions.HideTreeLines))
             {
                 if (prevSibling != null)
                 {
@@ -1392,7 +1264,7 @@ namespace Genius.Controls.TreeView
 
             }
             //dessin de l'expand
-            if (rExpand != Rectangle.Empty && !Contains(DefaultDrawingOption, DrawingOption.HideButtons))
+            if (rExpand != Rectangle.Empty && !Contains(DefaultDrawingOption, DrawingOptions.HideButtons))
             {
                 g.SetClip(rClip, System.Drawing.Drawing2D.CombineMode.Replace);
                 if (FImageTreeList != null)
@@ -1423,7 +1295,7 @@ namespace Genius.Controls.TreeView
                 DecalX -= Indentation;
                 if (NextSiblingVisibleNode(aNode) != null)
                 {
-                    ev.Draw = !Contains(DefaultDrawingOption, DrawingOption.HideTreeLines);
+                    ev.Draw = !Contains(DefaultDrawingOption, DrawingOptions.HideTreeLines);
                     if (OnDrawTreeLines != null)
                     {
                         ev.SetNode(aNode);
@@ -1586,7 +1458,7 @@ namespace Genius.Controls.TreeView
         private void PaintFooterCol(GeniusTreeViewColonne col, Graphics g, Rectangle rCol)
         {
             Brush br = null;
-            int aDisplayCol = col != null ? this.Header.IndexOfDisplay(col) : Constantes.NoColumn;
+            int aDisplayCol = col != null ? this.Header.IndexOfDisplay(col) : Constants.NoColumn;
 
             PaintFooterEventArgs e = new PaintFooterEventArgs(g, aDisplayCol, rCol);
             if (DoBeforePaintFooter(e))
@@ -1616,7 +1488,7 @@ namespace Genius.Controls.TreeView
                         if (this.FastDrawString)
                             g.DrawString(ev.Text, ev.Font, new SolidBrush(foreColor), rCol, ev.Format);
                         else
-                            TextRenderer.DrawText(g, ev.Text, ev.Font, rCol, foreColor, Drawing.StringFormatToTextFormatFlags(ev.Format));
+                            TextRenderer.DrawText(g, ev.Text, ev.Font, rCol, foreColor, DrawingHelper.StringFormatToTextFormatFlags(ev.Format));
                     }
                 }
             }
@@ -1725,7 +1597,7 @@ namespace Genius.Controls.TreeView
             paintinfo.FNodeRect = Rectangle.Empty;
             paintinfo.ContentRect = Rectangle.Empty;
             paintinfo.FGraphics = g;
-            paintinfo.DisplayColumn = Constantes.NoColumn;
+            paintinfo.DisplayColumn = Constants.NoColumn;
             paintinfo.FButtons = System.Windows.Forms.Control.MouseButtons;
             DoBeginPainting(paintinfo);
             if (paintinfo.FNode != null && !dragImage)
@@ -1747,7 +1619,7 @@ namespace Genius.Controls.TreeView
                     #region dessin en mode grille
                     if (UseColumns)
                     {
-                        if (Contains(paintinfo.DrawingOptions, DrawingOption.ShowHorzLines))
+                        if (Contains(paintinfo.DrawingOptions, DrawingOptions.ShowHorzLines))
                         {
                             if (paintinfo.FNode == this.TopNode())
                             {   //FColors.GridLinesColor.DashStyle = DashStyle.DashDot;
@@ -1797,8 +1669,8 @@ namespace Genius.Controls.TreeView
                                 paintinfo.Font = GetFontNode(paintinfo.FNode, paintinfo.DisplayColumn);
                                 paintinfo.ForeColor = GetForeColor(paintinfo.FNode, paintinfo.DisplayColumn);
                                 paintinfo.StringFormat = GetStringFormat(paintinfo.FNode, paintinfo.DisplayColumn);
-                                paintinfo.CellGridLines = Contains(paintinfo.DrawingOptions, DrawingOption.ShowHorzLines) ? Lines.Horizontal : Lines.None;
-                                paintinfo.CellGridLines |= Contains(paintinfo.DrawingOptions, DrawingOption.ShowVertLines) ? Lines.Vertical : Lines.None;
+                                paintinfo.CellGridLines = Contains(paintinfo.DrawingOptions, DrawingOptions.ShowHorzLines) ? Lines.Horizontal : Lines.None;
+                                paintinfo.CellGridLines |= Contains(paintinfo.DrawingOptions, DrawingOptions.ShowVertLines) ? Lines.Vertical : Lines.None;
                                 paintinfo.ContentRect = paintinfo.NodeRect;
                                 paintinfo.FClipRect = Rectangle.Round(g.ClipBounds);
                                 if (!DoBeforeCellPainting(paintinfo))
@@ -1907,7 +1779,7 @@ namespace Genius.Controls.TreeView
                 {
                     Rectangle r = paintinfo.FNodeRect;
                     //si j'ai des lignes verticales il ne faut pas que je "mange" la ligne de ma colonne précedente
-                    if (paintinfo.DisplayColumn > 0 && Contains(paintinfo.DrawingOptions, DrawingOption.ShowVertLines))
+                    if (paintinfo.DisplayColumn > 0 && Contains(paintinfo.DrawingOptions, DrawingOptions.ShowVertLines))
                     {
                         r.Offset(1, 0);
                         r.Width -= 1;
@@ -1915,7 +1787,7 @@ namespace Genius.Controls.TreeView
                     paintinfo.graphics.FillRectangle(br, r);
                 }
             }
-            if ((paintinfo.DisplayColumn == this.MainColumnIndex && UseColumns) || paintinfo.DisplayColumn == Constantes.NoColumn)
+            if ((paintinfo.DisplayColumn == this.MainColumnIndex && UseColumns) || paintinfo.DisplayColumn == Constants.NoColumn)
             {
                 Node aNode = paintinfo.FNode;
                 Graphics g = paintinfo.graphics;
@@ -2005,12 +1877,12 @@ namespace Genius.Controls.TreeView
             string sText = GetNodeText(paintinfo.FNode, paintinfo.DisplayColumn);
             bool nodeIsSelected = IsSelectedNode(paintinfo.FNode);
             bool isSelected = nodeIsSelected && paintinfo.DisplayColumn == FNodes.CurrentColIndex;
-            bool hideSelection = Contains(paintinfo.DrawingOptions, DrawingOption.AlwaysHideSelection);
+            bool hideSelection = Contains(paintinfo.DrawingOptions, DrawingOptions.AlwaysHideSelection);
             if (!FullRowSelect && isSelected)
             {
                 if (!hideSelection)
                 {
-                    if (paintinfo.TreeFocused || !Contains(paintinfo.DrawingOptions, DrawingOption.HideSelection))
+                    if (paintinfo.TreeFocused || !Contains(paintinfo.DrawingOptions, DrawingOptions.HideSelection))
                     {
                         DrawSelectedRectangle(paintinfo.graphics, paintinfo.ContentRect, false, paintinfo);
                     }
@@ -2045,10 +1917,10 @@ namespace Genius.Controls.TreeView
             if (FastDrawString)
                 paintinfo.graphics.DrawString(sText, f, new SolidBrush(aTextColor), rText, sf);
             else
-                TextRenderer.DrawText(paintinfo.graphics, sText, f, rText, aTextColor, Drawing.StringFormatToTextFormatFlags(sf));
+                TextRenderer.DrawText(paintinfo.graphics, sText, f, rText, aTextColor, DrawingHelper.StringFormatToTextFormatFlags(sf));
             //paintinfo.graphics.DrawString(sText, f, new SolidBrush(aTextColor), rText, sf);
             if (isSelected && !FullRowSelect &&
-                !Contains(paintinfo.DrawingOptions, DrawingOption.HideFocusRect) &&
+                !Contains(paintinfo.DrawingOptions, DrawingOptions.HideFocusRect) &&
                 !hideSelection)
                 DrawFocusedRectangle(paintinfo.graphics, paintinfo.ContentRect, paintinfo);
         }
@@ -2082,7 +1954,7 @@ namespace Genius.Controls.TreeView
                 OnAfterNodePainting(this, new PaintNodeEventArgs(paintinfo));
             if (paintinfo.DefaultDrawing)
             {
-                if (FullRowSelect && IsSelectedNode(paintinfo.FNode) && !Contains(paintinfo.DrawingOptions, DrawingOption.AlwaysHideSelection))
+                if (FullRowSelect && IsSelectedNode(paintinfo.FNode) && !Contains(paintinfo.DrawingOptions, DrawingOptions.AlwaysHideSelection))
                     DrawFocusedRectangle(paintinfo.graphics, paintinfo.FNodeRect, paintinfo);
             }
         }
@@ -2094,7 +1966,7 @@ namespace Genius.Controls.TreeView
                 OnPaintNodeBackGround(this, new PaintNodeEventArgs(paintinfo));
             if (paintinfo.DefaultDrawing)
             {
-                if (FullRowSelect && IsSelectedNode(paintinfo.FNode) && !Contains(paintinfo.DrawingOptions, DrawingOption.AlwaysHideSelection))
+                if (FullRowSelect && IsSelectedNode(paintinfo.FNode) && !Contains(paintinfo.DrawingOptions, DrawingOptions.AlwaysHideSelection))
                     DrawSelectedRectangle(paintinfo.graphics, paintinfo.FNodeRect, false, paintinfo);
             }
         }
@@ -2428,7 +2300,7 @@ namespace Genius.Controls.TreeView
             bool Shift_Control = false;
             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift || (Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
-                Shift_Control = true;
+                Shift_Control = _AllowMultiSelect;
 #if DEBUG				    
 			        Debug.WriteLine("mouse click with controlol-shift= " + Shift_Control.ToString());
 #endif
@@ -2900,10 +2772,10 @@ namespace Genius.Controls.TreeView
             {
                 g.FillRectangle(Brushes.White, 0, 0, bmp.Width, bmp.Height);
                 g.TranslateTransform(-MainColumnX, 0);
-                DrawingOption oldpaintoptions = DefaultDrawingOption;
+                DrawingOptions oldpaintoptions = DefaultDrawingOption;
                 try
                 {
-                    DefaultDrawingOption = DrawingOption.AlwaysHideSelection;
+                    DefaultDrawingOption = DrawingOptions.AlwaysHideSelection;
                     PaintTree(g, rNode, ahit.HitNode, true);
                 }
                 finally
@@ -3038,10 +2910,20 @@ namespace Genius.Controls.TreeView
         private StringFormat GetStringFormat(Node aNode, int aColumn)
         {
             StringFormat sf = new StringFormat(StringFormatFlags.NoWrap);
-            sf.Trimming = UseColumns ? StringTrimming.EllipsisCharacter : StringTrimming.None;
-            sf.LineAlignment = StringAlignment.Center;
+            if (UseColumns && aColumn == FHeader.AutoSizeColIndex)
+            {
+                sf = new StringFormat();
+                sf.LineAlignment = StringAlignment.Near;
+            }
+            else
+            {
+                sf.Trimming = UseColumns ? StringTrimming.EllipsisCharacter : StringTrimming.None;
+                sf.LineAlignment = StringAlignment.Center;
+            }
             if (UseColumns)
+            {
                 sf.Alignment = FHeader.DisplayColonnes(aColumn).ContentAlignment;
+            }
             return sf;
         }
 
@@ -3050,16 +2932,9 @@ namespace Genius.Controls.TreeView
             int Result = 0;
             if (aText != null && aText != string.Empty)
             {
-                //sf.SetMeasurableCharacterRanges(new CharacterRange[]{new CharacterRange(0, aText.Length)});
-                TextFormatFlags tf = Drawing.StringFormatToTextFormatFlags(sf);
+                TextFormatFlags tf = DrawingHelper.StringFormatToTextFormatFlags(sf);
                 Size sizeText = TextRenderer.MeasureText(aText, GetFontNode(aNode, aColumn), Size.Empty, tf);
-                //Region[] stringRegion = g.MeasureCharacterRanges(aText, GetFontNode(aNode, aColumn), new RectangleF(0,0,9999,9999), sf);
-                //Result = Rectangle.Round(stringRegion[0].GetBounds(g)).Width;
                 Result = sizeText.Width;
-                //Result +=  6; 
-                //j'ajoute 6, sinon j'ai des ... à la fin des mes drawstring
-                //g.MeasureCharacterRanges(
-                //Result = Convert.ToInt32(g.MeasureString(aText, this.Font, 9999, sf).Width);
             }
             return Result;
         }
@@ -3142,7 +3017,7 @@ namespace Genius.Controls.TreeView
             int indent = 0;
             int imageoffset = 0;
 
-            mainColumnHit = (aHi.HitColumn == MainColumnIndex || (!UseColumns && aHi.HitColumn == Constantes.NoColumn));
+            mainColumnHit = (aHi.HitColumn == MainColumnIndex || (!UseColumns && aHi.HitColumn == Constants.NoColumn));
             if (mainColumnHit)
             {
                 indent = FMargin;
@@ -3156,7 +3031,7 @@ namespace Genius.Controls.TreeView
             }
             if (offset < indent)
             {
-                if (!Contains(DefaultDrawingOption, DrawingOption.HideButtons) && Contains(aHi.HitNode.State, NodeState.HasChildren))
+                if (!Contains(DefaultDrawingOption, DrawingOptions.HideButtons) && Contains(aHi.HitNode.State, NodeState.HasChildren))
                 {
                     if (offset >= indent - Indentation)
                         Include(ref aHi.HitPositions, HitPositionsEnum.OnItemButton);
@@ -3259,7 +3134,7 @@ namespace Genius.Controls.TreeView
 
             aHi.HitNode = null;
             aHi.HitPositions = (HitPositionsEnum)0;
-            aHi.HitColumn = Constantes.NoColumn;
+            aHi.HitColumn = Constants.NoColumn;
             // Determine if point lies in the tree's client area.
             if (X < 0)
                 Include(ref aHi.HitPositions, HitPositionsEnum.ToLeft);
@@ -3288,15 +3163,15 @@ namespace Genius.Controls.TreeView
                 else
                 {
                     ColRight = Math.Max(FScrolls.RangeX, TreeRectangle.Width);
-                    aHi.HitColumn = Constantes.NoColumn;
+                    aHi.HitColumn = Constants.NoColumn;
                 }
                 ColLeft = 0;
-                if (aHi.HitColumn == Constantes.InvalideColumn)
+                if (aHi.HitColumn == Constants.InvalidColumn)
                     Include(ref aHi.HitPositions, HitPositionsEnum.Nowhere);
                 else
                 {
                     Include(ref aHi.HitPositions, HitPositionsEnum.OnItem);
-                    if (aHi.HitColumn == Constantes.NoColumn)
+                    if (aHi.HitColumn == Constants.NoColumn)
                     {
                         currenAlignment = this.Alignment;
                     }
@@ -3439,10 +3314,10 @@ namespace Genius.Controls.TreeView
             //TODO: générer les évènement OnCellMouseLeave, OnItemMouseLeave si besoin
             if (UseColumns)
             {
-                if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constantes.InvalideColumn)
+                if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constants.InvalidColumn)
                     DoCellMouseEvent(OnCellMouseLeave, FLastNodeUnderMouse, FLastColUnDerMouse, HitPositionsEnum.OnItem, new Point(-1, -1), MouseButtons.None);
                 FLastNodeUnderMouse = null;
-                FLastColUnDerMouse = Constantes.InvalideColumn;
+                FLastColUnDerMouse = Constants.InvalidColumn;
             }
             else
             {
@@ -3597,11 +3472,11 @@ namespace Genius.Controls.TreeView
             {
                 if (hitInfo.HitNode != FLastNodeUnderMouse || hitInfo.HitColumn != FLastColUnDerMouse)
                 {
-                    if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constantes.InvalideColumn)
+                    if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constants.InvalidColumn)
                         DoCellMouseEvent(OnCellMouseLeave, FLastNodeUnderMouse, FLastColUnDerMouse, HitPositionsEnum.OnItem, new Point(e.X, e.Y), e.Button);
                     FLastNodeUnderMouse = hitInfo.HitNode;
                     FLastColUnDerMouse = hitInfo.HitColumn;
-                    if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constantes.InvalideColumn)
+                    if (FLastNodeUnderMouse != null && FLastColUnDerMouse != Constants.InvalidColumn)
                         DoCellMouseEvent(OnCellMouseEnter, FLastNodeUnderMouse, FLastColUnDerMouse, HitPositionsEnum.OnItem, new Point(e.X, e.Y), e.Button);
                 }
                 if (hitInfo.HitNode != null)
@@ -3735,9 +3610,8 @@ namespace Genius.Controls.TreeView
                     {
                         oldSelected = Selected;		// read last node selected
                         tmp = oldSelected;
-                        bool tempSel = SelectionUP;
 
-                        if (!e.Shift)
+                        if (!e.Shift && FNodes.SelectedNodes.Count > 1)
                         {
                             FNodes.UnSelectAll();
                             InvalidateTree();
@@ -3755,7 +3629,7 @@ namespace Genius.Controls.TreeView
                         }
                         if (e.Shift && SelectionUP)
                         {
-                            FNodes.InternalSelectNode(tmp, e.Shift, FNodes.CurrentColIndex);
+                            FNodes.InternalSelectNode(tmp, e.Shift && _AllowMultiSelect, FNodes.CurrentColIndex);
                             if (!ShowNode(tmp))
                             {
                                 Rectangle rNode = GetNodeRect(tmp);
@@ -3766,11 +3640,13 @@ namespace Genius.Controls.TreeView
                             if (IsSelectedNode(PrevVisibleNode(tmp)))
                                 return;		// if prev node is selected leave all things 
                         }
+                        bool hasSelected = false; 
                         do
                         {
                             tmp = PrevVisibleNode(tmp);
-                            if (tmp != null && InternalSelectNode(tmp, FNodes.CurrentColIndex, e.Shift))
+                            if (tmp != null && InternalSelectNode(tmp, FNodes.CurrentColIndex, e.Shift && _AllowMultiSelect))
                             {
+                                hasSelected = true;
                                 if (!ShowNode(tmp))
                                 {
                                     Rectangle rNode = GetNodeRect(oldSelected);
@@ -3785,6 +3661,10 @@ namespace Genius.Controls.TreeView
                             }
                         }
                         while (tmp != null);
+                        if (!hasSelected)
+                        {
+                            InternalSelectNode(oldSelected, FNodes.CurrentColIndex, e.Shift && _AllowMultiSelect);
+                        }
                     }
                     break;
                 case VirtualKeys.VK_DOWN:
@@ -3796,7 +3676,7 @@ namespace Genius.Controls.TreeView
                         tmp = oldSelected;
                         bool tempSel = SelectionDOWN;
 
-                        if (!e.Shift)
+                        if (!e.Shift && FNodes.SelectedNodes.Count > 1)
                         {
                             FNodes.UnSelectAll();
                             InvalidateTree();
@@ -3814,7 +3694,7 @@ namespace Genius.Controls.TreeView
                         }
                         if (e.Shift && SelectionDOWN)
                         {
-                            FNodes.InternalSelectNode(tmp, e.Shift, FNodes.CurrentColIndex);
+                            FNodes.InternalSelectNode(tmp, e.Shift && _AllowMultiSelect, FNodes.CurrentColIndex);
                             if (!ShowNode(tmp))
                             {
                                 Rectangle rNode = GetNodeRect(tmp);
@@ -3826,12 +3706,14 @@ namespace Genius.Controls.TreeView
                                 return;		// if prev node is selected leave all things 
                         }
 
+                        bool hasSelected = false; 
                         //la boucle est présente pour passer tout les noeuds que je ne peux selectionner
                         do
                         {
                             tmp = NextVisibleNode(tmp);
-                            if (tmp != null && InternalSelectNode(tmp, FNodes.CurrentColIndex, e.Shift))
+                            if (tmp != null && InternalSelectNode(tmp, FNodes.CurrentColIndex, e.Shift && _AllowMultiSelect))
                             {
+                                hasSelected = true;
                                 if (!ShowNode(tmp))
                                 {
                                     Rectangle rNode;
@@ -3844,9 +3726,13 @@ namespace Genius.Controls.TreeView
                                 }
                                 DoAfterSelect(tmp, FNodes.CurrentColIndex);
                                 tmp = null;
-                            }
+                            }                            
                         }
                         while (tmp != null);
+                        if (!hasSelected)
+                        {
+                            InternalSelectNode(oldSelected, FNodes.CurrentColIndex, e.Shift && _AllowMultiSelect);
+                        }
                     }
                     break;
                 case VirtualKeys.VK_RIGHT:
@@ -4167,7 +4053,7 @@ namespace Genius.Controls.TreeView
                     if (!UseColumns)
                     {
                         string st = stringProvider.GetText(-1);
-                        if (string.Compare(st, aNode.Text) != 0)
+                        if (string.Compare(st, aNode.Text, StringComparison.InvariantCulture) != 0)
                         {
                             aNode.Text = st;
                             aNode.Width = 0;
@@ -4829,7 +4715,7 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             FScrolls.OffsetY = 0;
             FScrolls.RangeY = 0;
             FLastNodeUnderMouse = null;
-            FLastColUnDerMouse = Constantes.InvalideColumn;
+            FLastColUnDerMouse = Constants.InvalidColumn;
             InvalidateTree();
         }
 
@@ -5209,7 +5095,7 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         /// </example>
         public void SortTree(int[] aDisplayCols, SortDirection[] aDirections)
         {
-            if (aDisplayCols[0] > Constantes.NoColumn)
+            if (aDisplayCols[0] > Constants.NoColumn)
             {
                 FHeader.SetSortColumn(Header.DisplayIndexToIndex(aDisplayCols), aDirections);
                 SortChildNodes(FRoot, aDisplayCols, aDirections, true);
@@ -5304,30 +5190,30 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         /// <returns></returns>
         public INode Search(string aText)
         {
-            return Search(null, aText, FNodes.CurrentColIndex, SearchDirectionEnum.Forward, true);
+            return Search(null, aText, FNodes.CurrentColIndex, SearchDirectionOption.Forward, true);
         }
 
         public INode Search(string aText, int aDisplayColumn)
         {
-            return Search(null, aText, aDisplayColumn, SearchDirectionEnum.Forward, true);
+            return Search(null, aText, aDisplayColumn, SearchDirectionOption.Forward, true);
         }
 
-        public INode Search(INode aStart, string aText, int aDisplayColumn, SearchDirectionEnum aDirection, bool aVisibleOnly)
+        public INode Search(INode aStart, string aText, int aDisplayColumn, SearchDirectionOption aDirection, bool aVisibleOnly)
         {
             SearchHelper sh = new SearchHelper(this);
             sh.Direction = aDirection;
 
-            return sh.Search((Node)aStart, aText, aVisibleOnly ? IncrementalSearchEnum.VisibleOnly : IncrementalSearchEnum.All, aDisplayColumn);
+            return sh.Search((Node)aStart, aText, aVisibleOnly ? IncrementalSearchOption.VisibleOnly : IncrementalSearchOption.All, aDisplayColumn);
         }
 
         public INode Search(INode aStart, string aText)
         {
-            return Search(aStart, aText, FNodes.CurrentColIndex, SearchDirectionEnum.Forward, true);
+            return Search(aStart, aText, FNodes.CurrentColIndex, SearchDirectionOption.Forward, true);
         }
 
         public INode Search(INode aStart, string aText, int aDisplayColumn)
         {
-            return Search(aStart, aText, aDisplayColumn, SearchDirectionEnum.Forward, true);
+            return Search(aStart, aText, aDisplayColumn, SearchDirectionOption.Forward, true);
         }
         #endregion
         #endregion
@@ -5486,10 +5372,10 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         }
 
         /// <summary>
-        /// les options de dessin <see cref="DrawingOption"/>
+        /// les options de dessin <see cref="DrawingOptions"/>
         /// </summary>
         [Description("Option de dessin, afficher/cacher les lignes de l'arbre, afficher/cacher les lignes de la grille, afficher/cacher les buttons, ...")]
-        public DrawingOption DefaultDrawingOption
+        public DrawingOptions DefaultDrawingOption
         {
             get
             {
@@ -5595,23 +5481,6 @@ Value of the high-order word of wParam. Specifies the current position of the sc
                 InvalidateTree();
             }
         }
-        /*
-		/// <summary>
-		/// obtient ou défini la liste d'images à utiliser pour les case à cochés
-		/// </summary>
-		[Description("Liste d'images pour les case à cochés, elle doivent être 4, et dans cet ordre : checked, unchecked, disable checked, disable unchecked")]
-		[DefaultValue(null)]
-		public ImageList ImageCheckList
-		{
-			get	{
-				return FImageCheckList;
-			}
-			set	{
-				FImageCheckList = value;
-				InvalidateTree();
-			}
-		}
-         * */
 
         /// <summary>
         /// liste des images + et - pour les noeuds
@@ -5690,7 +5559,7 @@ Value of the high-order word of wParam. Specifies the current position of the sc
                 if (FUseColumns != value)
                 {
                     FUseColumns = value;
-                    if (value && FHeader.MainColumnIndex <= Constantes.NoColumn)
+                    if (value && FHeader.MainColumnIndex <= Constants.NoColumn)
                         FHeader.SetMainColumnIndex(0);
                     UpdateHorizontalScrollBar();
                     InvalidateTree();
@@ -5717,7 +5586,7 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         /// </summary>
         [Description("Définir les colonnes pour ce treeview")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Colonnes HeaderColonnes
+        public GeniusTreeViewColumnCollection HeaderColonnes
         {
             get
             {
@@ -5869,9 +5738,9 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         /// recherche incrémentale
         /// </summary>
         [Description("Active /desactive la recherche incrémentale")]
-        [DefaultValue(IncrementalSearchEnum.VisibleOnly)]
+        [DefaultValue(IncrementalSearchOption.VisibleOnly)]
         [Category("IncrementalSearch")]
-        public IncrementalSearchEnum IncrementalSearch
+        public IncrementalSearchOption IncrementalSearch
         {
             get
             {
@@ -5883,10 +5752,13 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             }
         }
 
+        /// <summary>
+        /// fixe le démarrage de la recherche
+        /// </summary>
         [Description("fixe le démarrage de la recherche")]
-        [DefaultValue(SearchStartEnum.FocusedNode)]
+        [DefaultValue(SearchStartOption.FocusedNode)]
         [Category("IncrementalSearch")]
-        public SearchStartEnum SearchStart
+        public SearchStartOption SearchStart
         {
             get
             {
@@ -5898,10 +5770,13 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             }
         }
 
+        /// <summary>
+        /// obtient/défini le sens de la recherche
+        /// </summary>
         [Description("Direction de la recherche")]
-        [DefaultValue(SearchDirectionEnum.Forward)]
+        [DefaultValue(SearchDirectionOption.Forward)]
         [Category("IncrementalSearch")]
-        public SearchDirectionEnum SearchDirection
+        public SearchDirectionOption SearchDirection
         {
             get
             {
@@ -5999,26 +5874,9 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             }
         }
 
-        /*
         /// <summary>
-        /// le nombre ligne fixe en haut
+        /// défini/obtient la hauteur du footer
         /// </summary>
-        [Description("Fixe un nombre de ligne fixe en haut du TreeView")]
-        [DefaultValue(0)]
-        public int FixedRowsCount
-        {
-            get {
-                return FFixedRowsCount;
-            }
-            set {
-                if (FFixedRowsCount != value)
-                {
-                    FFixedRowsCount = value;
-                    InvalidateTree();
-                }
-            }
-        }
-        */
         [Description("défini/obtient la hauteur du footer"),
         DefaultValue(0)]
         public int FooterHeight
@@ -6042,6 +5900,9 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             }
         }
 
+        /// <summary>
+        /// True : Les checkbox sont indépendantes les unes des autres (pere-fils)\r\n False: lorsque l'on clic sur un noeud père ses fils sont automatique cochés/décochés.
+        /// </summary>
         [Description("True : Les checkbox sont indépendantes les unes des autres (pere-fils)\r\n False: lorsque l'on clic sur un noeud père ses fils sont automatique cochés/décochés.")]
         [DefaultValue(false)]
         public bool IndependantCheckboxes
@@ -6073,6 +5934,33 @@ Value of the high-order word of wParam. Specifies the current position of the sc
                 if (FFastDrawString != value)
                 {
                     FFastDrawString = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Permet d'autoriser/interdire la multiselection
+        /// </summary>
+        [Description("Permet d'autoriser/interdire la multiselection")]
+        [DefaultValue(true)]
+        public bool AllowMultiSelect
+        {
+            get
+            {
+                return _AllowMultiSelect;
+            }
+            set
+            {
+                if (_AllowMultiSelect != value)
+                {
+                    _AllowMultiSelect = value;
+                    if (!_AllowMultiSelect && FNodes.SelectedNodes.Count > 1)
+                    {
+                        Node oldSelected = Selected;
+                        FNodes.UnSelectAll();
+                        SelectNode(oldSelected);
+                        InvalidateTree();
+                    }
                 }
             }
         }
@@ -6179,6 +6067,15 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         private void FNodes_OnInitNode(NodeEventArgs e)
         {
             e.Node.Height = DefaultNodeHeight;
+            //le fait d'avoir des noeud en auto height affecte les performances
+            if (FHeader.AutoColHeight && FHeader.AutoSizeColIndex >= 0)
+            {
+                int height;
+                if (CalculateTextHeight((Node)e.Node, FHeader.Colonnes[FHeader.AutoSizeColIndex], FHeader.AutoSizeColIndex, out height))
+                {
+                    e.Node.Height = height;
+                }
+            }
             if (OnInitNode != null)
                 OnInitNode(this, e);
         }
@@ -6200,7 +6097,6 @@ Value of the high-order word of wParam. Specifies the current position of the sc
         {
             if (FDropNode != null && FDropNode.ChildCount > 0)
             {
-                //Debug.WriteLine(String.Format("{0}", FDropNode));
                 if (!IsExpanded(FDropNode))
                     ExpandNode(FDropNode);
             }
@@ -6231,5 +6127,54 @@ Value of the high-order word of wParam. Specifies the current position of the sc
             ShowHint(helper.Text, helper.Node, helper.Column);
         }
         #endregion
+
+        internal bool RecalcHeightAutoSizeColumn(GeniusTreeViewColonne aCol, int aColIndex)
+        {
+            bool beginUpdateCalled = false;
+            try
+            {
+                Node n = NextVisibleNode(FRoot);
+                while (n != null)
+                {
+                    int height;
+                    if (CalculateTextHeight(n, aCol, aColIndex, out height))
+                    {
+                        if (!beginUpdateCalled)
+                        {
+                            beginUpdateCalled = true;
+                            this.BeginUpdate();
+                        }
+                        int newHeight = Math.Max(DefaultNodeHeight, height);
+                        ((INode)n).Height = newHeight;
+                    }
+                    n = NextVisibleNode(n);
+                }
+            }
+            finally
+            {
+                if (beginUpdateCalled)
+                    this.EndUpdate();
+
+            }
+            return beginUpdateCalled;
+        }
+
+        private bool CalculateTextHeight(Node n, GeniusTreeViewColonne aCol, int aColIndex, out int height)
+        {
+            string text = GetNodeText(n, aColIndex);
+            if (!string.IsNullOrEmpty(text))
+            {
+                Font fnt = GetFontNode(n, aColIndex);
+
+                StringFormat sf = GetStringFormat(n, aColIndex);
+                TextFormatFlags tf = DrawingHelper.StringFormatToTextFormatFlags(sf);
+                tf |= TextFormatFlags.WordBreak;
+                Size sizeText = TextRenderer.MeasureText(text, fnt, new Size(aCol.Width, Int32.MaxValue), tf);
+                height = sizeText.Height;
+                return true;
+            }
+            height = 0;
+            return false;
+        }
     }
 }

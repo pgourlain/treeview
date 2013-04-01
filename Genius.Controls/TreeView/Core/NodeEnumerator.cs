@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Genius.Controls.TreeView.Core
 {
 	/// <summary>
 	/// classe d'énumération pour les noeuds
 	/// </summary>
-	internal class NodeEnumerator : IEnumerable, IEnumerator
+    internal class NodeEnumerator : IEnumerable<INode>, IEnumerator<INode>, IEnumerator, IDisposable
 	{
 		private Node FParent;
 		private bool FRecurse;
@@ -49,7 +51,7 @@ namespace Genius.Controls.TreeView.Core
 		/// <summary>
 		/// renvoi le noeud en cours d'énumération, de type <see cref="INode"/>
 		/// </summary>
-		public object Current
+        public INode Current
 		{
 			get
 			{
@@ -99,9 +101,42 @@ namespace Genius.Controls.TreeView.Core
 						FCurrent = FCurrent.NextSibling;
 				}
 			}
-			return FCurrent != null;
+            ////---- Check that we have not reach the same level          
+            //// It mean it remain no node to return.         
+            //if (Node.GetNodeLevel(FCurrent) == Node.GetNodeLevel(FParent))
+            //{
+            //    FCurrent = null;
+            //    return false;
+            //}
+            return FCurrent != null;
 		}
 
 		#endregion
-	}
+
+        #region IEnumerable<Node> Members
+
+        IEnumerator<INode> IEnumerable<INode>.GetEnumerator()
+        {
+            return this;
+        }
+
+        #endregion
+
+        #region IEnumerator Members
+
+        object IEnumerator.Current
+        {
+            get { return FCurrent; }
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+        }
+
+        #endregion
+    }
 }

@@ -107,11 +107,12 @@ namespace Genius.Controls.TreeView.Converter
 		/// <returns></returns>
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			if (!(value is string))
+            var sValue = value as string;
+            if (sValue == null)
 			{
 				return base.ConvertFrom(context, culture, value);
 			}
-			string text1 = ((string) value).Trim();
+            string text1 = sValue.Trim();
 			if (text1.Length == 0)
 			{
 				return null;

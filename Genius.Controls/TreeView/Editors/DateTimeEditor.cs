@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Genius.Controls.TreeView.Editors
@@ -11,8 +12,8 @@ namespace Genius.Controls.TreeView.Editors
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="tv"></param>
-		public DateTimeEditor(GeniusTreeView tv) : base(tv)
+		/// <param name="treeView"></param>
+		public DateTimeEditor(GeniusTreeView treeView) : base(treeView)
 		{
 		}
 
@@ -27,7 +28,7 @@ namespace Genius.Controls.TreeView.Editors
 			}
 			set
 			{
-				(FControl as DateTimePicker).Value = Convert.ToDateTime(value);
+				(FControl as DateTimePicker).Value = Convert.ToDateTime(value, CultureInfo.CurrentCulture);
 			}
 		}
 

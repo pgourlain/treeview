@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Genius.Controls.TreeView;
 
-namespace Genius.Controls.UserControl
+namespace Genius.Controls.UserControls
 {
 	/// <summary>
 	/// Summary description for StandardDemo1Ctl.
@@ -104,7 +104,7 @@ namespace Genius.Controls.UserControl
 			this.geniusTreeView1.Colors.SelectedUnfocusedColor = new Genius.Controls.GeniusLinearGradientBrush(System.Drawing.SystemColors.InactiveCaption, System.Drawing.Color.Empty, 0F);
 			this.geniusTreeView1.Colors.SignaledPenColor = new Genius.Controls.TreeView.Colors.GeniusPen(System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(128)), ((System.Byte)(0))), 2F);
 			this.geniusTreeView1.Colors.TextColor = new Genius.Controls.GeniusLinearGradientBrush(System.Drawing.Color.Black, System.Drawing.Color.Empty, 0F);
-			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOption.ShowGridLines;
+			this.geniusTreeView1.DefaultDrawingOption = Genius.Controls.TreeView.DrawingOptions.ShowGridLines;
 			this.geniusTreeView1.DefaultNodeHeight = 32;
 			this.geniusTreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.geniusTreeView1.Header.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));

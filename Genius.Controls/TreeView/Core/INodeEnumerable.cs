@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Genius.Controls.TreeView
 {
@@ -12,19 +13,19 @@ namespace Genius.Controls.TreeView
 		/// renvoi un <see cref="IEnumerable"/> sur l'ensemble des noeuds
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable GetNodes();
+		IEnumerable<INode> GetNodes();
 		/// <summary>
 		/// renvoi l'ensemble des noeuds d'un niveau ou plus
 		/// </summary>
 		/// <param name="recurse"></param>
 		/// <returns></returns>
-		IEnumerable GetNodes(bool recurse);
+        IEnumerable<INode> GetNodes(bool recurse);
 		/// <summary>
 		/// renvoi l'ensemble des noeuds visible d'un niveau ou plus
 		/// </summary>
 		/// <param name="recurse"></param>
 		/// <returns></returns>
-		IEnumerable GetVisibleNodes(bool recurse);
+        IEnumerable<INode> GetVisibleNodes(bool recurse);
 
 		/// <summary>
 		/// renoiv le index "ieme" noeud

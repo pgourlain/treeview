@@ -90,8 +90,8 @@ namespace Genius.Controls.TreeView
 						FWidth = 0;
 					if (FOwner != null)
 					{
-						FOwner.ColSizeChanged(this);
-						FOwner.Redraw(true);
+                        FOwner.ColSizeChanged(this);
+                        FOwner.Redraw(true);
 					}
 				}
 			}

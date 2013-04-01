@@ -11,8 +11,8 @@ namespace Genius.Controls.TreeView.Editors
 		/// <summary>
 		/// constructeur par défaut
 		/// </summary>
-		/// <param name="tv"></param>
-		public ComboBoxEditor(GeniusTreeView tv) : base(tv)
+		/// <param name="treeView"></param>
+		public ComboBoxEditor(GeniusTreeView treeView) : base(treeView)
 		{
 		}
 
